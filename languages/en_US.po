@@ -1,0 +1,254 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2017-01-06 18:11-0300\n"
+"PO-Revision-Date: 2017-01-06 18:11-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/carousel-admin.php:74
+msgid "Add New Carousel"
+msgstr ""
+
+#: inc/carousel-admin.php:75
+msgid "New Carousel"
+msgstr ""
+
+#: inc/carousel-admin.php:76
+msgid "Edit Carousel"
+msgstr ""
+
+#: inc/carousel-admin.php:77
+msgid "View Carousel"
+msgstr ""
+
+#: inc/carousel-admin.php:78
+msgid "All Carousels"
+msgstr ""
+
+#: inc/carousel-admin.php:79
+msgid "Search Carousels"
+msgstr ""
+
+#: inc/carousel-admin.php:80
+msgid "Parent Carousels:"
+msgstr ""
+
+#: inc/carousel-admin.php:81
+msgid "No Carousels found."
+msgstr ""
+
+#: inc/carousel-admin.php:82
+msgid "No Carousels found in Trash."
+msgstr ""
+
+#: inc/carousel-admin.php:87
+msgid "Description."
+msgstr ""
+
+#: inc/carousel-admin.php:107
+msgid "MLabs Carousels"
+msgstr ""
+
+#: inc/carousel-admin.php:108
+msgid "Carousels"
+msgstr ""
+
+#: inc/carousel-admin.php:128 inc/carousel-admin.php:238
+msgid ""
+"<br>ERROR: An action to edit a carousel was passed but with an invalid ID."
+msgstr ""
+
+#: inc/carousel-admin.php:192
+msgid ""
+"<br>SECURITY ERROR: An action to delete a carousel was passed but with an "
+"invalid ID."
+msgstr ""
+
+#: inc/carousel-admin.php:211
+msgid "<br>SECURITY ERROR: invalid nonce."
+msgstr ""
+
+#: inc/carousel-admin.php:306
+msgid "Email on element "
+msgstr ""
+
+#: inc/carousel-admin.php:329
+msgid "Error with the type of carousel selected, saved default instead."
+msgstr ""
+
+#: inc/carousel-admin.php:337
+msgid ""
+"The height of the carousel was not a number higher than a 100, saved default "
+"instead."
+msgstr ""
+
+#: inc/carousel-admin.php:344
+msgid ""
+"Amount of items to show was not a positive number, saved default instead."
+msgstr ""
+
+#: inc/carousel-admin.php:351
+msgid ""
+"Amount of items to show on tablet was not a positive number, saved default "
+"instead."
+msgstr ""
+
+#: inc/carousel-admin.php:358
+msgid ""
+"Amount of items to show on phone was not a positive number, saved default "
+"instead."
+msgstr ""
+
+#: inc/carousel-admin.php:365
+msgid ""
+"Amount of autoplay miliseconds was not a number higher than 200, saved "
+"default instead."
+msgstr ""
+
+#: inc/carousel-admin.php:372
+msgid "The background color was invalid, saved default instead."
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:12
+msgid "Settings saved."
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:63
+msgid "Preview:"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:77
+msgid "Carousel items"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:91
+msgid "Add images"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:92
+msgid "Delete ALL items"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:93
+msgid "Each image will be added as an individual item of the carousel."
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:106
+msgid "Carousel Name"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:125
+msgid "Carousel Type/Layout"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:146
+msgid "Navigation arrows"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:170
+msgid "Dots pagination"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:188
+msgid "Overlay Color"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:204
+msgid "Autoplay"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:215
+msgid "Time in miliseconds before changing to the next item"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:249
+msgid "Items to show"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:262
+msgid "Items (tablets)"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:275
+msgid "Items (phone)"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:288
+msgid "Height (fixed)"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:305
+msgid "Image"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:310
+msgid "Change image"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:319
+msgid "Title text"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:323
+#: inc/templates/mlabs-admin-carousel-add.php:336
+#: inc/templates/mlabs-admin-carousel-add.php:372
+msgid "Optional"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:332
+msgid "Description text"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:351
+msgid "Button text"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:368
+msgid "Full URL"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:387
+msgid "Facebook link"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:391
+msgid "Without '/' at the start"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:400
+msgid "Twitter link"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:404
+msgid "Without '@' at the start"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:413
+msgid "Google+ link"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:417
+msgid "Without '+' at the start"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:426
+msgid "Email link"
+msgstr ""
+
+#: inc/templates/mlabs-admin-carousel-add.php:447
+msgid "Save changes to refresh the preview."
+msgstr ""
+
+#: shortcodes/mlabs_carousel.php:9
+msgid "ERROR: Invalid carousel ID"
+msgstr ""
