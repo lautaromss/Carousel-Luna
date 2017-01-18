@@ -39,7 +39,7 @@
   // Descriptions of all options available on the demo site:
   // http://lokeshdhakar.com/projects/lightbox2/index.html#options
   Lightbox.defaults = {
-    albumLabel: 'Image %1 of %2',
+    albumLabel: 'asd',
     alwaysShowNavOnTouchDevices: false,
     fadeDuration: 500,
     fitImagesInViewport: true,
@@ -243,7 +243,7 @@
         // Take into account the border around the image and an additional 10px gutter on each side.
 
         windowWidth    = jQuery(window).width();
-        windowHeight   = document.body.clientHeight;
+        windowHeight   = window.innerHeight;
         maxImageWidth  = windowWidth - self.containerLeftPadding - self.containerRightPadding - 20;
         maxImageHeight = windowHeight - self.containerTopPadding - self.containerBottomPadding - 120;
 
@@ -465,3 +465,9 @@
 
   return new Lightbox();
 }));
+
+lightbox.option({
+  'resizeDuration': 400,
+  'fitImagesInViewport': true,
+  'albumLabel': '',
+})

@@ -56,7 +56,7 @@ msgid "Description."
 msgstr ""
 
 #: inc/carousel-admin.php:107
-msgid "MLabs Carousels"
+msgid "pixelmold Carousels"
 msgstr ""
 
 #: inc/carousel-admin.php:108
@@ -119,136 +119,136 @@ msgstr ""
 msgid "The background color was invalid, saved default instead."
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:12
+#: inc/templates/pixelmold-admin-carousel-add.php:12
 msgid "Settings saved."
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:63
+#: inc/templates/pixelmold-admin-carousel-add.php:63
 msgid "Preview:"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:77
+#: inc/templates/pixelmold-admin-carousel-add.php:77
 msgid "Carousel items"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:91
+#: inc/templates/pixelmold-admin-carousel-add.php:91
 msgid "Add images"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:92
+#: inc/templates/pixelmold-admin-carousel-add.php:92
 msgid "Delete ALL items"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:93
+#: inc/templates/pixelmold-admin-carousel-add.php:93
 msgid "Each image will be added as an individual item of the carousel."
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:106
+#: inc/templates/pixelmold-admin-carousel-add.php:106
 msgid "Carousel Name"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:125
+#: inc/templates/pixelmold-admin-carousel-add.php:125
 msgid "Carousel Type/Layout"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:146
+#: inc/templates/pixelmold-admin-carousel-add.php:146
 msgid "Navigation arrows"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:170
+#: inc/templates/pixelmold-admin-carousel-add.php:170
 msgid "Dots pagination"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:188
+#: inc/templates/pixelmold-admin-carousel-add.php:188
 msgid "Overlay Color"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:204
+#: inc/templates/pixelmold-admin-carousel-add.php:204
 msgid "Autoplay"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:215
+#: inc/templates/pixelmold-admin-carousel-add.php:215
 msgid "Time in miliseconds before changing to the next item"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:249
+#: inc/templates/pixelmold-admin-carousel-add.php:249
 msgid "Items to show"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:262
+#: inc/templates/pixelmold-admin-carousel-add.php:262
 msgid "Items (tablets)"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:275
+#: inc/templates/pixelmold-admin-carousel-add.php:275
 msgid "Items (phone)"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:288
+#: inc/templates/pixelmold-admin-carousel-add.php:288
 msgid "Height (fixed)"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:305
+#: inc/templates/pixelmold-admin-carousel-add.php:305
 msgid "Image"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:310
+#: inc/templates/pixelmold-admin-carousel-add.php:310
 msgid "Change image"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:319
+#: inc/templates/pixelmold-admin-carousel-add.php:319
 msgid "Title text"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:323
-#: inc/templates/mlabs-admin-carousel-add.php:336
-#: inc/templates/mlabs-admin-carousel-add.php:372
+#: inc/templates/pixelmold-admin-carousel-add.php:323
+#: inc/templates/pixelmold-admin-carousel-add.php:336
+#: inc/templates/pixelmold-admin-carousel-add.php:372
 msgid "Optional"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:332
+#: inc/templates/pixelmold-admin-carousel-add.php:332
 msgid "Description text"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:351
+#: inc/templates/pixelmold-admin-carousel-add.php:351
 msgid "Button text"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:368
+#: inc/templates/pixelmold-admin-carousel-add.php:368
 msgid "Full URL"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:387
+#: inc/templates/pixelmold-admin-carousel-add.php:387
 msgid "Facebook link"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:391
+#: inc/templates/pixelmold-admin-carousel-add.php:391
 msgid "Without '/' at the start"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:400
+#: inc/templates/pixelmold-admin-carousel-add.php:400
 msgid "Twitter link"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:404
+#: inc/templates/pixelmold-admin-carousel-add.php:404
 msgid "Without '@' at the start"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:413
+#: inc/templates/pixelmold-admin-carousel-add.php:413
 msgid "Google+ link"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:417
+#: inc/templates/pixelmold-admin-carousel-add.php:417
 msgid "Without '+' at the start"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:426
+#: inc/templates/pixelmold-admin-carousel-add.php:426
 msgid "Email link"
 msgstr ""
 
-#: inc/templates/mlabs-admin-carousel-add.php:447
+#: inc/templates/pixelmold-admin-carousel-add.php:447
 msgid "Save changes to refresh the preview."
 msgstr ""
 
-#: shortcodes/mlabs_carousel.php:9
+#: shortcodes/pixelmold_carousel.php:9
 msgid "ERROR: Invalid carousel ID"
 msgstr ""

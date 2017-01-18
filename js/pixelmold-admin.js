@@ -2,17 +2,63 @@ if ( typeof jQuery === 'undefined' ) {
 	throw new Error( 'jQuery not found.' )
 }
 
-// ColorPicker
-(function ($) {
-  $(function () {
-    $('.my-input-class').wpColorPicker();
-  });
-}(jQuery));
-
 jQuery( document ).ready(function($) {
 	"use strict";
-	console.log($( '#attachids' ).val());
-	console.log('done');
+	$(".pixelmold-font-field").select2({});
+
+	$(".pixelmold-variant-field").select2({});
+
+	$(".pixelmold-anim-field").select2({});
+
+	$('#pixelmold_carousel_primaryfont').on('select2:select', function (evt) {
+		
+		var id = evt.params.data.id;
+		var text = evt.params.data.text;
+		console.log(pixelmold_typography['google'][text]['variants']);
+		if ( id.charAt(0) == 'g' ) {
+			var variants = pixelmold_typography['google'][text]['variants'];
+			$("#primary_variant").select2("destroy");
+			$("#primary_variant").html('');
+			$("#primary_variant").select2({
+				data: variants
+			});
+		} else {
+			$("#primary_variant").select2("destroy");
+			$("#primary_variant").html('');
+			$("#primary_variant").select2({
+				data: [{ id: '400', text: 'Normal 400' }, { id: '700', text: 'Bold 700' }, { id: '400i', text: 'Normal 400 Italic' }, { id: '700i', text: 'Bold 700 Italic' }]
+			});
+		}
+
+	});
+
+	$('#pixelmold_carousel_secondaryfont').on('select2:select', function (evt) {
+		
+		var id = evt.params.data.id;
+		var text = evt.params.data.text;
+		if ( id.charAt(0) == 'g' ) {
+			var variants = pixelmold_typography['google'][text]['variants'];
+			$("#secondary_variant").select2("destroy");
+			$("#secondary_variant").html('');
+			$("#secondary_variant").select2({
+				data: variants
+			});
+		} else {
+			$("#secondary_variant").select2("destroy");
+			$("#secondary_variant").html('');
+			$("#secondary_variant").select2({
+				data: [{ id: '400', text: 'Normal 400' }, { id: '700', text: 'Bold 700' }, { id: '400i', text: 'Normal 400 Italic' }, { id: '700i', text: 'Bold 700 Italic' }]
+			});
+		}
+
+	});
+
+	$(function () {
+		$('.my-input-class').wpColorPicker();
+	});
+	$(function () {
+		$('.pixelmold_primary_color').wpColorPicker();
+	});
 
 	/*!
 	 *
@@ -20,7 +66,7 @@ jQuery( document ).ready(function($) {
 	 *
 	 */
 	$( '#gallery-button' ).on( 'click', function(e) {
-		var mediaUploader, mlabsImagesIds = [], mlabsContent = [], attachment;
+		var mediaUploader, pixelmoldImagesIds = [], pixelmoldContent = [], attachment;
 
 		e.preventDefault();
 		if( mediaUploader ){
@@ -40,14 +86,10 @@ jQuery( document ).ready(function($) {
 		//Save the images selected 
 		mediaUploader.on( 'select', function(){
 
-			console.log('mediaUploader.on function called');
+			var pixelmoldContent = [], pixelmoldImagesIds = [], numItems, pixelmoldPreviousIds;
+			var pixelmoldCarouselType = $( '#pixelmold-carousel-preview' ).data( 'cartype' );
 
-			var mlabsContent = [], mlabsImagesIds = [], numItems, mlabsPreviousIds;
-			var mlabsCarouselType = $( '#mlabs_carousel_preview' ).data( 'cartype' );
-
-
-
-			if ( $.parseJSON( $( '#attachids' ).val() ) == null ) {
+			if ( $( '#attachids' ).val() == '' || $.parseJSON( $( '#attachids' ).val() ) == null ) {
 				numItems = 0
 			} else {
 				numItems = $.parseJSON( $( '#attachids' ).val() ).length;
@@ -58,13 +100,13 @@ jQuery( document ).ready(function($) {
 			attachment.map(function( current ) {
 				current = current.toJSON();
 				console.log('ids are'+current.id);
-				mlabsImagesIds.push( current.id );
+				pixelmoldImagesIds.push( current.id );
 
 				// Prepare the HTML string for the new carousel:
-				var mlabsContentPlaceholder = 
-				makeItemContent( mlabsCarouselType, numItems, current.url, current.width, current.height );
+				var pixelmoldContentPlaceholder = 
+				makeItemContent( pixelmoldCarouselType, numItems, current.url, current.width, current.height );
 
-				mlabsContent.push( mlabsContentPlaceholder );
+				pixelmoldContent.push( pixelmoldContentPlaceholder );
 
 				makeTabContent( numItems, current.id, current.url );
 
@@ -72,29 +114,27 @@ jQuery( document ).ready(function($) {
 
 			});
 
-			mlabsPreviousIds = $.parseJSON( $( '#attachids' ).val());
-
-			console.log('previouse IDs are ' + mlabsPreviousIds);
+			pixelmoldPreviousIds = $.parseJSON( $( '#attachids' ).val());
 
 			// If there was any image already uploaded
-			if ( mlabsPreviousIds != null ) {
+			if ( pixelmoldPreviousIds != undefined && pixelmoldPreviousIds != '' && pixelmoldPreviousIds != null ) {
 				// Get previous and current items count
-				var mlabsImagesIds = mlabsPreviousIds.concat( mlabsImagesIds );
+				var pixelmoldImagesIds = pixelmoldPreviousIds.concat( pixelmoldImagesIds );
 				var numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
 			} else {
 				numItemsPrev = 0;
 			}
 
-			$( '#attachids' ).val( JSON.stringify( mlabsImagesIds ) );
+			$( '#attachids' ).val( JSON.stringify( pixelmoldImagesIds ) );
 			var numItems = $.parseJSON( $( '#attachids' ).val() ).length;
 			console.log('we added this amount of IDs: ' + numItems);
 
 			// Update Carousel preview
-			var car = $( "#owl_mlabs_carousel" );
+			var car = $( "#owl_pixelmold_carousel" );
 			if ( car.length ) {
 				// Add the new content to the carousel
-				for ( var i = 0; i < mlabsContent.length; i++ ) {
-					$( '.owl-carousel' ).trigger( 'add.owl.carousel', mlabsContent[ i ] );
+				for ( var i = 0; i < pixelmoldContent.length; i++ ) {
+					$( '.owl-carousel' ).trigger( 'add.owl.carousel', pixelmoldContent[ i ] );
 				}
 				// Refresh it
 				$('.owl-carousel').trigger('refresh.owl.carousel');
@@ -104,21 +144,20 @@ jQuery( document ).ready(function($) {
 			} else {
 
 				// Forge the content
-				var i;
-				for ( i = 0; i < mlabsContent.length; i++ ) {
-					if ( ! mlabs_placeholder ) {
-						mlabs_placeholder = mlabsContent[ i ];
+				for ( var i = 0; i < pixelmoldContent.length; i++ ) {
+					if ( ! pixelmold_placeholder ) {
+						pixelmold_placeholder = pixelmoldContent[ i ];
 					} else {
-						mlabs_placeholder = mlabs_placeholder + mlabsContent[ i ];
+						pixelmold_placeholder = pixelmold_placeholder + pixelmoldContent[ i ];
 					}
 				}
-				var mlabs_placeholder = '<div id="owl_mlabs_carousel" class="owl-carousel">' + 
-					mlabs_placeholder + '</div>\
-					<div class="mlabs-prev-btn mlabs-carousel-btn"></div>\
-					<div class="mlabs-next-btn mlabs-carousel-btn"></div>';
+				var pixelmold_placeholder = '<div id="owl_pixelmold_carousel" class="owl-carousel">' + 
+					pixelmold_placeholder + '</div>\
+					<div class="pixelmold-prev-btn pixelmold-carousel-btn"></div>\
+					<div class="pixelmold-next-btn pixelmold-carousel-btn"></div>';
 
 				// Make the carousel with the new content
-				$( '#mlabs_carousel_preview' ).html( mlabs_placeholder );
+				$( '#pixelmold-carousel-preview' ).html( pixelmold_placeholder );
 
 				// Initiate the Owl Carousel
 				var owl = jQuery( '.owl-carousel' );
@@ -129,10 +168,10 @@ jQuery( document ).ready(function($) {
 					items:5,
 					dots:false,
 				});
-				jQuery( '.mlabs-next-btn' ).click(function() {
+				jQuery( '.pixelmold-next-btn' ).click(function() {
 					owl.trigger( 'next.owl.carousel' );
 				})
-				jQuery('.mlabs-prev-btn').click(function() {
+				jQuery('.pixelmold-prev-btn').click(function() {
 					owl.trigger( 'prev.owl.carousel' );
 				})
 			}
@@ -143,32 +182,32 @@ jQuery( document ).ready(function($) {
 	// Update de admin tabs for item customization
 	function makeTabContent( numItemsPrev, attachid, url ) {
 
-		var mlabsInputState;
+		var pixelmoldInputState;
 
 		// Create the tab links
-		$( 'ul#mlabs_ele_tabs' ).append( '<li role="presentation"><a href="#element'
-			+ ( numItemsPrev + 1 ) + '" aria-controls="mlabs_ele" role="tab" data-toggle="tab">Element ' +
+		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element'
+			+ ( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Element ' +
 			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="'+( numItemsPrev + 1 ) +
 			'" title="Remove this slide">x</button></li>');
 
 		// Create the tabs content:
 
-		if ( $( "#mlabs_carousel_type" ).val() == 4) {
-			mlabsInputState = '';
+		if ( $( "#pixelmold_carousel_type" ).val() == 4) {
+			pixelmoldInputState = '';
 		} else {
-			mlabsInputState = 'class="disabled_input"';
+			pixelmoldInputState = 'class="disabled_input"';
 		}
 
 		// Populate the admin tabs
-		$( '#mlabs_ele_tab_content' ).append( '<div role="tabpanel" class="tab-pane fade" id="element' +
+		$( '#pixelmold_ele_tab_content' ).append( '<div role="tabpanel" class="tab-pane fade" id="element' +
 			( numItemsPrev + 1 ) + '">\
-			<table class="form-table mlabs_close_table"><tbody>\
+			<table class="form-table pixelmold-close-table"><tbody>\
 			<tr>\
 				<th scope="row">\
-					<label for="mlabs_element_image' + numItemsPrev + '">Image</label>\
+					<label for="pixelmold_element_image' + numItemsPrev + '">Image</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_image' + numItemsPrev + '" type="hidden" name="attachid' +
+					<input id="pixelmold_element_image' + numItemsPrev + '" type="hidden" name="attachid' +
 					numItemsPrev + '" value="' + attachid + '" />\
 					<img id="ele_img_' + numItemsPrev + '" src="' + url +
 					'" style="height:200px; width:auto;display:block;margin-bottom:15px;">\
@@ -178,73 +217,73 @@ jQuery( document ).ready(function($) {
 			</tr>\
 			<tr>\
 				<th scope="row">\
-					<label for="mlabs_element_title' + numItemsPrev + '">Title text</label>\
+					<label for="pixelmold_element_title' + numItemsPrev + '">Title text</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_title' + numItemsPrev + '" type="text" name="title' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_title' + numItemsPrev + '" type="text" name="title' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
 			<tr>\
 				<th scope="row">\
-					<label for="mlabs_element_desc' + numItemsPrev + '">Description text</label>\
+					<label for="pixelmold_element_desc' + numItemsPrev + '">Description text</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_desc' + numItemsPrev + '" type="text" name="desc' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_desc' + numItemsPrev + '" type="text" name="desc' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
 			<tr>\
 				<th scope="row">\
-					<label for="mlabs_element_linkurl' + numItemsPrev + '">Slug of post/page</label>\
+					<label for="pixelmold_element_linkurl' + numItemsPrev + '">Slug of post/page</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_linkurl' + numItemsPrev + '" type="text" name="linkurl' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_linkurl' + numItemsPrev + '" type="text" name="linkurl' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
 			<tr>\
 				<th scope="row">\
-					<label for="mlabs_element_linktext' + numItemsPrev + '">Button link text</label>\
+					<label for="pixelmold_element_linktext' + numItemsPrev + '">Button link text</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_linktext' + numItemsPrev + '" type="text" name="linktext' + numItemsPrev + '" value="See more" />\
+					<input id="pixelmold_element_linktext' + numItemsPrev + '" type="text" name="linktext' + numItemsPrev + '" value="See more" />\
 				</td>\
 			</tr>\
 			\
-			<tr id="mlabs_social_class" ' + mlabsInputState + '>\
+			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
 				<th scope="row">\
-					<label for="mlabs_element_facebook' + numItemsPrev + '">Facebook link</label>\
+					<label for="pixelmold_element_facebook' + numItemsPrev + '">Facebook link</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_facebook' + numItemsPrev + '" type="text" name="facebook' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_facebook' + numItemsPrev + '" type="text" name="facebook' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
-			<tr id="mlabs_social_class" ' + mlabsInputState + '>\
+			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
 				<th scope="row">\
-					<label for="mlabs_element_twitter' + numItemsPrev + '">Twitter link</label>\
+					<label for="pixelmold_element_twitter' + numItemsPrev + '">Twitter link</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_twitter' + numItemsPrev + '" type="text" name="twitter' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_twitter' + numItemsPrev + '" type="text" name="twitter' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
-			<tr id="mlabs_social_class" ' + mlabsInputState + '>\
+			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
 				<th scope="row">\
-					<label for="mlabs_element_googleplus' + numItemsPrev + '">Google+ link</label>\
+					<label for="pixelmold_element_googleplus' + numItemsPrev + '">Google+ link</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_googleplus' + numItemsPrev + '" type="text" name="googleplus' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_googleplus' + numItemsPrev + '" type="text" name="googleplus' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
-			<tr id="mlabs_social_class" ' + mlabsInputState + '>\
+			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
 				<th scope="row">\
-					<label for="mlabs_element_email' + numItemsPrev + '">Email link</label>\
+					<label for="pixelmold_element_email' + numItemsPrev + '">Email link</label>\
 				</th>\
 				<td>\
-					<input id="mlabs_element_email' + numItemsPrev + '" type="text" name="email' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_email' + numItemsPrev + '" type="text" name="email' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			</tbody></table>\
@@ -257,78 +296,78 @@ jQuery( document ).ready(function($) {
 	function makeItemContent( cartype, numItems, url, width, height ) {
 		switch ( cartype ) {
 			case 0:
-				var mlabsContent = '<div class="children-owl-item">\
-					<img id="car_item_' + numItems + '" class="mlabs-zommable" style="width:100%; height: auto;" src="' + url + '">\
-					<div class="mlabs_c_overlay">\
-						<div class="mlabs-overlay-content">\
-							<a class="mlabs-ov mlabs-ov-lightbox" data-lightbox="image-1" href="' + url + '"></a>\
+				var pixelmoldContent = '<div class="children-owl-item">\
+					<img id="car_item_' + numItems + '" class="pixelmold-zommable" style="width:100%; height: auto;" src="' + url + '">\
+					<div class="pixelmold-c-overlay">\
+						<div class="pixelmold-overlay-content">\
+							<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-1" href="' + url + '"></a>\
 						</div>\
 					</div>\
 				</div>';
 				break;
 			case 1:
-				var mlabsContent = '<img id="car_item_' + numItems +
-					'" class="mlabs-zommable" style="width:100%; height: auto;" src="' + url + '">';
+				var pixelmoldContent = '<img id="car_item_' + numItems +
+					'" class="pixelmold-zommable" style="width:100%; height: auto;" src="' + url + '">';
 				break;
 			case 2:
-				var mlabs_img_width = Math.round( 200 * width / height );
-				var mlabsContent = '<div class="children-owl-item">\
-				<img id="car_item_' + numItems + '" class="mlabs-zommable"\
-				style="height: ' + height + 'px; width:' + mlabs_img_width + 'px;" src="' + url + '">\
-					<div class="mlabs_c_overlay">\
-						<div class="mlabs-overlay-content">\
-							<a class="mlabs-ov mlabs-ov-lightbox" data-lightbox="image-2" href="' + url + '"></a>\
+				var pixelmold_img_width = Math.round( 200 * width / height );
+				var pixelmoldContent = '<div class="children-owl-item">\
+				<img id="car_item_' + numItems + '" class="pixelmold-zommable"\
+				style="height: ' + height + 'px; width:' + pixelmold_img_width + 'px;" src="' + url + '">\
+					<div class="pixelmold-c-overlay">\
+						<div class="pixelmold-overlay-content">\
+							<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-2" href="' + url + '"></a>\
 						</div>\
 					</div>\
 				</div>';
 				break;
 			case 3:
-				var mlabsContent = '<div class="children-owl-item">\
-				<div class="mlabs-testimonials">\
-						<div id="car_item_' + numItems + '" class="mlabs-testminial-image" style="background-image:url(\'' +
+				var pixelmoldContent = '<div class="children-owl-item">\
+				<div class="pixelmold-testimonials">\
+						<div id="car_item_' + numItems + '" class="pixelmold-testminial-image" style="background-image:url(\'' +
 						url + '\');"></div>\
 						<div class="blockquote">\
-							<div class="mlabs-testimonial-quote"></div>\
-							<div class="mlabs-testimonial-author"></div>\
+							<div class="pixelmold-testimonial-quote"></div>\
+							<div class="pixelmold-testimonial-author"></div>\
 						</div>\
 					</div>\
 				</div>';
 				break;
 			case 4:
-				var mlabsContent = '<div class="children-owl-item">\
-				<img id="car_item_' + numItems + '" class="mlabs-zommable" src="' + url + '"></img>\
-					<div class="mlabs-black-overlay">\
-						<div class="mlabs-overlay-caption">\
-							<div class="mlabs-caption-title"></div>\
+				var pixelmoldContent = '<div class="children-owl-item">\
+				<img id="car_item_' + numItems + '" class="pixelmold-zommable" src="' + url + '"></img>\
+					<div class="pixelmold-black-overlay">\
+						<div class="pixelmold-overlay-caption">\
+							<div class="pixelmold-caption-title"></div>\
 							<div class="double-separator"></div>\
-							<div class="mlabs-caption-name"></div>\
+							<div class="pixelmold-caption-name"></div>\
 						</div>\
 					</div>\
 				</div>';
 				break;
 			case 5:
-				var mlabsContent = '<div class="children-owl-item">\
-				<div class="mlabs-service">\
-						<span id="car_item_' + numItems + '" class="dashicons-heart mlabs-ico"></span>\
-						<div class="mlabs-service-title"></div>\
-						<div class="mlabs-card-text"></div>\
+				var pixelmoldContent = '<div class="children-owl-item">\
+				<div class="pixelmold-service">\
+						<span id="car_item_' + numItems + '" class="dashicons-heart pixelmold-ico"></span>\
+						<div class="pixelmold-service-title"></div>\
+						<div class="pixelmold-card-text"></div>\
 					</div>\
 				</div>';
 				break;
 			case 6:
-				var mlabsContent = '<div class="children-owl-item">\
-				<div class="mlabs-card">\
-						<img id="car_item_' + numItems + '" class="mlabs-card-img-top" src="' + url + '">\
-						<div class="mlabs-card-block">\
-							<p class="mlabs-card-title"></p>\
-							<div class="mlabs-card-text"></div>\
-							<a href="#" class="mlabs-btn-card">See more</a>\
+				var pixelmoldContent = '<div class="children-owl-item">\
+				<div class="pixelmold-card">\
+						<img id="car_item_' + numItems + '" class="pixelmold-card-img-top" src="' + url + '">\
+						<div class="pixelmold-card-block">\
+							<p class="pixelmold-card-title"></p>\
+							<div class="pixelmold-card-text"></div>\
+							<a href="#" class="pixelmold-btn-card">See more</a>\
 						</div>\
 					</div>\
 				</div>';
 				break;
 		}
-		return mlabsContent;
+		return pixelmoldContent;
 	}
 
 	/*!
@@ -336,13 +375,13 @@ jQuery( document ).ready(function($) {
 	 * Change an item's image.
 	 *
 	 */
-	$( '.ele_img_button' ).on( 'click', function(e) {
+	$( '.tab-content' ).on( 'click', ".tab-pane .ele_img_button", function(e) {
 
 		var eleID = this.getAttribute( "data-element" );
 		var imgID = "#ele_img_" + eleID;
 		var imgCarID = ".car_item_" + eleID;
-		var inputID = "#mlabs_element_image" + eleID;
-		var carType = $( '#mlabs_carousel_preview' ).data( 'cartype' );
+		var inputID = "#pixelmold_element_image" + eleID;
+		var carType = $( '#pixelmold-carousel-preview' ).data( 'cartype' );
 
 		e.preventDefault();
 		if ( mediaUploader ) {
@@ -361,6 +400,7 @@ jQuery( document ).ready(function($) {
 
 		// Save the image selected & refresh preview
 		mediaUploader.on( 'select', function(){
+			console.log('mediaUploader.on("select") triggered');
 			var attachment = mediaUploader.state().get('selection').first().toJSON();
 			
 			$( imgID ).attr( 'src', attachment.url );
@@ -378,20 +418,43 @@ jQuery( document ).ready(function($) {
 			$( '#attachids' ).val( attachmentsArray );
 
 			/* Prepare the HTML string for the new carousel item:
-			mlabs_img_width = Math.round((200 * attachment.width) / attachment.height);
-			mlabsContent.push('<div class="children-owl-item">\
-				<img style="height: 200px; width: '+mlabs_img_width+'px;" src="'
+			pixelmold_img_width = Math.round((200 * attachment.width) / attachment.height);
+			pixelmoldContent.push('<div class="children-owl-item">\
+				<img style="height: 200px; width: '+pixelmold_img_width+'px;" src="'
 				+current.url+'" alt="Owl Image">\
 				</div>');
 
 			$('.owl-carousel').trigger('remove.owl.carousel', (tabId-1));
-			$('.owl-carousel').trigger('add.owl.carousel', mlabsContent[i]);
+			$('.owl-carousel').trigger('add.owl.carousel', pixelmoldContent[i]);
 			$('.owl-carousel').trigger('refresh.owl.carousel');*/
 
 		});
 
 		mediaUploader.open();
 
+	});
+
+	/*!
+	 *
+	 * Add a tab button.
+	 *
+	 */
+	$( '#add-pixelmold-tab' ).on( 'click', function(e) {
+		var pixelmoldPreviousIds = $.parseJSON( $( '#attachids' ).val());
+
+		// If there was any image already uploaded
+		if ( pixelmoldPreviousIds != undefined && pixelmoldPreviousIds != '' && pixelmoldPreviousIds != null ) {
+			// Get previous items count
+			var numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
+		} else {
+			numItemsPrev = 0;
+		}
+
+		makeTabContent(numItemsPrev, 0, '#');
+
+		console.log(pixelmoldPreviousIds);
+		pixelmoldPreviousIds.push(0);
+		$( '#attachids' ).val( JSON.stringify( pixelmoldPreviousIds ) );
 	});
 
 	/*!
@@ -404,7 +467,7 @@ jQuery( document ).ready(function($) {
 		var answer = confirm( 'Are you sure you want to delete ALL items in this carousel?' );
 		if ( answer == true ) {
 			$( '#attachids' ).val( '[]' );
-			$( '#mlabs_carousel_form' ).submit();
+			$( '#pixelmold_carousel_form' ).submit();
 		}
 		return;
 	});
@@ -413,7 +476,7 @@ jQuery( document ).ready(function($) {
 	$( '#btnsubmit' ).on( 'click', function(e) {
 		e.preventDefault();
 		//TODO: Pertinent checks
-		$( '#mlabs_carousel_form' ).submit();
+		$( '#pixelmold_carousel_form' ).submit();
 	});
 
 	/*!
@@ -421,11 +484,11 @@ jQuery( document ).ready(function($) {
 	 * Remove a tab button.
 	 *
 	 */
-	$( '#mlabs_ele_tabs' ).on( 'click', ' li .close', function() {
+	$( '#pixelmold_ele_tabs' ).on( 'click', ' li .close', function() {
 		if ( confirm( 'Are you sure you want to permanently remove this item?' ) ) {
 			
 			var tabId = $( this ).data( 'identifier' );
-			var totalElements = $( '#mlabs_ele_tabs li' ).size() - 1;
+			var totalElements = $( '#pixelmold_ele_tabs li' ).size() - 1;
 			var attachmentsArray = $( '#attachids' ).val();
 
 			// Remove the tab and it's content
@@ -450,7 +513,7 @@ jQuery( document ).ready(function($) {
 
 	// Used after removing a tab to Re-Number the other tabs accordingly
 	function reNumberElements( removedId, totalElements ) {
-		for ( i = removedId; i < totalElements; i++ ) {
+		for ( var i = removedId; i < totalElements; i++ ) {
 
 			var elementSelector = 'a[href="#element' + ( i + 1 ) + '"]';
 			var closeButton = jQuery('button[data-identifier="' + ( i + 1 ) + '"]');
@@ -493,58 +556,74 @@ jQuery( document ).ready(function($) {
 	 * Put the correct inputs when changing the carousel type.
 	 *
 	 */
-	$( "#mlabs_carousel_type" ).change(function() {
+	$( "#pixelmold_carousel_type" ).change(function() {
 
-		// Check input( $( this ).val() ) for validity here
+		// Check input( $( this ).val() ) for validity here.
 		// TODO
 
-		// Toggle on the social media properties if the carousel is of Meet your Team type
+		// Toggle on the social media properties if the carousel is of Meet your Team type.
 		if ( $( this ).val() != 4 ) {
-			$( 'tr.mlabs_social_class' ).addClass( 'disabled_input' );
+			$( 'tr.pixelmold_social_class' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr.mlabs_social_class' ).removeClass( 'disabled_input' );
+			$( 'tr.pixelmold_social_class' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle off the 'amounts of items to show' properties if the carousel is a Slider or Flexible Width
+		// Toggle off the 'amounts of items to show' properties if the carousel is a Slider or Flexible Width.
 		if ( $( this ).val() == 1 || $( this ).val() == 2 ) {
-			$( 'tr.mlabs_items_class' ).addClass( 'disabled_input' );
+			$( 'tr.pixelmold_items_class' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr.mlabs_items_class' ).removeClass( 'disabled_input' );
+			$( 'tr.pixelmold_items_class' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle on the 'fixed height' property if the carousel is a flexible width
+		// Toggle on the 'fixed height' property if the carousel is a flexible width.
 		if ( $( this ).val() != 2 ) {
-			$( 'tr.mlabs_height_class' ).addClass( 'disabled_input' );
+			$( 'tr.pixelmold_height_class' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr.mlabs_height_class' ).removeClass( 'disabled_input' );
+			$( 'tr.pixelmold_height_class' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle on the 'link url' property if the carousel is images or content
-		if ( $( this ).val() != 0 && $( this ).val() != 2 && $( this ).val() != 6 ) {
-			$( 'tr.mlabs_linkurl' ).addClass( 'disabled_input' );
+		// Toggle on the 'link url' property if the carousel is images or content.
+		if ( $( this ).val() != 0 && $( this ).val() != 2 && $( this ).val() != 6 && $( this ).val() != 7 ) {
+			$( 'tr.pixelmold_linkurl' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr.mlabs_linkurl' ).removeClass( 'disabled_input' );
+			$( 'tr.pixelmold_linkurl' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle on the 'button's text' property if the carousel is content
-		if ( $( this ).val() != 6 ) {
-			$( 'tr.mlabs_buttontext' ).addClass( 'disabled_input' );
+		// Toggle on the 'button's text' property if the carousel is content.
+		if ( $( this ).val() != 6 && $( this ).val() != 7 ) {
+			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr.mlabs_buttontext' ).removeClass( 'disabled_input' );
+			$( 'tr.pixelmold_buttontext' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle off the 'pagination' property if the carousel is flexible width
+		// Toggle off the 'pagination' property if the carousel is flexible width.
 		if ( $( this ).val() == 2 ) {
-			$( 'tr#mlabs_dots_pagination' ).addClass( 'disabled_input' );
+			$( 'tr#pixelmold_dots_pagination' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr#mlabs_dots_pagination' ).removeClass( 'disabled_input' );
+			$( 'tr#pixelmold_dots_pagination' ).removeClass( 'disabled_input' );
 		}
 
-		// Toggle off the 'overlay color' property if the carousel is content
-		if ( $( this ).val() == 6 ) {
-			$( 'tr#mlabs_colorpick' ).addClass( 'disabled_input' );
+		// Toggle off the 'overlay color' and 'animation' property if the carousel is team/services/content.
+		if ( $( this ).val() == 3 || $( this ).val() == 4 || $( this ).val() == 5 ) {
+			$( 'tr#pixelmold_colorpick' ).addClass( 'disabled_input' );
+			$( 'tr#pixelmold_animation' ).addClass( 'disabled_input' );
 		} else {
-			$( 'tr#mlabs_colorpick' ).removeClass( 'disabled_input' );
+			$( 'tr#pixelmold_colorpick' ).removeClass( 'disabled_input' );
+			$( 'tr#pixelmold_animation' ).removeClass( 'disabled_input' );
+		}
+
+		// Toggle off the 'style' property for carousel types that don't use it.
+		if ( $( this ).val() != 6 ) {
+			$( 'tr#pixelmold_carousel_style' ).addClass( 'disabled_input' );
+		} else {
+			$( 'tr#pixelmold_carousel_style' ).removeClass( 'disabled_input' );
+		}
+
+		// Toggle off the 'price' property for non-product carousels.
+		if ( $( this ).val() != 6 ) {
+			$( 'tr.pixelmold_price' ).addClass( 'disabled_input' );
+		} else {
+			$( 'tr.pixelmold_price' ).removeClass( 'disabled_input' );
 		}
 
 	});

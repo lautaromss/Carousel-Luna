@@ -1,6 +1,6 @@
 <?php
 
-class MlabsthemeCarousel {
+class pixelmoldthemeCarousel {
 
 
 	function __construct() {
@@ -18,23 +18,31 @@ class MlabsthemeCarousel {
 	function default_carousel_options() {
 
 		$default_options = array(
-				'title' => '',
-				'type' => 2, // 0: Images Carousel, 1: Slider, 2: Flexible Width, 3: Testimonials, 4: Meet our team, 5: Services, 6: Product/Content Card.
-				'count' => 0,
-				'dots' => false, // Dots navigation. 0: None, 1: Inside, 2: Outside.
-				'navs' => true, // Navigation arrows. 0: None, 1: Inside, 2: Outside.
-				'bgcolor' => '#000',
-				'color' => '#fff',
-				'items' => 5, // Amount of items displayed at once in the desktop size.
-				'items_tablet' => 3,
-				'items_phone' => 2,
-				'autoplay' => false,
-				'autoplayms' => 4000,
-				'stop_on_hover' => true,
-				'speed' => 300,
-				'animation' => 0, // 0 is move, 1 is ease-in-out.
-				'fixedheight' => false,
-				'height' => 200,
+			'title' => '',
+			'type' => 2, // 0: Images Carousel, 1: Slider, 2: Flexible Width, 3: Testimonials, 4: Meet our eam, 5: Services/logo, 6: Product, 7: Content card.
+			'style' => 0,
+			'count' => 0,
+			'dots' => false, // Dots navigation. 0: None, 1: Inside, 2: Outside.
+			'navs' => true, // Navigation arrows. 0: None, 1: Inside, 2: Outside.
+			'bgcolor' => '#000',
+			'items' => 5, // Amount of items displayed at once in the desktop size.
+			'items_tablet' => 3,
+			'items_phone' => 2,
+			'autoplay' => false,
+			'autoplayms' => 4000,
+			'stop_on_hover' => true, // Not yet implemented
+			'speed' => 300,
+			'fixedheight' => false, // Not yet implemented
+			'height' => 200, // In pixels
+			'primary_font' => array( 'g', 'Raleway', '900', 'Ultra-Bold 900' ),
+			'primary_size' => 24, // In pixels
+			'primary_color' => '#fff',
+			'primary_lineheight' => 24,
+			'secondary_font' => array( 'g', 'Open Sans', '400', 'Normal 400' ),
+			'secondary_size' => 16, // In pixels
+			'secondary_color' => '#fff',
+			'secondary_lineheight' => 16,
+			'animation' => 'fadeIn',
 			);
 
 		return $default_options;
@@ -58,6 +66,8 @@ class MlabsthemeCarousel {
 				'twitter' => '',
 				'googleplus' => '',
 				'email' => '',
+				'price' => '',
+				'old_price' => '',
 			);
 
 		return $element;
@@ -66,31 +76,31 @@ class MlabsthemeCarousel {
 	function register_post_type() {
 
 		$labels = array(
-				'name'               => _x( 'Carousels', 'post type general name', 'mlabstheme' ),
-				'singular_name'      => _x( 'Carousel', 'post type singular name', 'mlabstheme' ),
-				'menu_name'          => _x( 'Carousels', 'admin menu', 'mlabstheme' ),
-				'name_admin_bar'     => _x( 'Carousel', 'add new on admin bar', 'mlabstheme' ),
-				'add_new'            => _x( 'Add New', 'Carousel', 'mlabstheme' ),
-				'add_new_item'       => __( 'Add New Carousel', 'mlabstheme' ),
-				'new_item'           => __( 'New Carousel', 'mlabstheme' ),
-				'edit_item'          => __( 'Edit Carousel', 'mlabstheme' ),
-				'view_item'          => __( 'View Carousel', 'mlabstheme' ),
-				'all_items'          => __( 'All Carousels', 'mlabstheme' ),
-				'search_items'       => __( 'Search Carousels', 'mlabstheme' ),
-				'parent_item_colon'  => __( 'Parent Carousels:', 'mlabstheme' ),
-				'not_found'          => __( 'No Carousels found.', 'mlabstheme' ),
-				'not_found_in_trash' => __( 'No Carousels found in Trash.', 'mlabstheme' ),
+				'name'               => _x( 'Carousels', 'post type general name', 'pixelmoldtheme' ),
+				'singular_name'      => _x( 'Carousel', 'post type singular name', 'pixelmoldtheme' ),
+				'menu_name'          => _x( 'Carousels', 'admin menu', 'pixelmoldtheme' ),
+				'name_admin_bar'     => _x( 'Carousel', 'add new on admin bar', 'pixelmoldtheme' ),
+				'add_new'            => _x( 'Add New', 'Carousel', 'pixelmoldtheme' ),
+				'add_new_item'       => __( 'Add New Carousel', 'pixelmoldtheme' ),
+				'new_item'           => __( 'New Carousel', 'pixelmoldtheme' ),
+				'edit_item'          => __( 'Edit Carousel', 'pixelmoldtheme' ),
+				'view_item'          => __( 'View Carousel', 'pixelmoldtheme' ),
+				'all_items'          => __( 'All Carousels', 'pixelmoldtheme' ),
+				'search_items'       => __( 'Search Carousels', 'pixelmoldtheme' ),
+				'parent_item_colon'  => __( 'Parent Carousels:', 'pixelmoldtheme' ),
+				'not_found'          => __( 'No Carousels found.', 'pixelmoldtheme' ),
+				'not_found_in_trash' => __( 'No Carousels found in Trash.', 'pixelmoldtheme' ),
 		);
 
 		$args = array(
 				'labels'             => $labels,
-		        'description'        => __( 'Description.', 'mlabstheme' ),
+		        'description'        => __( 'Description.', 'pixelmoldtheme' ),
 				'public'             => false,
 				'publicly_queryable' => false,
 				'show_ui'            => false,
 				'show_in_menu'       => false,
 				'query_var'          => true,
-				'rewrite'            => array( 'slug' => 'mlabs_carousel' ),
+				'rewrite'            => array( 'slug' => 'pixelmold_carousel' ),
 				'capability_type'    => 'post',
 				'has_archive'        => true,
 				'hierarchical'       => false,
@@ -99,18 +109,18 @@ class MlabsthemeCarousel {
 				'show_in_admin_bar'  => false,
 		);
 
-		register_post_type( 'mlabs_carousel', $args );
+		register_post_type( 'pixelmold_carousel', $args );
 	}
 
 	function admin_menu() {
-		$page_title = __( 'MLabs Carousels', 'mlabsplugin' );
-		$menu_title = __( 'Carousels', 'mlabsplugin' );
-		// $menu_slug = 'edit.php?post_type=mlabs_carousel';.
+		$page_title = __( 'pixelmold Carousels', 'pixelmoldplugin' );
+		$menu_title = __( 'Carousels', 'pixelmoldplugin' );
+		// $menu_slug = 'edit.php?post_type=pixelmold_carousel';.
 		add_menu_page(
 			$page_title,
 			$menu_title,
 			'manage_options',
-		  	'mlabs_carousels_page',
+		  	'pixelmold_carousels_page',
 			array( $this, 'carousels_page' )
 		);
 	}
@@ -120,35 +130,36 @@ class MlabsthemeCarousel {
 		// If there is an action to edit or add a carousel.
 		if ( isset( $_GET['action'] ) ) {
 			// Prepare variables.
-			$mlabs_nonce = wp_create_nonce( 'mlabs_settings_nonce' );
+			$pixelmold_nonce = wp_create_nonce( 'pixelmold_settings_nonce' );
 			$carousel_options = $this->default_carousel_options();
-			$mlabs_elements = array();
+			$pixelmold_elements = array();
 
 			if ( 'edit_carousel' === $_GET['action'] ) {
-				if ( ! isset( $_GET['post_id'] ) || get_post_type( (int) $_GET['post_id'] ) !== 'mlabs_carousel' ) {
+				// Check post_id for security.
+				if ( ! isset( $_GET['post_id'] ) || get_post_type( (int) $_GET['post_id'] ) !== 'pixelmold_carousel' ) {
 					echo __( '<br>ERROR: An action to edit a carousel was passed but with an invalid ID.' );
 					return;
 				}
 
 				// Prepare more variables.
-				$post_id = (int) $_GET['post_id'];
-				$save_link = admin_url( 'admin.php?page=mlabs_carousels_page&action=edit_carousel&post_id=' . $post_id );
-				$carousel_options = array_merge( $carousel_options, get_post_meta( $post_id, 'mlabs_carousel_data', true ) );
-				$carousel_options['title'] = get_the_title( $post_id );
-				$mlabs_elements = get_post_meta( $post_id, 'mlabs_elements_data', true );
+				$pixelmold_post_id = (int) $_GET['post_id'];
+				$save_link = admin_url( 'admin.php?page=pixelmold_carousels_page&action=edit_carousel&post_id=' . $pixelmold_post_id );
+				$carousel_options = array_merge( $carousel_options, get_post_meta( $pixelmold_post_id, 'pixelmold_carousel_data', true ) );
+				$carousel_options['title'] = get_the_title( $pixelmold_post_id );
+				$pixelmold_elements = get_post_meta( $pixelmold_post_id, 'pixelmold_elements_data', true );
 			} elseif ( 'new_post' === $_GET['action'] ) {
-				$save_link = admin_url( 'admin.php?page=mlabs_carousels_page&action=new_post' );
+				$save_link = admin_url( 'admin.php?page=pixelmold_carousels_page&action=new_post' );
 			}
 
 			// if ( isset( $_POST['submit'] )  )
 				// TODO when (succesful?) submit
 			// This is the Add/Edit Carousel page.
-			require_once( plugin_dir_path( __FILE__ ) . 'templates/mlabs-admin-carousel-add.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'templates/pixelmold-admin-carousel-add.php' );
 
 			// Else there is no action to edit or add a carousel.
 			// So show the list of existing carousels.
 		} else {
-			$carousel_del_nonce = wp_create_nonce( 'mlabs_carousel_del_nonce' );
+			$carousel_del_nonce = wp_create_nonce( 'pixelmold_carousel_del_nonce' );
 
 			$args = array(
 				'posts_per_page'   => -1,
@@ -161,7 +172,7 @@ class MlabsthemeCarousel {
 				'exclude'          => '',
 				'meta_key'         => '',
 				'meta_value'       => '',
-				'post_type'        => 'mlabs_carousel',
+				'post_type'        => 'pixelmold_carousel',
 				'post_mime_type'   => '',
 				'post_parent'      => '',
 				'author'	       => '',
@@ -172,68 +183,68 @@ class MlabsthemeCarousel {
 			$carousels = get_posts( $args );
 
 			// This is the carousel list page.
-			require_once( plugin_dir_path( __FILE__ ) . 'templates/mlabs-admin-carousel.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'templates/pixelmold-admin-carousel.php' );
 		}// End if().
 	}
 
 	function save_carousel_options() {
 
 		// Check if we should delete a carousel.
-		if ( isset( $_GET['mlabs_nonce_del'] ) && 'delete_carousel' === $_GET['action'] ) {
-			if ( ! wp_verify_nonce( $_GET['mlabs_nonce_del'], 'mlabs_carousel_del_nonce' ) ) {
+		if ( isset( $_GET['pixelmold_nonce_del'] ) && 'delete_carousel' === $_GET['action'] ) {
+			if ( ! wp_verify_nonce( $_GET['pixelmold_nonce_del'], 'pixelmold_carousel_del_nonce' ) ) {
 				die( 'Security Error' );
 			}
 
-			if ( get_post_type( (int) $_GET['post_id'] ) !== 'mlabs_carousel' ) {
+			if ( get_post_type( (int) $_GET['post_id'] ) !== 'pixelmold_carousel' ) {
 				echo __( '<br>SECURITY ERROR: An action to delete a carousel was passed but with an invalid ID.' );
 				return;
 			}
 
 			wp_delete_post( $_GET['post_id'], true );
 
-			$location = admin_url( 'admin.php?page=mlabs_carousels_page' );
+			$location = admin_url( 'admin.php?page=pixelmold_carousels_page' );
 			wp_redirect( $location );
 			return;
 		}
 
 		// Check that the submitted form is from the carousel, otherwise exit.
-		if ( ! isset( $_POST['mlabs_nonce'] ) ) {
+		if ( ! isset( $_POST['pixelmold_nonce'] ) ) {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['mlabs_nonce'], 'mlabs_settings_nonce' ) ) {
+		if ( ! wp_verify_nonce( $_POST['pixelmold_nonce'], 'pixelmold_settings_nonce' ) ) {
 			echo __( '<br>SECURITY ERROR: invalid nonce.' );
 		}
 
-		$mlabs_carousel_dumpdata = $_POST;
+		$pixelmold_carousel_dumpdata = $_POST;
 
 		// This variable is used to show errors (like the ones that can be caught during sanitization).
-		global $mlabs_carousel_errors;
-		$GLOBALS['mlabs_carousel_errors'] = array();
+		global $pixelmold_carousel_errors;
+		$GLOBALS['pixelmold_carousel_errors'] = array();
 
 		// If the action is to create a new caruosel, create it and redirect to the edit page.
 		if ( 'new_post' === $_GET['action'] ) {
 			$postarr = array(
-					'post_title' => sanitize_text_field( $mlabs_carousel_dumpdata['title'] ),
+					'post_title' => sanitize_text_field( $pixelmold_carousel_dumpdata['title'] ),
 					'post_status' => 'private',
-					'post_type' => 'mlabs_carousel',
+					'post_type' => 'pixelmold_carousel',
 					'post_author' => 1,
 				);
-			$post_id = wp_insert_post( $postarr );
-			$this->update_carousel( $post_id, $mlabs_carousel_dumpdata );
-			$location = admin_url( 'admin.php?page=mlabs_carousels_page&action=edit_carousel&post_id=' . $post_id );
+			$pixelmold_post_id = wp_insert_post( $postarr );
+			$this->update_carousel( $pixelmold_post_id, $pixelmold_carousel_dumpdata );
+			$location = admin_url( 'admin.php?page=pixelmold_carousels_page&action=edit_carousel&post_id=' . $pixelmold_post_id );
 			wp_redirect( $location );
 			exit;
 
 			// Else the action is to edit a carousel.
 		} elseif ( isset( $_GET['post_id'] ) && 'edit_carousel' === $_GET['action'] ) {
-			if ( get_post_type( (int) $_GET['post_id'] ) !== 'mlabs_carousel' ) {
+			if ( get_post_type( (int) $_GET['post_id'] ) !== 'pixelmold_carousel' ) {
 				echo __( '<br>ERROR: An action to edit a carousel was passed but with an invalid ID.' );
 				return;
 			}
 
 			// First update the title.
-			$title = sanitize_text_field( $mlabs_carousel_dumpdata['title'] );
+			$title = sanitize_text_field( $pixelmold_carousel_dumpdata['title'] );
 			$postarr = array(
 					'ID' => $_GET['post_id'],
 					'post_title' => $title,
@@ -241,144 +252,254 @@ class MlabsthemeCarousel {
 			wp_update_post( $postarr );
 
 			// Sanitize and fill the carousel options.
-			$this->update_carousel( $_GET['post_id'], $mlabs_carousel_dumpdata );
+			$this->update_carousel( $_GET['post_id'], $pixelmold_carousel_dumpdata );
 		}
 	}
 
-	function update_carousel( $post_id, $dumpdata ) {
+	function update_carousel( $pixelmold_post_id, $dumpdata ) {
 
-		$meta_mlabs_carousel_data = array();
-		$meta_mlabs_carousel_data = $this->mlabs_sanitation( $dumpdata );
-		update_post_meta( $post_id, 'mlabs_carousel_data', $meta_mlabs_carousel_data );
+		$meta_pixelmold_carousel_data = array();
+		$meta_pixelmold_carousel_data = $this->pixelmold_sanitation( $dumpdata );
+		update_post_meta( $pixelmold_post_id, 'pixelmold_carousel_data', $meta_pixelmold_carousel_data );
 
 		// Finally update the info of each individual element (slides).
 		$attachmentids = json_decode( $dumpdata['attachids'] );
 		if ( is_array( $attachmentids ) || is_object( $attachmentids ) ) {
-			$meta_mlabs_elements_data = array();
+			$meta_pixelmold_elements_data = array();
 			$i = 0;
 			foreach ( $attachmentids as $c_element ) {
-				$mlabs_ele_placeholder = $this->mlabs_ele_sanitation( $i, $c_element, $dumpdata );
-				array_push( $meta_mlabs_elements_data, $mlabs_ele_placeholder );
+				$pixelmold_ele_placeholder = $this->pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
+				array_push( $meta_pixelmold_elements_data, $pixelmold_ele_placeholder );
 				$i++;
 			}
-			update_post_meta( $post_id, 'mlabs_elements_data', $meta_mlabs_elements_data );
+			update_post_meta( $pixelmold_post_id, 'pixelmold_elements_data', $meta_pixelmold_elements_data );
 		}
 	}
 
-	function mlabs_ele_sanitation( $id, $c_element, $mlabs_carousel_dumpdata ) {
+	function pixelmold_ele_sanitation( $id, $c_element, $pixelmold_carousel_dumpdata ) {
 
-		$mlabs_ele_placeholder['id'] = intval( $id );
-		$mlabs_ele_placeholder['attachid'] = intval( $c_element );
-		$mlabs_ele_placeholder['title'] = sanitize_text_field( $mlabs_carousel_dumpdata[ 'title' . $id ] );
+		$pixelmold_ele_placeholder['id'] = intval( $id );
+		$pixelmold_ele_placeholder['attachid'] = intval( $c_element );
+		$pixelmold_ele_placeholder['title'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'title' . $id ] );
 
 		// This next implode thing is just a fancy way of sanitizing textareas, keeping the newlines.
-		// Credits to http://stackoverflow.com/questions/20444042/wordpress-how-to-sanitize-multi-line-text-from-a-textarea-without-losing-line for it.
-		$mlabs_ele_placeholder['desc'] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $mlabs_carousel_dumpdata[ 'desc' . $id ] ) ) );
+		$pixelmold_ele_placeholder['desc'] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $pixelmold_carousel_dumpdata[ 'desc' . $id ] ) ) );
 
-		$mlabs_ele_placeholder['linkurl'] = esc_url_raw( $mlabs_carousel_dumpdata[ 'linkurl' . $id ] );
-		$mlabs_ele_placeholder['linktext'] = sanitize_text_field( $mlabs_carousel_dumpdata[ 'linktext' . $id ] );
+		$pixelmold_ele_placeholder['linkurl'] = esc_url_raw( $pixelmold_carousel_dumpdata[ 'linkurl' . $id ] );
+		$pixelmold_ele_placeholder['linktext'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'linktext' . $id ] );
 
-		$mlabs_ele_placeholder['facebook'] = sanitize_text_field( $mlabs_carousel_dumpdata[ 'facebook' . $id ] );
-		if ( substr( $mlabs_ele_placeholder['facebook'], 0, 1 ) === '/' ) {
-			$mlabs_ele_placeholder['facebook'] = substr( $mlabs_ele_placeholder['facebook'], 1 );
+		$pixelmold_ele_placeholder['price'] = intval( $pixelmold_carousel_dumpdata[ 'price' . $id ] );
+		$pixelmold_ele_placeholder['old_price'] = intval( $pixelmold_carousel_dumpdata[ 'old_price' . $id ] );
+
+		$pixelmold_ele_placeholder['facebook'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'facebook' . $id ] );
+		if ( substr( $pixelmold_ele_placeholder['facebook'], 0, 1 ) === '/' ) {
+			$pixelmold_ele_placeholder['facebook'] = substr( $pixelmold_ele_placeholder['facebook'], 1 );
 		}
 
-		$mlabs_ele_placeholder['twitter'] = sanitize_text_field( $mlabs_carousel_dumpdata[ 'twitter' . $id ] );
-		if ( substr( $mlabs_ele_placeholder['twitter'], 0, 1 ) === '@' ) {
-			$mlabs_ele_placeholder['twitter'] = substr( $mlabs_ele_placeholder['twitter'], 1 );
+		$pixelmold_ele_placeholder['twitter'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'twitter' . $id ] );
+		if ( substr( $pixelmold_ele_placeholder['twitter'], 0, 1 ) === '@' ) {
+			$pixelmold_ele_placeholder['twitter'] = substr( $pixelmold_ele_placeholder['twitter'], 1 );
 		}
-		$mlabs_ele_placeholder['googleplus'] = sanitize_text_field( $mlabs_carousel_dumpdata[ 'googleplus' . $id ] );
-		if ( substr( $mlabs_ele_placeholder['googleplus'], 0, 1 ) === '+' ) {
-			$mlabs_ele_placeholder['googleplus'] = substr( $mlabs_ele_placeholder['googleplus'], 1 );
+		$pixelmold_ele_placeholder['googleplus'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'googleplus' . $id ] );
+		if ( substr( $pixelmold_ele_placeholder['googleplus'], 0, 1 ) === '+' ) {
+			$pixelmold_ele_placeholder['googleplus'] = substr( $pixelmold_ele_placeholder['googleplus'], 1 );
 		}
 
-		if ( '' !== $mlabs_carousel_dumpdata[ 'email' . $id ] && sanitize_email( $mlabs_carousel_dumpdata[ 'email' . $id ] ) === '' ) {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Email was invalid ' ) . 'on element ' . $id );
+		if ( '' !== $pixelmold_carousel_dumpdata[ 'email' . $id ] && sanitize_email( $pixelmold_carousel_dumpdata[ 'email' . $id ] ) === '' ) {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Email was invalid ' ) . 'on element ' . $id );
 		}
-		$mlabs_ele_placeholder['email'] = sanitize_email( $mlabs_carousel_dumpdata[ 'email' . $id ] );
+		$pixelmold_ele_placeholder['email'] = sanitize_email( $pixelmold_carousel_dumpdata[ 'email' . $id ] );
 
-		return $mlabs_ele_placeholder;
+		return $pixelmold_ele_placeholder;
 	}
 
-	function mlabs_sanitation( $mlabs_carousel_dumpdata ) {
+	function pixelmold_sanitation( $pixelmold_carousel_dumpdata ) {
 
 		// This will prevent errors if some value is missing.
 		$required = $this->default_carousel_options();
-		$missing = array_diff( array_keys( $required ), array_keys( $mlabs_carousel_dumpdata ) );
+		$missing = array_diff( array_keys( $required ), array_keys( $pixelmold_carousel_dumpdata ) );
 		foreach ( $missing as $m ) {
-		    $mlabs_carousel_dumpdata[ $m ] = $required[ $m ];
+		    $pixelmold_carousel_dumpdata[ $m ] = $required[ $m ];
 		}
 
-		$attachmentids = json_decode( $mlabs_carousel_dumpdata['attachids'] );
-		$mlabs_sanitized['count'] = count( $attachmentids );
+		$attachmentids = json_decode( $pixelmold_carousel_dumpdata['attachids'] );
+		$pixelmold_sanitized['count'] = count( $attachmentids );
 
-		if ( intval( $mlabs_carousel_dumpdata['type'] ) >= 0 && intval( $mlabs_carousel_dumpdata['type'] ) < 10 ) {
-			$mlabs_sanitized['type'] = intval( $mlabs_carousel_dumpdata['type'] );
+		if ( intval( $pixelmold_carousel_dumpdata['type'] ) >= 0 && intval( $pixelmold_carousel_dumpdata['type'] ) < 10 ) {
+			$pixelmold_sanitized['type'] = intval( $pixelmold_carousel_dumpdata['type'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Error with the type of carousel selected, saved default instead.' ) );
-			$mlabs_sanitized['type'] = $required['type'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Error with the type of carousel selected, saved default instead.' ) );
+			$pixelmold_sanitized['type'] = $required['type'];
 		}
 
-		if ( intval( $mlabs_carousel_dumpdata['height'] ) >= 100 ) {
-			$mlabs_sanitized['height'] = intval( $mlabs_carousel_dumpdata['height'] );
+		if ( '' === $pixelmold_carousel_dumpdata['style'] ) {
+			$pixelmold_sanitized['style'] = 'content_and_button';
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'The height of the carousel was not a number higher than a 100, saved default instead.' ) );
-			$mlabs_sanitized['height'] = $required['height'];
+			$pixelmold_sanitized['style'] = sanitize_text_field( $pixelmold_carousel_dumpdata['style'] );
 		}
 
-		if ( intval( $mlabs_carousel_dumpdata['items'] ) > 0 ) {
-			$mlabs_sanitized['items'] = intval( $mlabs_carousel_dumpdata['items'] );
+		if ( intval( $pixelmold_carousel_dumpdata['height'] ) >= 50 ) {
+			$pixelmold_sanitized['height'] = intval( $pixelmold_carousel_dumpdata['height'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Amount of items to show was not a positive number, saved default instead.' ) );
-			$mlabs_sanitized['items'] = $required['items'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Height of the carousel was not a number higher than a 50, saved default instead.' ) );
+			$pixelmold_sanitized['height'] = $required['height'];
 		}
 
-		if ( intval( $mlabs_carousel_dumpdata['items_tablet'] ) > 0 ) {
-			$mlabs_sanitized['items_tablet'] = intval( $mlabs_carousel_dumpdata['items_tablet'] );
+		if ( intval( $pixelmold_carousel_dumpdata['items'] ) > 0 ) {
+			$pixelmold_sanitized['items'] = intval( $pixelmold_carousel_dumpdata['items'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Amount of items to show on tablet was not a positive number, saved default instead.' ) );
-			$mlabs_sanitized['items_tablet'] = $required['items_tablet'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Amount of items to show was not a positive number, saved default instead.' ) );
+			$pixelmold_sanitized['items'] = $required['items'];
 		}
 
-		if ( intval( $mlabs_carousel_dumpdata['items_phone'] ) > 0 ) {
-			$mlabs_sanitized['items_phone'] = intval( $mlabs_carousel_dumpdata['items_phone'] );
+		if ( intval( $pixelmold_carousel_dumpdata['items_tablet'] ) > 0 ) {
+			$pixelmold_sanitized['items_tablet'] = intval( $pixelmold_carousel_dumpdata['items_tablet'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Amount of items to show on phone was not a positive number, saved default instead.' ) );
-			$mlabs_sanitized['items_phone'] = $required['items_phone'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Amount of items to show on tablet was not a positive number, saved default instead.' ) );
+			$pixelmold_sanitized['items_tablet'] = $required['items_tablet'];
 		}
 
-		if ( intval( $mlabs_carousel_dumpdata['autoplayms'] ) >= 200 ) {
-			$mlabs_sanitized['autoplayms'] = intval( $mlabs_carousel_dumpdata['autoplayms'] );
+		if ( intval( $pixelmold_carousel_dumpdata['items_phone'] ) > 0 ) {
+			$pixelmold_sanitized['items_phone'] = intval( $pixelmold_carousel_dumpdata['items_phone'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'Amount of autoplay miliseconds was not a number higher than 200, saved default instead.' ) );
-			$mlabs_sanitized['autoplayms'] = $required['autoplayms'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Amount of items to show on phone was not a positive number, saved default instead.' ) );
+			$pixelmold_sanitized['items_phone'] = $required['items_phone'];
 		}
 
-		if ( preg_match( '/^(#[a-f0-9]{3}([a-f0-9]{3})?)$/i', $mlabs_carousel_dumpdata['bgcolor'] ) ) {
-			$mlabs_sanitized['bgcolor'] = $mlabs_carousel_dumpdata['bgcolor'];
+		if ( intval( $pixelmold_carousel_dumpdata['autoplayms'] ) >= 200 ) {
+			$pixelmold_sanitized['autoplayms'] = intval( $pixelmold_carousel_dumpdata['autoplayms'] );
 		} else {
-			array_push( $GLOBALS['mlabs_carousel_errors'], __( 'The background color was invalid, saved default instead.' ) );
-			$mlabs_sanitized['bgcolor'] = $required['bgcolor'];
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Amount of autoplay miliseconds was not a number higher than 200, saved default instead.' ) );
+			$pixelmold_sanitized['autoplayms'] = $required['autoplayms'];
 		}
 
-		if ( 'on' === $mlabs_carousel_dumpdata['navs'] ) {
-			$mlabs_sanitized['navs'] = true;
+		if ( preg_match( '/^(#[a-f0-9]{3}([a-f0-9]{3})?)$/i', $pixelmold_carousel_dumpdata['bgcolor'] ) ) {
+			$pixelmold_sanitized['bgcolor'] = $pixelmold_carousel_dumpdata['bgcolor'];
 		} else {
-			$mlabs_sanitized['navs'] = false;
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The background color was invalid, saved default instead.' ) );
+			$pixelmold_sanitized['bgcolor'] = $required['bgcolor'];
 		}
 
-		if ( 'on' === $mlabs_carousel_dumpdata['dots'] ) {
-			$mlabs_sanitized['dots'] = true;
+		if ( 'on' === $pixelmold_carousel_dumpdata['navs'] ) {
+			$pixelmold_sanitized['navs'] = true;
 		} else {
-			$mlabs_sanitized['dots'] = false;
+			$pixelmold_sanitized['navs'] = false;
 		}
 
-		if ( 'on' === $mlabs_carousel_dumpdata['autoplay'] ) {
-			$mlabs_sanitized['autoplay'] = true;
+		if ( 'on' === $pixelmold_carousel_dumpdata['dots'] ) {
+			$pixelmold_sanitized['dots'] = true;
 		} else {
-			$mlabs_sanitized['autoplay'] = false;
+			$pixelmold_sanitized['dots'] = false;
 		}
 
-		return $mlabs_sanitized;
+		if ( 'on' === $pixelmold_carousel_dumpdata['autoplay'] ) {
+			$pixelmold_sanitized['autoplay'] = true;
+		} else {
+			$pixelmold_sanitized['autoplay'] = false;
+		}
+
+		if ( '' === $pixelmold_carousel_dumpdata['animation'] ) {
+			$pixelmold_sanitized['animation'] = 'fadeIn';
+		} else {
+			$pixelmold_sanitized['animation'] = sanitize_text_field( $pixelmold_carousel_dumpdata['animation'] );
+		}
+
+		// The rest of the function is typographys sanitation.
+		$pixelmold_variants = array(
+			'100' => 'Ultra-Light 100',
+			'200' => 'Light 200',
+			'300' => 'Book 300',
+			'400' => 'Normal 400',
+			'500' => 'Medium 500',
+			'600' => 'Semi-Bold 600',
+			'700' => 'Bold 700',
+			'800' => 'Extra-Bold 800',
+			'900' => 'Ultra-Bold 900',
+			'100i' => 'Ultra-Light 100 Italic',
+			'200i' => 'Light 200 Italic',
+			'300i' => 'Book 300 Italic',
+			'400i' => 'Normal 400 Italic',
+			'500i' => 'Medium 500 Italic',
+			'600i' => 'Semi-Bold 600 Italic',
+			'700i' => 'Bold 700 Italic',
+			'800i' => 'Extra-Bold 800 Italic',
+			'900i' => 'Ultra-Bold 900 Italic',
+			);
+
+		// Primary font
+		$pixelmold_font_family = substr( $pixelmold_carousel_dumpdata['primary_font'], 2 );
+		$pixelmold_variant = $pixelmold_carousel_dumpdata['primary_variant'];
+
+		if ( substr( $pixelmold_carousel_dumpdata['primary_font'], 0, 1 ) === 'g' ) {
+			$pixelmold_font_type = 'g';
+			$pixelmold_sanitized['primary_font'] = array( $pixelmold_font_type, $pixelmold_font_family, $pixelmold_variant, $pixelmold_variants[ $pixelmold_variant ] );
+		} elseif ( substr( $pixelmold_carousel_dumpdata['primary_font'], 0, 1 ) === 's' ) {
+			$pixelmold_font_type = 's';
+			$pixelmold_sanitized['primary_font'] = array( $pixelmold_font_type, $pixelmold_font_family, $pixelmold_variant, $pixelmold_variants[ $pixelmold_variant ] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], esc_html__( 'The primary font was invalid.' ) );
+			$pixelmold_sanitized['primary_font'] = $required['primary_font'];
+		}
+
+		// Secondary font
+		$pixelmold_font_family = substr( $pixelmold_carousel_dumpdata['secondary_font'], 2 );
+		$pixelmold_variant = $pixelmold_carousel_dumpdata['secondary_variant'];
+
+		if ( substr( $pixelmold_carousel_dumpdata['secondary_font'], 0, 1 ) === 'g' ) {
+			$pixelmold_font_type = 'g';
+			$pixelmold_sanitized['secondary_font'] = array( $pixelmold_font_type, $pixelmold_font_family, $pixelmold_variant, $pixelmold_variants[ $pixelmold_variant ] );
+		} elseif ( substr( $pixelmold_carousel_dumpdata['secondary_font'], 0, 1 ) === 's' ) {
+			$pixelmold_font_type = 's';
+			$pixelmold_sanitized['secondary_font'] = array( $pixelmold_font_type, $pixelmold_font_family, $pixelmold_variant, $pixelmold_variants[ $pixelmold_variant ] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], esc_html__( 'The secondary font was invalid.' ) );
+			$pixelmold_sanitized['secondary_font'] = $required['secondary_font'];
+		}
+
+		// Font colors
+		if ( preg_match( '/^(#[a-f0-9]{3}([a-f0-9]{3})?)$/i', $pixelmold_carousel_dumpdata['primary_color'] ) ) {
+			$pixelmold_sanitized['primary_color'] = $pixelmold_carousel_dumpdata['primary_color'];
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The primary font color was invalid, saved default instead.' ) );
+			$pixelmold_sanitized['primary_color'] = $required['primary_color'];
+		}
+
+		if ( preg_match( '/^(#[a-f0-9]{3}([a-f0-9]{3})?)$/i', $pixelmold_carousel_dumpdata['secondary_color'] ) ) {
+			$pixelmold_sanitized['secondary_color'] = $pixelmold_carousel_dumpdata['secondary_color'];
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The secondary font color was invalid, saved default instead.' ) );
+			$pixelmold_sanitized['secondary_color'] = $required['secondary_color'];
+		}
+
+		// Font line heights
+		if ( intval( $pixelmold_carousel_dumpdata['primary_lineheight'] ) > 0 ) {
+			$pixelmold_sanitized['primary_lineheight'] = intval( $pixelmold_carousel_dumpdata['primary_lineheight'] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The primary line height was not a number higher than 0, saved default instead.' ) );
+			$pixelmold_sanitized['primary_lineheight'] = $required['primary_lineheight'];
+		}
+
+		if ( intval( $pixelmold_carousel_dumpdata['secondary_lineheight'] ) > 0 ) {
+			$pixelmold_sanitized['secondary_lineheight'] = intval( $pixelmold_carousel_dumpdata['secondary_lineheight'] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The secondary line height of the carousel was not a number higher than 0, saved default instead.' ) );
+			$pixelmold_sanitized['secondary_lineheight'] = $required['secondary_lineheight'];
+		}
+
+		// Font sizes
+		if ( intval( $pixelmold_carousel_dumpdata['primary_size'] ) > 0 ) {
+			$pixelmold_sanitized['primary_size'] = intval( $pixelmold_carousel_dumpdata['primary_size'] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The primary font size was not a number higher 0, saved default instead.' ) );
+			$pixelmold_sanitized['primary_size'] = $required['primary_size'];
+		}
+		if ( intval( $pixelmold_carousel_dumpdata['secondary_size'] ) > 0 ) {
+			$pixelmold_sanitized['secondary_size'] = intval( $pixelmold_carousel_dumpdata['secondary_size'] );
+		} else {
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'The secondary font size was not a number higher 0, saved default instead.' ) );
+			$pixelmold_sanitized['secondary_size'] = $required['secondary_size'];
+		}
+
+		return $pixelmold_sanitized;
 	}
 }
