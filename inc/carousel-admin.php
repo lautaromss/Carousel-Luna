@@ -20,7 +20,7 @@ class pixelmoldthemeCarousel {
 		$default_options = array(
 			'title' => '',
 			'type' => 2, // 0: Images Carousel, 1: Slider, 2: Flexible Width, 3: Testimonials, 4: Meet our eam, 5: Services/logo, 6: Product, 7: Content card.
-			'style' => 0,
+			'style' => 'products_cart',
 			'count' => 0,
 			'dots' => false, // Dots navigation. 0: None, 1: Inside, 2: Outside.
 			'navs' => true, // Navigation arrows. 0: None, 1: Inside, 2: Outside.

@@ -225,7 +225,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 							<label for="pixelmold_carousel_style"><?php echo __( 'Carousel style' ); ?></label>
 						</th>
 						<td>
-							<select id="pixelmold_carousel_style" name="style">
+							<select id="pixelmold_carousel_style_select" name="style">
 								<?php
 								$counted_style = count( $pixelmold_style );
 								for ( $i = 0; $i < $counted_style; $i++ ) {
@@ -304,7 +304,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 							<label for="pixelmold_carousel_bgcolor"><?php echo __( 'Hover/Overlay Color' ); ?></label>
 						</th>
 						<td>
-							<input class="my-input-class" id="pixelmold_carousel_bgcolor" type="text" name="bgcolor"
+							<input class="pixelmold-bgcolor" id="pixelmold_carousel_bgcolor" type="text" name="bgcolor"
 								value="<?php echo $carousel_options['bgcolor'] ?>">
 						</td>
 					</tr>
@@ -630,7 +630,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 								<?php echo __( 'Font color' ); ?>	
 							</p>
 							<input
-								class="my-input-class"
+								class="pixelmold-bgcolor"
 								id="pixelmold_primary_color"
 								type="text"
 								name="primary_color"
@@ -729,7 +729,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 							<p class="label-subtitle">
 								<?php echo __( 'Font color' ); ?>	
 							</p>
-							<input class="my-input-class" id="pixelmold_secondary_color" type="text" name="secondary_color"
+							<input class="pixelmold-bgcolor" id="pixelmold_secondary_color" type="text" name="secondary_color"
 							value="<?php echo $carousel_options['secondary_color'] ?>">
 						</td>
 					</tr>
@@ -813,7 +813,10 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					</tr>
 
 					<?php
-					if ( 6 === $carousel_options['type'] ) {
+					if (
+						7 === $carousel_options['type'] ||
+						( 6 === $carousel_options['type'] && 'products_button' === $carousel_options['style'] )
+						) {
 						$pixelmold_input_state = '';
 					} else {
 						$pixelmold_input_state = 'disabled_input';
@@ -841,8 +844,10 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					<?php
 					if (
 						0 === $carousel_options['type'] ||
+						1 === $carousel_options['type'] ||
 						2 === $carousel_options['type'] ||
-						6 === $carousel_options['type']
+						6 === $carousel_options['type'] ||
+						7 === $carousel_options['type']
 					) {
 						$pixelmold_input_state = '';
 					} else {
@@ -935,7 +940,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 						<td>
 							<input
 								id="pixelmold_element_facebook<?php echo $i; ?>"
-								type="text" name="facebook<?php echo $i; ?>"
+								type="text"
+								name="facebook<?php echo $i; ?>"
 								value="<?php echo $pixelmold_elements[ $i ]['facebook'] ?>"
 							>
 							<p class="description"><?php echo __( "Without '/' at the start" ); ?></p>
@@ -974,7 +980,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 						<td>
 							<input
 								id="pixelmold_element_googleplus<?php echo $i; ?>"
-								type="text" name="googleplus<?php echo $i; ?>"
+								type="text"
+								name="googleplus<?php echo $i; ?>"
 								value="<?php echo $pixelmold_elements[ $i ]['googleplus'] ?>"
 							>
 							<p class="description"><?php echo __( "Without '+' at the start" ); ?></p>
@@ -991,7 +998,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 						<td>
 							<input
 								id="pixelmold_element_email<?php echo $i; ?>"
-								type="email" name="email<?php echo $i; ?>"
+								type="email"
+								name="email<?php echo $i; ?>"
 								value="<?php echo $pixelmold_elements[ $i ]['email'] ?>"
 							>
 						</td>

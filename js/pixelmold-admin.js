@@ -1,20 +1,23 @@
+"use strict";
+
 if ( typeof jQuery === 'undefined' ) {
 	throw new Error( 'jQuery not found.' )
 }
 
 jQuery( document ).ready(function($) {
-	"use strict";
+
+	/*!
+	 *
+	 * Load typographys using the Select2 library.
+	 *
+	 */
 	$(".pixelmold-font-field").select2({});
-
 	$(".pixelmold-variant-field").select2({});
-
 	$(".pixelmold-anim-field").select2({});
-
 	$('#pixelmold_carousel_primaryfont').on('select2:select', function (evt) {
 		
 		var id = evt.params.data.id;
 		var text = evt.params.data.text;
-		console.log(pixelmold_typography['google'][text]['variants']);
 		if ( id.charAt(0) == 'g' ) {
 			var variants = pixelmold_typography['google'][text]['variants'];
 			$("#primary_variant").select2("destroy");
@@ -53,11 +56,9 @@ jQuery( document ).ready(function($) {
 
 	});
 
+	// This applies both to typography colors and the overlay/hover background color.
 	$(function () {
-		$('.my-input-class').wpColorPicker();
-	});
-	$(function () {
-		$('.pixelmold_primary_color').wpColorPicker();
+		$('.pixelmold-bgcolor').wpColorPicker();
 	});
 
 	/*!
@@ -99,7 +100,6 @@ jQuery( document ).ready(function($) {
 
 			attachment.map(function( current ) {
 				current = current.toJSON();
-				console.log('ids are'+current.id);
 				pixelmoldImagesIds.push( current.id );
 
 				// Prepare the HTML string for the new carousel:
@@ -127,7 +127,6 @@ jQuery( document ).ready(function($) {
 
 			$( '#attachids' ).val( JSON.stringify( pixelmoldImagesIds ) );
 			var numItems = $.parseJSON( $( '#attachids' ).val() ).length;
-			console.log('we added this amount of IDs: ' + numItems);
 
 			// Update Carousel preview
 			var car = $( "#owl_pixelmold_carousel" );
@@ -182,7 +181,10 @@ jQuery( document ).ready(function($) {
 	// Update de admin tabs for item customization
 	function makeTabContent( numItemsPrev, attachid, url ) {
 
-		var pixelmoldInputState;
+		var stateSocialMedia;
+		var stateButtonText;
+		var stateButtonURL;
+		var statePrices;
 
 		// Create the tab links
 		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element'
@@ -190,12 +192,39 @@ jQuery( document ).ready(function($) {
 			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="'+( numItemsPrev + 1 ) +
 			'" title="Remove this slide">x</button></li>');
 
-		// Create the tabs content:
+		// Check which options to enable:
 
-		if ( $( "#pixelmold_carousel_type" ).val() == 4) {
-			pixelmoldInputState = '';
+		if ( 4 == $( "#pixelmold_carousel_type" ).val()) {
+			stateSocialMedia = '';
 		} else {
-			pixelmoldInputState = 'class="disabled_input"';
+			stateSocialMedia = ' disabled_input';
+		}
+
+		if (
+			7 == $( "#pixelmold_carousel_type" ).val() ||
+			( 6 == $( "#pixelmold_carousel_type" ).val() && 'products_button' === $( "#pixelmold_carousel_style_select" ).val() )
+			) {
+			stateButtonText = '';
+		} else {
+			stateButtonText = ' disabled_input';
+		}
+
+		if (
+			0 == $( "#pixelmold_carousel_type" ).val() ||
+			1 == $( "#pixelmold_carousel_type" ).val() ||
+			2 == $( "#pixelmold_carousel_type" ).val() ||
+			6 == $( "#pixelmold_carousel_type" ).val() ||
+			7 == $( "#pixelmold_carousel_type" ).val()
+		) {
+			stateButtonURL = '';
+		} else {
+			stateButtonURL = ' disabled_input';
+		}
+
+		if ( 6 == $( "#pixelmold_carousel_type" ).val()) {
+			statePrices = '';
+		} else {
+			statePrices = ' disabled_input';
 		}
 
 		// Populate the admin tabs
@@ -220,7 +249,8 @@ jQuery( document ).ready(function($) {
 					<label for="pixelmold_element_title' + numItemsPrev + '">Title text</label>\
 				</th>\
 				<td>\
-					<input id="pixelmold_element_title' + numItemsPrev + '" type="text" name="title' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_title' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="title' + numItemsPrev + '" value=""/>\
+					<p class="description">Optional</p>\
 				</td>\
 			</tr>\
 			\
@@ -229,29 +259,51 @@ jQuery( document ).ready(function($) {
 					<label for="pixelmold_element_desc' + numItemsPrev + '">Description text</label>\
 				</th>\
 				<td>\
-					<input id="pixelmold_element_desc' + numItemsPrev + '" type="text" name="desc' + numItemsPrev + '" value="" />\
+					<textarea id="pixelmold_element_desc' + numItemsPrev + '" type="text" rows="5" cols="55" name="desc' + numItemsPrev + '" value="">\
+					</textarea>\
+					<p class="description">Optional</p>\
 				</td>\
 			</tr>\
 			\
-			<tr>\
+			<tr class="pixelmold_buttontext' + stateButtonText + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_linkurl' + numItemsPrev + '">Slug of post/page</label>\
+					<label for="pixelmold_element_linktext' + numItemsPrev + '">Button text</label>\
 				</th>\
 				<td>\
-					<input id="pixelmold_element_linkurl' + numItemsPrev + '" type="text" name="linkurl' + numItemsPrev + '" value="" />\
+					<input id="pixelmold_element_linktext' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linktext' + numItemsPrev + '" value="See more"/>\
 				</td>\
 			</tr>\
 			\
-			<tr>\
+			<tr class="pixelmold_linkurl' + stateButtonURL + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_linktext' + numItemsPrev + '">Button link text</label>\
+					<label for="pixelmold_element_linkurl' + numItemsPrev + '">Full URL</label>\
 				</th>\
 				<td>\
-					<input id="pixelmold_element_linktext' + numItemsPrev + '" type="text" name="linktext' + numItemsPrev + '" value="See more" />\
+					<input id="pixelmold_element_linkurl' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linkurl' + numItemsPrev + '" value="" />\
 				</td>\
 			</tr>\
 			\
-			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
+			<tr class="pixelmold_price' + statePrices + '">\
+				<th scope="row">\
+					<label for="for="pixelmold_element_price' + numItemsPrev + '">Current price</label>\
+				</th>\
+				<td>\
+					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="price' + numItemsPrev + '" value=""/>\
+					<p class="description">Optional</p>\
+				</td>\
+			</tr>\
+			\
+			<tr class="pixelmold_price' + statePrices + '">\
+				<th scope="row">\
+					<label for="for="pixelmold_element_old_price' + numItemsPrev + '">Old price</label>\
+				</th>\
+				<td>\
+					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="old_price' + numItemsPrev + '" value=""/>\
+					<p class="description">Optional, to show a product on sale.</p>\
+				</td>\
+			</tr>\
+			\
+			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
 					<label for="pixelmold_element_facebook' + numItemsPrev + '">Facebook link</label>\
 				</th>\
@@ -260,7 +312,7 @@ jQuery( document ).ready(function($) {
 				</td>\
 			</tr>\
 			\
-			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
+			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
 					<label for="pixelmold_element_twitter' + numItemsPrev + '">Twitter link</label>\
 				</th>\
@@ -269,7 +321,7 @@ jQuery( document ).ready(function($) {
 				</td>\
 			</tr>\
 			\
-			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
+			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
 					<label for="pixelmold_element_googleplus' + numItemsPrev + '">Google+ link</label>\
 				</th>\
@@ -278,7 +330,7 @@ jQuery( document ).ready(function($) {
 				</td>\
 			</tr>\
 			\
-			<tr id="pixelmold_social_class" ' + pixelmoldInputState + '>\
+			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
 					<label for="pixelmold_element_email' + numItemsPrev + '">Email link</label>\
 				</th>\
@@ -400,7 +452,6 @@ jQuery( document ).ready(function($) {
 
 		// Save the image selected & refresh preview
 		mediaUploader.on( 'select', function(){
-			console.log('mediaUploader.on("select") triggered');
 			var attachment = mediaUploader.state().get('selection').first().toJSON();
 			
 			$( imgID ).attr( 'src', attachment.url );
@@ -448,11 +499,11 @@ jQuery( document ).ready(function($) {
 			var numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
 		} else {
 			numItemsPrev = 0;
+			pixelmoldPreviousIds = [];
 		}
 
 		makeTabContent(numItemsPrev, 0, '#');
 
-		console.log(pixelmoldPreviousIds);
 		pixelmoldPreviousIds.push(0);
 		$( '#attachids' ).val( JSON.stringify( pixelmoldPreviousIds ) );
 	});
@@ -592,6 +643,8 @@ jQuery( document ).ready(function($) {
 		// Toggle on the 'button's text' property if the carousel is content.
 		if ( $( this ).val() != 6 && $( this ).val() != 7 ) {
 			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
+		} else if ( $( this ).val() == 6 && $( "#pixelmold_carousel_style_select" ).val() != 'products_button' ) {
+			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
 		} else {
 			$( 'tr.pixelmold_buttontext' ).removeClass( 'disabled_input' );
 		}
@@ -628,6 +681,19 @@ jQuery( document ).ready(function($) {
 
 	});
 
+	/*!
+	 *
+	 * Put the correct inputs when changing the carousel style.
+	 *
+	 */
+	$( "#pixelmold_carousel_style_select" ).change(function() {
+		// Toggle on the 'button's text' property if the carousel is product button.
+		if ( $( this ).val() != 'products_button' ) {
+			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
+		} else {
+			$( 'tr.pixelmold_buttontext' ).removeClass( 'disabled_input' );
+		}
+	});
 });
 
 /*!
