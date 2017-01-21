@@ -257,7 +257,7 @@ function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_i
 			}
 			if ( '' !== $element['desc'] ) { ?>
 				<div class="pixelmold-caption-name" style="
-					color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>; 
+					color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>;
 					font-size: <?php echo esc_attr( $carousel_data['secondary_size'] ); ?>px;
 					line-height: <?php echo esc_attr( $carousel_data['secondary_lineheight'] ); ?>px;
 					font-family: <?php echo esc_attr( $carousel_data['secondary_font'][1] ); ?>;
@@ -268,12 +268,17 @@ function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_i
 			<?php
 			}
 			if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
-				<a class="pixelmold-ov pixelmold-ov-link" 
-					href="<?php echo esc_url( $element['linkurl'] ); ?>"></a>
+				<a class="pixelmold-ov pixelmold-ov-link"
+					style="color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>;"
+					href="<?php echo esc_url( $element['linkurl'] ); ?>">
+				</a>
 			<?php
 			} ?>
-			<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-1" 
-				href="<?php echo esc_url( $elem_img_full[0] ); ?>"></a>
+			<a class="pixelmold-ov pixelmold-ov-lightbox"
+				style="color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>;"
+				data-lightbox="image-1" 
+				href="<?php echo esc_url( $elem_img_full[0] ); ?>">
+			</a>
 		</div>
 	</div>
 	<?php
@@ -311,9 +316,16 @@ function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img,
 				</div>
 			<?php } ?>
 			<?php if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
-				<a class="pixelmold-ov pixelmold-ov-link" href="<?php echo esc_url( $element['linkurl'] ); ?>"></a>
+				<a class="pixelmold-ov pixelmold-ov-link"
+					style="color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>;"
+					href="<?php echo esc_url( $element['linkurl'] ); ?>">
+				</a>
 			<?php } ?>
-			<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-2" href="<?php echo esc_url( $elem_img_full[0] ); ?>"></a>
+			<a class="pixelmold-ov pixelmold-ov-lightbox"
+				style="color:<?php echo esc_attr( $carousel_data['secondary_color'] ); ?>;"
+				data-lightbox="image-2"
+				href="<?php echo esc_url( $elem_img_full[0] ); ?>">
+			</a>
 		</div>
 	</div>
 	<?php
