@@ -24,9 +24,8 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 	wp_register_style( 'pixelmold_owl_carousel_css', plugins_url( 'css/owl.carousel.css', dirname( __FILE__ ) ), array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'pixelmold_owl_carousel_css' );
 
-	wp_register_style( 'pixelmold_carousel_style', plugins_url( 'css/pixelmold-carousel.css', dirname( __FILE__ ) ), array('pixelmold_owl_carousel_css'), '1.0.0', 'all' );
-	echo 'enqueued pixelmold_carousel_style';
-	wp_enqueue_style( 'pixelmold_carousel_style' );
+	wp_register_style( 'pixelmold_carousel_styled', plugins_url( 'css/pixelmold-carousel.css', dirname( __FILE__ ) ), array('pixelmold_owl_carousel_css'), '1.0.0', 'all' );
+	wp_enqueue_style( 'pixelmold_carousel_styled' );
 
 	wp_register_style( 'animate_css', plugins_url( 'css/animate.css', dirname( __FILE__ ) ), array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'animate_css' );
@@ -42,7 +41,7 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 	wp_register_script( 'pixelmold_admin_script', plugins_url( 'js/pixelmold-admin.js', dirname( __FILE__ ) ), array( 'jquery', 'wp-color-picker' ), '1.0.0', true );
 	wp_enqueue_script( 'pixelmold_admin_script' );
 
-	wp_register_script( 'pixelmold_owl_js', plugins_url( 'js/owl.carousel.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0', false );
+	wp_register_script( 'pixelmold_owl_js', plugins_url( 'js/owl.carousel.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0', true );
 	wp_enqueue_script( 'pixelmold_owl_js' );
 
 	wp_enqueue_style( 'wp-color-picker' );

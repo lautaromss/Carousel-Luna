@@ -15,7 +15,7 @@ class pixelmoldthemeCarousel {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
-	function default_carousel_options() {
+	public static function default_carousel_options() {
 
 		$default_options = array(
 			'title' => '',
@@ -30,16 +30,16 @@ class pixelmoldthemeCarousel {
 			'items_phone' => 2,
 			'autoplay' => false,
 			'autoplayms' => 4000,
-			'stop_on_hover' => true, // Not yet implemented
-			'speed' => 300,
-			'fixedheight' => false, // Not yet implemented
-			'height' => 200, // In pixels
+			'stop_on_hover' => true, // Not yet implemented.
+			'speed' => 300,  // Not yet implemented.
+			'fixedheight' => false, // Not yet implemented.
+			'height' => 200, // In pixels.
 			'primary_font' => array( 'g', 'Raleway', '900', 'Ultra-Bold 900' ),
-			'primary_size' => 24, // In pixels
+			'primary_size' => 24, // In pixels.
 			'primary_color' => '#fff',
 			'primary_lineheight' => 24,
 			'secondary_font' => array( 'g', 'Open Sans', '400', 'Normal 400' ),
-			'secondary_size' => 16, // In pixels
+			'secondary_size' => 16, // In pixels.
 			'secondary_color' => '#fff',
 			'secondary_lineheight' => 16,
 			'animation' => 'fadeIn',
@@ -48,7 +48,7 @@ class pixelmoldthemeCarousel {
 		return $default_options;
 	}
 
-	function default_element_options() {
+	public static function default_element_options() {
 
 		$element = array(
 				'id' => 0,
@@ -131,7 +131,7 @@ class pixelmoldthemeCarousel {
 		if ( isset( $_GET['action'] ) ) {
 			// Prepare variables.
 			$pixelmold_nonce = wp_create_nonce( 'pixelmold_settings_nonce' );
-			$carousel_options = $this->default_carousel_options();
+			$carousel_options = pixelmoldthemeCarousel::default_carousel_options();
 			$pixelmold_elements = array();
 
 			if ( 'edit_carousel' === $_GET['action'] ) {
@@ -192,7 +192,8 @@ class pixelmoldthemeCarousel {
 		// Check if we should delete a carousel.
 		if ( isset( $_GET['pixelmold_nonce_del'] ) && 'delete_carousel' === $_GET['action'] ) {
 			if ( ! wp_verify_nonce( $_GET['pixelmold_nonce_del'], 'pixelmold_carousel_del_nonce' ) ) {
-				die( 'Security Error' );
+				echo __( '<br>SECURITY ERROR: An action to delete a carousel was passed but with an invalid nonce.' );
+				return;
 			}
 
 			if ( get_post_type( (int) $_GET['post_id'] ) !== 'pixelmold_carousel' ) {
@@ -208,12 +209,15 @@ class pixelmoldthemeCarousel {
 		}
 
 		// Check that the submitted form is from the carousel, otherwise exit.
-		if ( ! isset( $_POST['pixelmold_nonce'] ) ) {
+		if ( ! isset( $_POST['pixelmold_luna_nonce'] ) ) {
 			return;
 		}
-
-		if ( ! wp_verify_nonce( $_POST['pixelmold_nonce'], 'pixelmold_settings_nonce' ) ) {
+		if ( ! check_admin_referer( 'add-edit-carousel', 'pixelmold_luna_nonce' ) ) {
 			echo __( '<br>SECURITY ERROR: invalid nonce.' );
+			return;
+		}
+		if ( ! isset( $_GET['action'] ) ) {
+			return;
 		}
 
 		$pixelmold_carousel_dumpdata = $_POST;
@@ -251,7 +255,7 @@ class pixelmoldthemeCarousel {
 				);
 			wp_update_post( $postarr );
 
-			// Sanitize and fill the carousel options.
+			// Sanitizes and saves the carousel options.
 			$this->update_carousel( $_GET['post_id'], $pixelmold_carousel_dumpdata );
 		}
 	}
@@ -259,7 +263,7 @@ class pixelmoldthemeCarousel {
 	function update_carousel( $pixelmold_post_id, $dumpdata ) {
 
 		$meta_pixelmold_carousel_data = array();
-		$meta_pixelmold_carousel_data = $this->pixelmold_sanitation( $dumpdata );
+		$meta_pixelmold_carousel_data = pixelmoldthemeCarousel::pixelmold_sanitation( $dumpdata );
 		update_post_meta( $pixelmold_post_id, 'pixelmold_carousel_data', $meta_pixelmold_carousel_data );
 
 		// Finally update the info of each individual element (slides).
@@ -268,7 +272,7 @@ class pixelmoldthemeCarousel {
 			$meta_pixelmold_elements_data = array();
 			$i = 0;
 			foreach ( $attachmentids as $c_element ) {
-				$pixelmold_ele_placeholder = $this->pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
+				$pixelmold_ele_placeholder = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
 				array_push( $meta_pixelmold_elements_data, $pixelmold_ele_placeholder );
 				$i++;
 			}
@@ -276,7 +280,7 @@ class pixelmoldthemeCarousel {
 		}
 	}
 
-	function pixelmold_ele_sanitation( $id, $c_element, $pixelmold_carousel_dumpdata ) {
+	public static function pixelmold_ele_sanitation( $id, $c_element, $pixelmold_carousel_dumpdata ) {
 
 		$pixelmold_ele_placeholder['id'] = intval( $id );
 		$pixelmold_ele_placeholder['attachid'] = intval( $c_element );
@@ -313,10 +317,10 @@ class pixelmoldthemeCarousel {
 		return $pixelmold_ele_placeholder;
 	}
 
-	function pixelmold_sanitation( $pixelmold_carousel_dumpdata ) {
+	public static function pixelmold_sanitation( $pixelmold_carousel_dumpdata ) {
 
 		// This will prevent errors if some value is missing.
-		$required = $this->default_carousel_options();
+		$required = pixelmoldthemeCarousel::default_carousel_options();
 		$missing = array_diff( array_keys( $required ), array_keys( $pixelmold_carousel_dumpdata ) );
 		foreach ( $missing as $m ) {
 		    $pixelmold_carousel_dumpdata[ $m ] = $required[ $m ];
@@ -428,7 +432,7 @@ class pixelmoldthemeCarousel {
 
 		// Primary font
 		$pixelmold_font_family = substr( $pixelmold_carousel_dumpdata['primary_font'], 2 );
-		$pixelmold_variant = $pixelmold_carousel_dumpdata['primary_variant'];
+		$pixelmold_variant = (string) $pixelmold_carousel_dumpdata['primary_variant'];
 
 		if ( substr( $pixelmold_carousel_dumpdata['primary_font'], 0, 1 ) === 'g' ) {
 			$pixelmold_font_type = 'g';
@@ -443,7 +447,7 @@ class pixelmoldthemeCarousel {
 
 		// Secondary font
 		$pixelmold_font_family = substr( $pixelmold_carousel_dumpdata['secondary_font'], 2 );
-		$pixelmold_variant = $pixelmold_carousel_dumpdata['secondary_variant'];
+		$pixelmold_variant = (string) $pixelmold_carousel_dumpdata['secondary_variant'];
 
 		if ( substr( $pixelmold_carousel_dumpdata['secondary_font'], 0, 1 ) === 'g' ) {
 			$pixelmold_font_type = 'g';

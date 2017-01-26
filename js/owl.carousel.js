@@ -1,4 +1,90 @@
 /**
+ * Luna-Carousel function to properly initiate Owl Carousels
+ */
+
+jQuery(document).ready(function() {
+	'use strict'
+	var lunaCounter = 0, owlData = {};
+	var toSanitize = ['dots', 'navs', 'autoplay'];
+
+	// While there are carousels left without initializing.
+	while ( lunaCounter != -1 ) {
+		// If the carousel exists.
+		if (
+			typeof pixelmold_carousel != 'undefined' &&
+			pixelmold_carousel.hasOwnProperty( 'type' + lunaCounter )
+		) {
+			// Sanitize it's properties for use.
+			for ( var i = 0; i < toSanitize.length; i++ ) {
+				if (
+					pixelmold_carousel.hasOwnProperty( toSanitize[i] + lunaCounter ) &&
+					( pixelmold_carousel[ toSanitize[i] + lunaCounter ] == '1' ||
+					pixelmold_carousel[ toSanitize[i] + lunaCounter ] == true )
+				) {
+					owlData[ toSanitize[i] ] = true;
+				} else {
+					owlData[ toSanitize[i] ] = false;
+				}
+			} // End for().
+
+			// Check autowidth.
+			if ( 2 == pixelmold_carousel[ 'type' + lunaCounter ]) {
+				owlData[ 'autoWidth' ] = true;
+			} else {
+				owlData[ 'autoWidth' ] = false;
+			}
+
+			// Check items to show.
+			if ( 1 == pixelmold_carousel[ 'type' + lunaCounter ] ) {
+				owlData[ 'items' ] = 1;
+			} else if ( 2 == pixelmold_carousel[ 'type' + lunaCounter ] ) {
+				owlData[ 'items' ] = parseInt(pixelmold_carousel[ 'count' + lunaCounter ]) * 5;
+			} else {
+				owlData[ 'responsiveClass' ] = true;
+				owlData[ 'responsive' ] = {
+					0:{
+						items: pixelmold_carousel[ 'items_phone' + lunaCounter ],
+					},
+					768:{
+						items: pixelmold_carousel[ 'items_tablet' + lunaCounter ],
+					},
+					992:{
+						items: pixelmold_carousel[ 'items' + lunaCounter ],
+					}
+				}
+			}
+			// Other properties.
+			owlData[ 'animateOut' ] = pixelmold_carousel[ 'animation' + lunaCounter ];
+			owlData[ 'animateIn' ] = pixelmold_carousel[ 'animation' + lunaCounter ];
+			owlData[ 'margin' ] = 0;
+			owlData[ 'loop' ] = true;
+			owlData[ 'autoplayTimeout' ] = pixelmold_carousel[ 'autoplayms' + lunaCounter ];
+
+			// Initialize carousel.
+			var owl = jQuery( '.pixelmold_images_carousel' + lunaCounter );
+			owl.owlCarousel(owlData);
+
+			// Initialize navigation arrow if applicable.
+			if ( true == owlData['navs'] ) {
+				// Go to the next item.
+				jQuery( '.pixelmold_next_identifier_' + lunaCounter ).click(function() {
+					owl.trigger('next.owl.carousel');
+				})
+				// Go to the previous item.
+				jQuery( '.pixelmold_prev_identifier_' + lunaCounter ).click(function() {
+					owl.trigger('prev.owl.carousel');
+				})
+			}
+
+			// Go to next carousel.
+			lunaCounter++;
+		} else {
+			lunaCounter = -1;
+		}
+	} // End while().
+});
+
+/**
  * Owl Carousel v2.1.6
  * Copyright 2013-2016 David Deutsch
  * Licensed under MIT (https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE)

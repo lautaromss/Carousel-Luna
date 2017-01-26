@@ -5,8 +5,9 @@
 	*	 2.2 Images
 	*	 2.3 Services
 	*	 2.4 Testimonials
-	*	 2.5 Content
-	*	 2.6 Product
+	*	 2.5 Content cards
+	*	 2.6 Products
+	*	 2.7 Sliders
 	 * ============================== */
 
 
@@ -628,7 +629,7 @@ body.lb-disable-scrolling {
 }
 
 	/* ==============================
-	 * 2.5 Content
+	 * 2.5 Content cards
 	 * ============================== */
 
 .pixelmold-card {
@@ -771,4 +772,87 @@ body.lb-disable-scrolling {
 	position: absolute;
 	top: 50%;
 	transform: translate(-50%,-50%);
+}
+
+	/* ==============================
+	 * 2.7 Sliders
+	 * ============================== */
+
+.lunacarousel-hero {
+	height: 700px;
+	background-color: rgba(0, 0, 0, 0.65);
+	text-align: center; 
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.lunacarousel-hero .container {
+	position: relative;
+	top: 50%;
+	-moz-transform: translate(0, -50%);
+	-o-transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+}
+
+.lunacarousel-hero h1 {
+	margin: 0px;
+}
+
+.lunacarousel-hero h3 {
+	margin-top: 0px;
+	margin-bottom: 20px;
+}
+
+.lunacarousel-separator {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	height: 1px;
+	width: 160px;
+	background-color: #3a9bff;
+	position: relative;
+	left: 50%;
+	-moz-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%); }
+
+.lunacarousel-btn {
+	display: inline-block;
+	padding: 10px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border-radius: 4px;
+}
+
+.lunacarousel-btn-hero {
+	color: #fff;
+	background-color: transparent;
+	border: 1px solid #fdfdfd;
+	border-radius: 0px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.lunacarousel-btn-hero:hover {
+	background-color: rgba(4, 4, 4, 0.4);
+	border-color: #ffffff;
+	color: white; 
 }

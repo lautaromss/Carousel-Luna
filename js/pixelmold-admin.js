@@ -67,7 +67,7 @@ jQuery( document ).ready(function($) {
 	 *
 	 */
 	$( '#gallery-button' ).on( 'click', function(e) {
-		var mediaUploader, pixelmoldImagesIds = [], pixelmoldContent = [], attachment;
+		var mediaUploader;
 
 		e.preventDefault();
 		if( mediaUploader ){
@@ -75,7 +75,7 @@ jQuery( document ).ready(function($) {
 			return;
 		}
 
-		// Create the media frame with the options we want
+		// Create the media frame with the options we want.
 		mediaUploader = wp.media({
 			title: 'Select your images',
 			button: {
@@ -84,11 +84,10 @@ jQuery( document ).ready(function($) {
 			multiple: true
 		});
 
-		//Save the images selected 
+		//Save the images selected.
 		mediaUploader.on( 'select', function(){
 
-			var pixelmoldContent = [], pixelmoldImagesIds = [], numItems, pixelmoldPreviousIds;
-			var pixelmoldCarouselType = $( '#pixelmold-carousel-preview' ).data( 'cartype' );
+			var pixelmoldImagesIds = [], attachment, numItems, pixelmoldPreviousIds;
 
 			if ( $( '#attachids' ).val() == '' || $.parseJSON( $( '#attachids' ).val() ) == null ) {
 				numItems = 0
@@ -102,83 +101,31 @@ jQuery( document ).ready(function($) {
 				current = current.toJSON();
 				pixelmoldImagesIds.push( current.id );
 
-				// Prepare the HTML string for the new carousel:
-				var pixelmoldContentPlaceholder = 
-				makeItemContent( pixelmoldCarouselType, numItems, current.url, current.width, current.height );
-
-				pixelmoldContent.push( pixelmoldContentPlaceholder );
-
 				makeTabContent( numItems, current.id, current.url );
 
 				numItems++;
 
 			});
 
-			pixelmoldPreviousIds = $.parseJSON( $( '#attachids' ).val());
+			pixelmoldPreviousIds = $.parseJSON( $( '#attachids' ).val() );
 
-			// If there was any image already uploaded
+			// If there was any image already uploaded.
 			if ( pixelmoldPreviousIds != undefined && pixelmoldPreviousIds != '' && pixelmoldPreviousIds != null ) {
-				// Get previous and current items count
-				var pixelmoldImagesIds = pixelmoldPreviousIds.concat( pixelmoldImagesIds );
-				var numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
-			} else {
-				numItemsPrev = 0;
+				// Concatenate previous images IDs with new ones.
+				pixelmoldImagesIds = pixelmoldPreviousIds.concat( pixelmoldImagesIds );
 			}
 
 			$( '#attachids' ).val( JSON.stringify( pixelmoldImagesIds ) );
-			var numItems = $.parseJSON( $( '#attachids' ).val() ).length;
+			numItems = $.parseJSON( $( '#attachids' ).val() ).length;
 
-			// Update Carousel preview
-			var car = $( "#owl_pixelmold_carousel" );
-			if ( car.length ) {
-				// Add the new content to the carousel
-				for ( var i = 0; i < pixelmoldContent.length; i++ ) {
-					$( '.owl-carousel' ).trigger( 'add.owl.carousel', pixelmoldContent[ i ] );
-				}
-				// Refresh it
-				$('.owl-carousel').trigger('refresh.owl.carousel');
-				// Go to last item
-				$('.owl-carousel').trigger('to.owl.carousel', numItems);
+			// Refresh carousel preview ajaxly.
+			pixelmold_refresh_carousel( numItems );
 
-			} else {
-
-				// Forge the content
-				for ( var i = 0; i < pixelmoldContent.length; i++ ) {
-					if ( ! pixelmold_placeholder ) {
-						pixelmold_placeholder = pixelmoldContent[ i ];
-					} else {
-						pixelmold_placeholder = pixelmold_placeholder + pixelmoldContent[ i ];
-					}
-				}
-				var pixelmold_placeholder = '<div id="owl_pixelmold_carousel" class="owl-carousel">' + 
-					pixelmold_placeholder + '</div>\
-					<div class="pixelmold-prev-btn pixelmold-carousel-btn"></div>\
-					<div class="pixelmold-next-btn pixelmold-carousel-btn"></div>';
-
-				// Make the carousel with the new content
-				$( '#pixelmold-carousel-preview' ).html( pixelmold_placeholder );
-
-				// Initiate the Owl Carousel
-				var owl = jQuery( '.owl-carousel' );
-				owl.owlCarousel({
-					margin:10,
-					loop:true,
-					autoWidth:false,
-					items:5,
-					dots:false,
-				});
-				jQuery( '.pixelmold-next-btn' ).click(function() {
-					owl.trigger( 'next.owl.carousel' );
-				})
-				jQuery('.pixelmold-prev-btn').click(function() {
-					owl.trigger( 'prev.owl.carousel' );
-				})
-			}
-			});
-			mediaUploader.open();
 		});
+		mediaUploader.open();
+	});
 
-	// Update de admin tabs for item customization
+	// Update de admin tabs for item customization.
 	function makeTabContent( numItemsPrev, attachid, url ) {
 
 		var stateSocialMedia;
@@ -186,20 +133,18 @@ jQuery( document ).ready(function($) {
 		var stateButtonURL;
 		var statePrices;
 
-		// Create the tab links
+		// Create the tab links.
 		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element'
 			+ ( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Element ' +
 			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="'+( numItemsPrev + 1 ) +
 			'" title="Remove this slide">x</button></li>');
 
-		// Check which options to enable:
-
+		// Check which options to enable.
 		if ( 4 == $( "#pixelmold_carousel_type" ).val()) {
 			stateSocialMedia = '';
 		} else {
 			stateSocialMedia = ' disabled_input';
 		}
-
 		if (
 			7 == $( "#pixelmold_carousel_type" ).val() ||
 			( 6 == $( "#pixelmold_carousel_type" ).val() && 'products_button' === $( "#pixelmold_carousel_style_select" ).val() )
@@ -208,7 +153,6 @@ jQuery( document ).ready(function($) {
 		} else {
 			stateButtonText = ' disabled_input';
 		}
-
 		if (
 			0 == $( "#pixelmold_carousel_type" ).val() ||
 			1 == $( "#pixelmold_carousel_type" ).val() ||
@@ -220,14 +164,13 @@ jQuery( document ).ready(function($) {
 		} else {
 			stateButtonURL = ' disabled_input';
 		}
-
 		if ( 6 == $( "#pixelmold_carousel_type" ).val()) {
 			statePrices = '';
 		} else {
 			statePrices = ' disabled_input';
 		}
 
-		// Populate the admin tabs
+		// Populate the admin tabs.
 		$( '#pixelmold_ele_tab_content' ).append( '<div role="tabpanel" class="tab-pane fade" id="element' +
 			( numItemsPrev + 1 ) + '">\
 			<table class="form-table pixelmold-close-table"><tbody>\
@@ -345,81 +288,124 @@ jQuery( document ).ready(function($) {
 			numItemsPrev++;
 	}
 
-	function makeItemContent( cartype, numItems, url, width, height ) {
-		switch ( cartype ) {
-			case 0:
-				var pixelmoldContent = '<div class="children-owl-item">\
-					<img id="car_item_' + numItems + '" class="pixelmold-zommable" style="width:100%; height: auto;" src="' + url + '">\
-					<div class="pixelmold-c-overlay">\
-						<div class="pixelmold-overlay-content">\
-							<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-1" href="' + url + '"></a>\
-						</div>\
-					</div>\
-				</div>';
-				break;
-			case 1:
-				var pixelmoldContent = '<img id="car_item_' + numItems +
-					'" class="pixelmold-zommable" style="width:100%; height: auto;" src="' + url + '">';
-				break;
-			case 2:
-				var pixelmold_img_width = Math.round( 200 * width / height );
-				var pixelmoldContent = '<div class="children-owl-item">\
-				<img id="car_item_' + numItems + '" class="pixelmold-zommable"\
-				style="height: ' + height + 'px; width:' + pixelmold_img_width + 'px;" src="' + url + '">\
-					<div class="pixelmold-c-overlay">\
-						<div class="pixelmold-overlay-content">\
-							<a class="pixelmold-ov pixelmold-ov-lightbox" data-lightbox="image-2" href="' + url + '"></a>\
-						</div>\
-					</div>\
-				</div>';
-				break;
-			case 3:
-				var pixelmoldContent = '<div class="children-owl-item">\
-				<div class="pixelmold-testimonials">\
-						<div id="car_item_' + numItems + '" class="pixelmold-testminial-image" style="background-image:url(\'' +
-						url + '\');"></div>\
-						<div class="blockquote">\
-							<div class="pixelmold-testimonial-quote"></div>\
-							<div class="pixelmold-testimonial-author"></div>\
-						</div>\
-					</div>\
-				</div>';
-				break;
-			case 4:
-				var pixelmoldContent = '<div class="children-owl-item">\
-				<img id="car_item_' + numItems + '" class="pixelmold-zommable" src="' + url + '"></img>\
-					<div class="pixelmold-black-overlay">\
-						<div class="pixelmold-overlay-caption">\
-							<div class="pixelmold-caption-title"></div>\
-							<div class="double-separator"></div>\
-							<div class="pixelmold-caption-name"></div>\
-						</div>\
-					</div>\
-				</div>';
-				break;
-			case 5:
-				var pixelmoldContent = '<div class="children-owl-item">\
-				<div class="pixelmold-service">\
-						<span id="car_item_' + numItems + '" class="dashicons-heart pixelmold-ico"></span>\
-						<div class="pixelmold-service-title"></div>\
-						<div class="pixelmold-card-text"></div>\
-					</div>\
-				</div>';
-				break;
-			case 6:
-				var pixelmoldContent = '<div class="children-owl-item">\
-				<div class="pixelmold-card">\
-						<img id="car_item_' + numItems + '" class="pixelmold-card-img-top" src="' + url + '">\
-						<div class="pixelmold-card-block">\
-							<p class="pixelmold-card-title"></p>\
-							<div class="pixelmold-card-text"></div>\
-							<a href="#" class="pixelmold-btn-card">See more</a>\
-						</div>\
-					</div>\
-				</div>';
-				break;
+	function pixelmold_refresh_carousel( numItems ) {
+		var data = {}, fontType;
+		var formdata = $("#pixelmold_carousel_form").serializeArray();
+		var GoogleFonts = '';
+		var primaryFont = $('#pixelmold_carousel_primaryfont').val().substring(2);
+		var secondaryFont = $('#pixelmold_carousel_secondaryfont').val().substring(2);
+		var primaryWeight = $('#primary_variant').val();
+		var scondaryWeight = $('#secondary_variant').val();
+
+		fontType = $('#pixelmold_carousel_primaryfont').val().charAt(0);
+		if ( 'g' == fontType ) {
+			GoogleFonts += '<link href="https://fonts.googleapis.com/css?family=' +
+				primaryFont +
+				':' + primaryWeight +
+				'" rel="stylesheet">';
 		}
-		return pixelmoldContent;
+
+		fontType = $('#pixelmold_carousel_secondaryfont').val().charAt(0);
+		if (
+			'g' == fontType &&
+			! ( secondaryFont == primaryFont &&
+				scondaryWeight == primaryWeight )
+		) {
+			GoogleFonts += '<link href="https://fonts.googleapis.com/css?family=' +
+				secondaryFont +
+				':' + scondaryWeight +
+				'" rel="stylesheet">';
+		}
+
+		// Prepare the data to send.
+		$(formdata ).each(function(index, obj){
+		    data[obj.name] = obj.value;
+		});
+
+		data['action'] = 'pixelmold_refresh_carousel';
+		data['count'] = numItems;
+
+		// Destroy previous carousel.
+		$('.owl-carousel').trigger('destroy.owl.carousel');
+		$( '#pixelmold-carousel-preview' ).html( 'refreshing' );
+
+		var start_time = new Date().getTime();
+
+		// Ajax request.
+		var resp = jQuery.post(ajaxurl, data, function(response) {
+			var request_time = new Date().getTime() - start_time;
+			console.log(request_time);
+
+			response += GoogleFonts;
+			$( '#pixelmold-carousel-preview' ).html( response );
+
+			var owlData = {};
+			var toSanitize = ['dots', 'navs', 'autoplay'];
+
+			// Sanitize it's properties for use.
+			for ( var i = 0; i < toSanitize.length; i++ ) {
+				if (
+					( data[ toSanitize[i] ] == 'on' ||
+					data[ toSanitize[i] ] == true )
+				) {
+					owlData[ toSanitize[i] ] = true;
+				} else {
+					owlData[ toSanitize[i] ] = false;
+				}
+			} // End for().
+
+			// Check autowidth.
+			if ( 2 == data[ 'type' ]) {
+				owlData[ 'autoWidth' ] = true;
+			} else {
+				owlData[ 'autoWidth' ] = false;
+			}
+
+			// Check items to show.
+			if ( 1 == data[ 'type' ] ) {
+				owlData[ 'items' ] = 1;
+			} else if ( 2 == data[ 'type' ] ) {
+				owlData[ 'items' ] = parseInt( data[ 'count' ] ) * 5;
+			} else {
+				owlData[ 'responsiveClass' ] = true;
+				owlData[ 'responsive' ] = {
+					0:{
+						items: data[ 'items_phone' ],
+					},
+					768:{
+						items: data[ 'items_tablet' ],
+					},
+					992:{
+						items: data[ 'items' ],
+					}
+				}
+			}
+			// Other properties.
+			owlData[ 'animateOut' ] = data[ 'animation' ];
+			owlData[ 'animateIn' ] = data[ 'animation' ];
+			owlData[ 'margin' ] = 0;
+			owlData[ 'loop' ] = true;
+			owlData[ 'autoplayTimeout' ] = data[ 'autoplayms' ];
+
+			// Initialize carousel.
+			var owl = jQuery( '.pixelmold_images_carousel0' );
+			console.log(owlData);
+			owl.owlCarousel(owlData);
+
+			// Initialize navigation arrow if applicable.
+			if ( true == owlData['navs'] ) {
+				// Go to the next item.
+				jQuery( '.pixelmold_next_identifier_0' ).click(function() {
+					owl.trigger('next.owl.carousel');
+				})
+				// Go to the previous item.
+				jQuery( '.pixelmold_prev_identifier_0' ).click(function() {
+					owl.trigger('prev.owl.carousel');
+				})
+			}
+
+		});
+
 	}
 
 	/*!
@@ -487,7 +473,25 @@ jQuery( document ).ready(function($) {
 
 	/*!
 	 *
-	 * Add a tab button.
+	 * "Refresh preview" button.
+	 *
+	 */
+	$( '#pixelmold-refresh-preview' ).on( 'click', function(e) {
+		var numItems;
+
+		e.preventDefault();
+		
+		if ( $( '#attachids' ).val() == '' || $.parseJSON( $( '#attachids' ).val() ) == null ) {
+			numItems = 0
+		} else {
+			numItems = $.parseJSON( $( '#attachids' ).val() ).length;
+		}
+		pixelmold_refresh_carousel( numItems );
+	});
+
+	/*!
+	 *
+	 * "Add a tab" button.
 	 *
 	 */
 	$( '#add-pixelmold-tab' ).on( 'click', function(e) {
@@ -510,7 +514,7 @@ jQuery( document ).ready(function($) {
 
 	/*!
 	 *
-	 * Delete all items button.
+	 * "Delete all items" button.
 	 *
 	 */
 	$('#delete-button').on( 'click', function(e) {
@@ -532,7 +536,7 @@ jQuery( document ).ready(function($) {
 
 	/*!
 	 *
-	 * Remove a tab button.
+	 * "Remove a tab" button.
 	 *
 	 */
 	$( '#pixelmold_ele_tabs' ).on( 'click', ' li .close', function() {
@@ -609,8 +613,33 @@ jQuery( document ).ready(function($) {
 	 */
 	$( "#pixelmold_carousel_type" ).change(function() {
 
-		// Check input( $( this ).val() ) for validity here.
-		// TODO
+		var styles_ids, styles_text, input_state, styles_options = '';
+		$( '#pixelmold_carousel_style_select' ).html('');
+
+		input_state = '';
+		if ( 6 == $( this ).val() ) {
+			styles_text = [ 'Cart Icon', 'Text button' ];
+			styles_ids = [ 'products_cart', 'products_button' ];
+		} else if ( 1 == $( this ).val() ) {
+			styles_text = [ 'With text and/or Button', 'Just Images' ];
+			styles_ids = [ 'text_and_button', 'just_images' ];
+		} else {
+			input_state = 'class="disabled_input"';
+		}
+
+		if ( typeof styles_text === 'object' ) {
+			for ( var i=0; i < styles_text.length; i++ ){
+			   styles_options += '<option value="'+ styles_ids[i] + '">' + styles_text[i] + '</option>';
+			}
+		}
+		$('#pixelmold_carousel_style_select').append(styles_options);
+
+		// Toggle off the 'style' property for carousel types that don't use it.
+		if ( 6 != $( this ).val() && 1 != $( this ).val() ) {
+			$( 'tr#pixelmold_carousel_style' ).addClass( 'disabled_input' );
+		} else {
+			$( 'tr#pixelmold_carousel_style' ).removeClass( 'disabled_input' );
+		}
 
 		// Toggle on the social media properties if the carousel is of Meet your Team type.
 		if ( $( this ).val() != 4 ) {
@@ -663,13 +692,6 @@ jQuery( document ).ready(function($) {
 		} else {
 			$( 'tr#pixelmold_colorpick' ).removeClass( 'disabled_input' );
 			$( 'tr#pixelmold_animation' ).removeClass( 'disabled_input' );
-		}
-
-		// Toggle off the 'style' property for carousel types that don't use it.
-		if ( $( this ).val() != 6 ) {
-			$( 'tr#pixelmold_carousel_style' ).addClass( 'disabled_input' );
-		} else {
-			$( 'tr#pixelmold_carousel_style' ).removeClass( 'disabled_input' );
 		}
 
 		// Toggle off the 'price' property for non-product carousels.

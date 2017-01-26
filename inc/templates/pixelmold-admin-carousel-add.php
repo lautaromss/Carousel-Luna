@@ -63,11 +63,11 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 			<!-- Main carousel admin tab -->
 			<div role="tabpanel" class="tab-pane fade in active" id="home">
 				<?php
-				// Hidden ID inputs
+				// Hidden ID input.
 				if ( 'edit_carousel' === $_GET['action'] ) { ?>
 					<input
 						type="hidden"
-						id="slideridvalue"
+						id="idvalue"
 						name="postid"
 						value="<?php echo intval( $pixelmold_post_id ); ?>"
 					>
@@ -75,7 +75,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 				} else { ?>
 					<input
 						type="hidden"
-						id="slideridvalue"
+						id="idvalue"
 						name="postid"
 						value=""
 					>
@@ -109,9 +109,12 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					pixelmold_show_carousel( $pixelmold_elements, $carousel_options, 0 );
 					?>
 				</div>
-				<p class="description">
-					<?php echo __( 'Save changes to refresh the preview.' ); ?>
-				</p>
+				<input
+					type="button"
+					class="button-primary"
+					value="<?php echo __( 'Refresh preview' ); ?>"
+					id="pixelmold-refresh-preview"
+				>
 				<?php
 				// Upload images row
 				?>
@@ -185,7 +188,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 
 					<?php
 					// Carousel Type
-					$types = array( 'Images Carousel', 'Slider', 'Flexible Width', 'Testimonials', 'Meet our team', 'Services', 'Product', 'Content Card' );
+					$types = array( 'Images Carousel', 'Slider', 'Images (Flexible Width)', 'Testimonials', 'Meet our team', 'Services', 'Product', 'Content Card' );
+					$types_order = array( 0, 2, 3, 4, 5, 6, 7, 1 );
 					?>
 					<tr>
 						<th scope="row">
@@ -196,11 +200,12 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 							<select id="pixelmold_carousel_type" name="type">
 								<?php
 								$counted_types = count( $types );
+								$pixelmold_state = '';
 								for ( $i = 0; $i < $counted_types; $i++ ) {
-									if ( $i === $carousel_options['type'] ) {
+									if ( $types_order[ $i ] === $carousel_options['type'] ) {
 										$pixelmold_state = 'selected="selected"';
 									}?>
-									<option <?php echo $pixelmold_state; ?> value="<?php echo $i; ?>"><?php echo $types[ $i ]; ?></option>
+									<option <?php echo $pixelmold_state; ?> value="<?php echo $types_order[ $i ]; ?>"><?php echo $types[ $types_order[ $i ] ]; ?></option>
 									<?php
 									$pixelmold_state = '';
 								}
@@ -211,12 +216,14 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 
 					<?php
 					// Carousel Style
-					$pixelmold_style = array( 'Cart Icon', 'Text button' );
-					$pixelmold_style_ids = array( 'products_cart', 'products_button' );
-					
-
+					$pixelmold_input_state = '';
 					if ( 6 === $carousel_options['type'] ) {
-						$pixelmold_input_state = '';
+						$pixelmold_style = array( 'Cart Icon', 'Text button' );
+						$pixelmold_style_ids = array( 'products_cart', 'products_button' );
+					} elseif ( 1 === $carousel_options['type'] ) {
+						$pixelmold_style = array( 'With text and/or Button', 'Just Images' );
+						$pixelmold_style_ids = array( 'text_and_button', 'just_images' );
+
 					} else {
 						$pixelmold_input_state = 'class="disabled_input"';
 					}?>
@@ -584,7 +591,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 									style="width: 100%; min-width:220px"
 								>
 									<?php
-									if ( 'google' === $carousel_options['primary_font'][0] ) {
+									if ( 'g' === $carousel_options['primary_font'][0] ) {
 										echo '<option value="' . $carousel_options['primary_font'][2] . '" selected>'
 											. $carousel_options['primary_font'][3] . '</option>';
 
@@ -607,7 +614,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 									<?php echo __( 'Font size' ); ?>	
 								</p>
 								<input
-									id="pixelmold_typography_size"
+									id="pixelmold_typography_prym_size"
 									type="number"
 									min="1"
 									name="primary_size"
@@ -619,13 +626,16 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 									<?php echo __( 'Line Height' ); ?>	
 								</p>
 								<input
-									id="pixelmold_typography_size"
+									id="pixelmold_typography_prym_height"
 									type="number"
 									min="1"
 									name="primary_lineheight"
 									value="<?php echo $carousel_options['primary_lineheight'] ?>"
 								>
 							</div>
+							<p class="description">
+								<?php echo __( 'Suggestion: use the same value for font size and line height for coherence.' ); ?>
+							</p>
 							<p class="label-subtitle">
 								<?php echo __( 'Font color' ); ?>	
 							</p>
@@ -695,7 +705,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 									name="secondary_variant" style="width: 100%; min-width:220px"
 								>
 									<?php
-									if ( 'google' === $carousel_options['secondary_font'][0] ) {
+									if ( 'g' === $carousel_options['secondary_font'][0] ) {
 										echo '<option value="' . $carousel_options['secondary_font'][2] .
 											'" selected>' . $carousel_options['secondary_font'][3] . '</option>';
 										
@@ -718,14 +728,17 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 								<p class="label-subtitle">
 									<?php echo __( 'Font size' ); ?>	
 								</p>
-								<input id="pixelmold_typography_size" type="number" min="1" name="secondary_size" value="<?php echo $carousel_options['secondary_size'] ?>" />
+								<input id="pixelmold_typography_sec_size" type="number" min="1" name="secondary_size" value="<?php echo $carousel_options['secondary_size'] ?>" />
 							</div>
 							<div class="pixelmold-typography-little">
 								<p class="label-subtitle">
 									<?php echo __( 'Line Height' ); ?>	
 								</p>
-								<input id="pixelmold_typography_size" type="number" min="1" name="secondary_lineheight" value="<?php echo $carousel_options['secondary_lineheight'] ?>" />
+								<input id="pixelmold_typography_sec_height" type="number" min="1" name="secondary_lineheight" value="<?php echo $carousel_options['secondary_lineheight'] ?>" />
 							</div>
+							<p class="description">
+								<?php echo __( 'Suggestion: use the same value for font size and line height for coherence.' ); ?>
+							</p>
 							<p class="label-subtitle">
 								<?php echo __( 'Font color' ); ?>	
 							</p>
@@ -1021,6 +1034,9 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 			<p class="description"><?php echo __( 'Save changes to refresh the preview.' ); ?></p>
 		<?php endif; ?>
 		</p>
-		<input type="hidden" value="<?php echo $pixelmold_nonce; ?>" name="pixelmold_nonce" />
+
+		<?php
+		wp_nonce_field( 'add-edit-carousel', 'pixelmold_luna_nonce' );
+		?>
 	</form>
 </div>
