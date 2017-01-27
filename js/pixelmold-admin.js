@@ -135,7 +135,7 @@ jQuery( document ).ready(function($) {
 
 		// Create the tab links.
 		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element'
-			+ ( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Element ' +
+			+ ( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Item ' +
 			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="'+( numItemsPrev + 1 ) +
 			'" title="Remove this slide">x</button></li>');
 
@@ -318,7 +318,7 @@ jQuery( document ).ready(function($) {
 		}
 
 		// Prepare the data to send.
-		$(formdata ).each(function(index, obj){
+		$( formdata ).each(function(index, obj){
 		    data[obj.name] = obj.value;
 		});
 
@@ -329,24 +329,18 @@ jQuery( document ).ready(function($) {
 		$('.owl-carousel').trigger('destroy.owl.carousel');
 		$( '#pixelmold-carousel-preview' ).html( 'refreshing' );
 
-		var start_time = new Date().getTime();
-
 		// Ajax request.
 		var resp = jQuery.post(ajaxurl, data, function(response) {
-			var request_time = new Date().getTime() - start_time;
-			console.log(request_time);
-
 			response += GoogleFonts;
 			$( '#pixelmold-carousel-preview' ).html( response );
 
 			var owlData = {};
-			var toSanitize = ['dots', 'navs', 'autoplay'];
+			var toSanitize = ['dots', 'navs', 'autoplay', 'loop', 'lightbox'];
 
-			// Sanitize it's properties for use.
+			// Sanitize it's properties for later use.
 			for ( var i = 0; i < toSanitize.length; i++ ) {
 				if (
-					( data[ toSanitize[i] ] == 'on' ||
-					data[ toSanitize[i] ] == true )
+					( data[ toSanitize[i] ] == 'on' )
 				) {
 					owlData[ toSanitize[i] ] = true;
 				} else {
@@ -381,15 +375,13 @@ jQuery( document ).ready(function($) {
 				}
 			}
 			// Other properties.
-			owlData[ 'animateOut' ] = data[ 'animation' ];
+			owlData[ 'animateOut' ] = 'fadeOut';
 			owlData[ 'animateIn' ] = data[ 'animation' ];
 			owlData[ 'margin' ] = 0;
-			owlData[ 'loop' ] = true;
 			owlData[ 'autoplayTimeout' ] = data[ 'autoplayms' ];
 
 			// Initialize carousel.
 			var owl = jQuery( '.pixelmold_images_carousel0' );
-			console.log(owlData);
 			owl.owlCarousel(owlData);
 
 			// Initialize navigation arrow if applicable.
@@ -574,7 +566,7 @@ jQuery( document ).ready(function($) {
 			var closeButton = jQuery('button[data-identifier="' + ( i + 1 ) + '"]');
 
 			// Re-number the tabs links and content divs
-			jQuery( elementSelector ).text( 'Element ' + i );
+			jQuery( elementSelector ).text( 'Item ' + i );
 			jQuery( elementSelector ).attr( "href", "#element" + i );
 			jQuery( '#element' + ( i + 1 ) ).attr( "id", "element" + i );
 
@@ -641,6 +633,13 @@ jQuery( document ).ready(function($) {
 			$( 'tr#pixelmold_carousel_style' ).removeClass( 'disabled_input' );
 		}
 
+		// Toggle off the 'lightbox' property for carousel types that don't use it.
+		if ( 0 != $( this ).val() && 2 != $( this ).val() ) {
+			$( 'tr#pixelmold_lightbox' ).addClass( 'disabled_input' );
+		} else {
+			$( 'tr#pixelmold_lightbox' ).removeClass( 'disabled_input' );
+		}
+
 		// Toggle on the social media properties if the carousel is of Meet your Team type.
 		if ( $( this ).val() != 4 ) {
 			$( 'tr.pixelmold_social_class' ).addClass( 'disabled_input' );
@@ -670,9 +669,11 @@ jQuery( document ).ready(function($) {
 		}
 
 		// Toggle on the 'button's text' property if the carousel is content.
-		if ( $( this ).val() != 6 && $( this ).val() != 7 ) {
+		if ( $( this ).val() != 6 && $( this ).val() != 7 && $( this ).val() != 8 ) {
 			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
 		} else if ( $( this ).val() == 6 && $( "#pixelmold_carousel_style_select" ).val() != 'products_button' ) {
+			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
+		} else if ( $( this ).val() == 1 && $( "#pixelmold_carousel_style_select" ).val() != 'text_and_button' ) {
 			$( 'tr.pixelmold_buttontext' ).addClass( 'disabled_input' );
 		} else {
 			$( 'tr.pixelmold_buttontext' ).removeClass( 'disabled_input' );

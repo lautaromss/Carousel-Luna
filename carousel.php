@@ -43,6 +43,9 @@ function my_action_callback() {
 	}
 
 	for ( $i = 0; $i < $_POST['count']; $i++ ) {
+		$_POST[ 'desc' . $i ] = str_replace( "\'", "'", $_POST[ 'desc' . $i ] );
+		$_POST[ 'linktext' . $i ] = str_replace( "\'", "'", $_POST[ 'linktext' . $i ] );
+		$_POST[ 'title' . $i ] = str_replace( "\'", "'", $_POST[ 'title' . $i ] );
 		$ele_placeholder = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $_POST[ 'attachid' . $i ], $_POST );
 		array_push( $sanitized_elements, $ele_placeholder );
 	}

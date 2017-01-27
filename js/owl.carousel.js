@@ -5,7 +5,7 @@
 jQuery(document).ready(function() {
 	'use strict'
 	var lunaCounter = 0, owlData = {};
-	var toSanitize = ['dots', 'navs', 'autoplay'];
+	var toSanitize = ['dots', 'navs', 'autoplay', 'loop'];
 
 	// While there are carousels left without initializing.
 	while ( lunaCounter != -1 ) {
@@ -54,10 +54,9 @@ jQuery(document).ready(function() {
 				}
 			}
 			// Other properties.
-			owlData[ 'animateOut' ] = pixelmold_carousel[ 'animation' + lunaCounter ];
+			owlData[ 'animateOut' ] = 'fadeOut';
 			owlData[ 'animateIn' ] = pixelmold_carousel[ 'animation' + lunaCounter ];
 			owlData[ 'margin' ] = 0;
-			owlData[ 'loop' ] = true;
 			owlData[ 'autoplayTimeout' ] = pixelmold_carousel[ 'autoplayms' + lunaCounter ];
 
 			// Initialize carousel.
@@ -2619,7 +2618,6 @@ jQuery(document).ready(function() {
 						this.stop();
 					}
 				} else if (e.namespace && e.property.name === 'position') {
-					//console.log('play?', e);
 					if (this._core.settings.autoplay) {
 						this._setAutoPlayInterval();
 					}

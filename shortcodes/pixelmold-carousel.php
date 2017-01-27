@@ -10,7 +10,7 @@ function pixelmold_carousel_enqueues() {
 function pixelmold_carousel_load( $atts ) {
 
 	if ( get_post_type( (int) $atts['id'] ) !== 'pixelmold_carousel' ) {
-		echo __( 'ERROR: Invalid carousel ID '  . (int) $_GET['post_id'] );
+		echo __( 'ERROR: Invalid carousel ID '  . (int) $atts['id'] );
 		return;
 	}
 
@@ -30,6 +30,7 @@ function pixelmold_carousel_load( $atts ) {
 }
 
 function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter, $isAjaxRequest = false ) {
+
 	if ( ! is_array( $elements ) ) {
 		return;
 	}
@@ -52,7 +53,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 		.pixelmold-caption-title,
 		.pixelmold-testimonial-quote,
 		.pixelmold-service-title,
-		.pixelmold-card-title,
+		.pixelmold-card-title, .pixelmold-card-title:hover, .pixelmold-card-title:focus,
 		.lunacarousel-hero h1 {
 			color: ' . esc_attr( $carousel_data['primary_color'] ) . '; 
 			font-size: ' . esc_attr( $carousel_data['primary_size'] ) . 'px;
@@ -71,8 +72,6 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 		.pixelmold-caption-name,
 		.pixelmold-testimonial-author,
 		.pixelmold-card-text,
-		.pixelmold-ov-link,
-		.pixelmold-ov-lightbox,
 		.lunacarousel-hero h3 {
 			color: ' . esc_attr( $carousel_data['secondary_color'] ) . '; 
 			font-size: ' . esc_attr( $carousel_data['secondary_size'] ) . 'px;
@@ -80,6 +79,11 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			font-family: ' . esc_attr( $carousel_data['secondary_font'][1] ) . ';
 			font-weight: ' . esc_attr( substr($carousel_data['secondary_font'][2], 0, 3 ) ) . ';
 			font-style: ' . esc_attr( $secondary_font_style ) . ';
+		}
+
+		.pixelmold-ov-link,
+		.pixelmold-ov-lightbox {
+			color: ' . esc_attr( $carousel_data['secondary_color'] ) . '; 
 		}
 
 		.pixelmold-c-overlay {
@@ -94,12 +98,6 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			transition: all 0.3s;
 			background-color: ' . esc_attr( $carousel_data['bgcolor'] ) . ';
 			color: #fff;
-		}
-		.pixelmold-card:hover, .pixelmold-card:focus {
-			border: 1px solid ' . esc_attr( $carousel_data['bgcolor'] ) . ';
-			-webkit-box-shadow: 0 0 4px 1px ' . esc_attr( $carousel_data['bgcolor'] ) . ';
-			-moz-box-shadow: 0 0 4px 1px ' . esc_attr( $carousel_data['bgcolor'] ) . ';
-			box-shadow: 0 0 4px 1px ' . esc_attr( $carousel_data['bgcolor'] ) . ';
 		}
 		';
 
@@ -130,10 +128,31 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			<?php
 			// List all carousel items.
 			foreach ( $elements as $element ) {
+				// Prepare some variables
 				$elem_img = wp_get_attachment_image_src( $element['attachid'], $size = 'large' );
 				$elem_img_full = wp_get_attachment_image_src( $element['attachid'], $size = 'original' );
-				?>
+				if (
+					is_numeric( $element['linkurl'] ) &&
+					false !== get_post_status( $element['linkurl'] )
+				) {
+					$is_post_link = true;
+					$element_linked_post = get_post( $element['linkurl'], 'ARRAY_A', 'display' );
+					$element['linkurl'] = get_permalink( $element_linked_post );
+					$element['linked_post_comments'] = get_comments_number( $element_linked_post );
+					$element['linked_post_date'] = get_the_date( 'M j, Y', $element_linked_post );
+					$element['linked_post_excerpt'] = $element_linked_post['post_excerpt'];
+					if ( $element['linked_post_excerpt'] === '' ) {
+						$element['linked_post_excerpt'] = wp_trim_words( $element_linked_post['post_content'], 55, '' );
+					}
+					if ( $element['desc'] === '' ) {
+						$element['desc'] = $element['linked_post_excerpt'];
+					}
+				} else {
+					$is_post_link = false;
+				}
 
+				// Print the item HTML
+				?>
 				<div class="children-owl-item pixelmold_carousel_<?php echo (int) $carousels_counter; ?>_items">
 				<?php
 				switch ( $carousel_data['type'] ) {
@@ -149,7 +168,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 						<?php
 						break;
 
-					// 2: Flexible Width
+					// 2: Flexible Width Images
 					case 2:
 						pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img, $elem_img_full );
 						break;
@@ -173,7 +192,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 						pixelmold_team_carousel( $carousel_data, $element, $elem_img );
 						break;
 
-					// 5: Services
+					// 5: Services or logos
 					case 5:
 						?>
 						<div class="pixelmold-service">
@@ -186,14 +205,19 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 						<?php
 						break;
 
-					// 6: Product
+					// 6: Products
 					case 6:
 						pixelmold_product_carousel( $carousel_data, $element, $elem_img );
 						break;
 
-					// 7: Content Card
+					// 7: Content Cards
 					case 7:
 						pixelmold_content_carousel( $carousel_data, $element, $elem_img );
+						break;
+
+					// 7: Posts
+					case 8:
+						pixelmold_posts_carousel( $carousel_data, $element, $elem_img );
 						break;
 				} // End switch(). ?>
 				</div>
@@ -233,11 +257,15 @@ function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_i
 					href="<?php echo esc_url( $element['linkurl'] ); ?>">
 				</a>
 			<?php
+			}
+			if ( true === $carousel_data['lightbox'] ) { 
+				?>
+				<a class="pixelmold-ov pixelmold-ov-lightbox"
+					data-lightbox="image-1" 
+					href="<?php echo esc_url( $elem_img_full[0] ); ?>">
+				</a>
+			<?php
 			} ?>
-			<a class="pixelmold-ov pixelmold-ov-lightbox"
-				data-lightbox="image-1" 
-				href="<?php echo esc_url( $elem_img_full[0] ); ?>">
-			</a>
 		</div>
 	</div>
 	<?php
@@ -252,24 +280,51 @@ function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
 				style="width:100%; height:auto;">
 			</img>
 			<div class="lunacarousel-hero">
-				<div class="container">
+				<div class="lunacarousel-hero-container">
 					<h1 class="animated fadeInDown">
 						<?php echo esc_html( $element['title'] ); ?>
 					</h1>
-					<div class="lunacarousel-separator"></div>
+					<?php
+					if (
+						'' !== esc_attr( $element['desc'] ) ||
+						'' !== esc_attr( $element['linktext'] )
+					) { ?>
+						<div class="lunacarousel-separator"></div>
+					<?php
+					} ?>
 					<h3 class="animated fadeInDown">
 						<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 					</h3>
-					<a class="lunacarousel-btn lunacarousel-btn-hero animated fadeInUp">
-						<?php echo esc_attr( $element['linktext'] ); ?>
-					</a>
+					<?php
+					if ( '' !== esc_attr( $element['linktext'] ) ) { ?>
+						<a class="lunacarousel-btn lunacarousel-btn-hero animated fadeInUp">
+							<?php echo esc_attr( $element['linktext'] ); ?>
+						</a>
+					<?php
+					} ?>
 				</div>
 			</div>
 			<?php
 			break;
 		case 'just_images':
 			?>
-			
+			<img
+				src="<?php echo esc_url( $elem_img_full[0] );?>"
+				style="width:100%; height:auto;">
+			</img>
+			<div class="lunacarousel-slider-plain">
+				<div class="lunacarousel-hero-container">
+					<?php
+					if ( true === $carousel_data['lightbox'] ) { 
+						?>
+						<a class="pixelmold-ov pixelmold-ov-lightbox"
+							data-lightbox="image-1" 
+							href="<?php echo esc_url( $elem_img_full[0] ); ?>">
+						</a>
+					<?php
+					} ?>
+				</div>
+			</div>
 			<?php
 			break;
 	} // End switch().
@@ -300,11 +355,15 @@ function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img,
 				<a class="pixelmold-ov pixelmold-ov-link"
 					href="<?php echo esc_url( $element['linkurl'] ); ?>">
 				</a>
-			<?php } ?>
-			<a class="pixelmold-ov pixelmold-ov-lightbox"
-				data-lightbox="image-2"
-				href="<?php echo esc_url( $elem_img_full[0] ); ?>">
-			</a>
+			<?php } 
+			if ( true === $carousel_data['lightbox'] ) { 
+				?>
+				<a class="pixelmold-ov pixelmold-ov-lightbox"
+					data-lightbox="image-1" 
+					href="<?php echo esc_url( $elem_img_full[0] ); ?>">
+				</a>
+			<?php
+			} ?>
 		</div>
 	</div>
 	<?php
@@ -406,7 +465,7 @@ function pixelmold_product_carousel( $carousel_data, $element, $elem_img ) {
 			<?php
 			break;
 	} // End switch().
-} // End pixelmold_content_carousel().
+} // End pixelmold_product_carousel().
 
 function pixelmold_content_carousel( $carousel_data, $element, $elem_img ) {
 	?>
@@ -429,6 +488,37 @@ function pixelmold_content_carousel( $carousel_data, $element, $elem_img ) {
 	</div>
 	<?php
 } // End pixelmold_content_carousel().
+
+function pixelmold_posts_carousel( $carousel_data, $element, $elem_img ) {
+	?>
+	<div class="pixelmold-card">
+		<img class="pixelmold-card-img-top" src="<?php echo esc_url( $elem_img[0] ); ?>">
+		<div class="pixelmold-card-block">
+			<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title">
+				<?php echo esc_attr( $element['title'] ); ?>
+			</a>
+			<?php
+			if (
+				array_key_exists( 'linked_post_date', $element ) &&
+				array_key_exists( 'linked_post_comments', $element )
+			) {
+			?>
+			<div class="pixelmold-post-meta"><span class="dashicons dashicons-calendar-alt"></span> <?php echo $element['linked_post_date'] ?> <span class="dashicons dashicons-admin-comments"></span><?php echo $element['linked_post_comments'] . ' comments.'; ?></div>
+			<?php
+			} ?>
+			<div class="pixelmold-card-text">
+				<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
+			</div>
+
+			<?php if ( esc_url( $element['linkurl'] ) !== '' ) {?>
+				<a href="<?php echo esc_url( $element['linkurl'] ); ?>" class="pixelmold-btn-card">
+					<?php echo esc_attr( $element['linktext'] ); ?>
+				</a>
+			<?php } ?>
+		</div>
+	</div>
+	<?php
+} // End pixelmold_posts_carousel().
 
 function pixelmold_hex_to_rgba( $hex ) {
 	$hex = str_replace( '#', '', $hex );

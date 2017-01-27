@@ -49,12 +49,12 @@ if ( ! empty( $GLOBALS['pixelmold_carousel_errors'] ) ) {
 <?php
 // Add each tab
 for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
-	<li role="presentation"><a href="#element<?php echo $i; ?>" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Element <?php echo $i; ?></a><button class="close" type="button" data-identifier="<?php echo $i; ?>" title="Remove this slide">x</button></li>
+	<li role="presentation"><a href="#element<?php echo $i; ?>" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Item <?php echo $i; ?></a><button class="close" type="button" data-identifier="<?php echo $i; ?>" title="Remove this slide">x</button></li>
 <?php }
 ?>
 </ul>
 <ul class="nav nav-tabs add-tab" role="tablist">
-<li><a id="add-pixelmold-tab">Add Element</a></li>
+<li><a id="add-pixelmold-tab">Add Item</a></li>
 </ul>
 
 <div class="card" style="max-width:1200px; margin-top:0px">
@@ -188,8 +188,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 
 					<?php
 					// Carousel Type
-					$types = array( 'Images Carousel', 'Slider', 'Images (Flexible Width)', 'Testimonials', 'Meet our team', 'Services', 'Product', 'Content Card' );
-					$types_order = array( 0, 2, 3, 4, 5, 6, 7, 1 );
+					$types = array( 'Images Carousel', 'Slider', 'Images (Flexible Width)', 'Testimonials', 'Meet our team', 'Services / Logos', 'Product', 'Content Card', 'Post or Page' );
+					$types_order = array( 2, 0, 8, 3, 4, 5, 6, 7, 1 );
 					?>
 					<tr>
 						<th scope="row">
@@ -226,6 +226,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 
 					} else {
 						$pixelmold_input_state = 'class="disabled_input"';
+						$pixelmold_style = array( 'Not applicable' );
+						$pixelmold_style_ids = array( 'N_A' );
 					}?>
 					<tr id="pixelmold_carousel_style" <?php echo $pixelmold_input_state; ?>>
 						<th scope="row">
@@ -294,10 +296,62 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					</tr>
 
 					<?php
+					// Infinite loop
+					?>
+
+					<tr>
+						<th scope="row">
+							<label for="pixelmold_carousel_loop"><?php echo __( 'Infinite loop' ); ?></label><span data-toggle="tooltip" title="After the last item, the first one will appear again and so on." class="dashicons dashicons-info pixelmold-infobox"></span>
+						</th>
+						<td>
+							<label class="switch">
+								<input id="pixelmold_carousel_loop" type="checkbox" name="loop" <?php
+								if ( true === $carousel_options['loop'] ) {
+									echo 'checked';
+								} ?>
+								>
+								<div class="slider round"></div>
+							</label>
+						</td>
+					</tr>
+
+					<?php
 					if (
+						0 !== $carousel_options['type'] &&
+						2 !== $carousel_options['type']
+					) {
+						$pixelmold_input_state = '';
+					} else {
+						$pixelmold_input_state = 'class="disabled_input"';
+					}
+
+					// Lightbox
+					?>
+
+					<tr id="pixelmold_lightbox" <?php echo $pixelmold_input_state; ?>>
+						<th scope="row">
+							<label for="pixelmold_carousel_lightbox"><?php echo __( 'Lightbox' ); ?></label><span data-toggle="tooltip" title="Shows an icon on each item that, when clicked, expands the image to it's full dimensions in a modal window, also known as lightbox." class="dashicons dashicons-info pixelmold-infobox"></span>
+						</th>
+						<td>
+							<label class="switch">
+								<input id="pixelmold_carousel_lightbox" type="checkbox" name="lightbox" <?php
+								if ( true === $carousel_options['lightbox'] ) {
+									echo 'checked';
+								} ?>
+								>
+								<div class="slider round"></div>
+							</label>
+						</td>
+					</tr>
+
+					<?php
+					if (
+						1 !== $carousel_options['type'] &&
 						3 !== $carousel_options['type'] &&
 						4 !== $carousel_options['type'] &&
-						5 !== $carousel_options['type']
+						5 !== $carousel_options['type'] &&
+						7 !== $carousel_options['type'] &&
+						8 !== $carousel_options['type']
 					) {
 						$pixelmold_input_state = '';
 					} else {
@@ -317,6 +371,18 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					</tr>
 
 					<?php
+					if (
+						3 !== $carousel_options['type'] &&
+						4 !== $carousel_options['type'] &&
+						5 !== $carousel_options['type'] &&
+						7 !== $carousel_options['type'] &&
+						8 !== $carousel_options['type']
+					) {
+						$pixelmold_input_state = '';
+					} else {
+						$pixelmold_input_state = 'class="disabled_input"';
+					}
+
 					// Animation
 					?>
 					<tr id="pixelmold_animation" <?php echo $pixelmold_input_state; ?>>
@@ -371,13 +437,10 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 										<option value="flip">flip</option>
 										<option value="flipInX">flipInX</option>
 										<option value="flipInY">flipInY</option>
-										<option value="flipOutX">flipOutX</option>
-										<option value="flipOutY">flipOutY</option>
 									</optgroup>
 
 									<optgroup label="Lightspeed">
 										<option value="lightSpeedIn">lightSpeedIn</option>
-										<option value="lightSpeedOut">lightSpeedOut</option>
 									</optgroup>
 
 									<optgroup label="Rotating Entrances">
@@ -828,8 +891,10 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					<?php
 					if (
 						7 === $carousel_options['type'] ||
+						8 === $carousel_options['type'] ||
+						( 1 === $carousel_options['type'] && 'text_and_button' === $carousel_options['style'] ) ||
 						( 6 === $carousel_options['type'] && 'products_button' === $carousel_options['style'] )
-						) {
+					) {
 						$pixelmold_input_state = '';
 					} else {
 						$pixelmold_input_state = 'disabled_input';
@@ -860,7 +925,8 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 						1 === $carousel_options['type'] ||
 						2 === $carousel_options['type'] ||
 						6 === $carousel_options['type'] ||
-						7 === $carousel_options['type']
+						7 === $carousel_options['type'] ||
+						8 === $carousel_options['type']
 					) {
 						$pixelmold_input_state = '';
 					} else {
@@ -871,7 +937,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 					<tr class="pixelmold_linkurl <?php echo $pixelmold_input_state; ?>">
 						<th scope="row">
 							<label for="pixelmold_element_linkurl<?php echo $i; ?>">
-								<?php echo __( 'Full URL' ); ?>
+								<?php echo __( 'Post ID or Full URL' ); ?>
 							</label>
 						</th>
 						<td>
@@ -882,7 +948,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 								name="linkurl<?php echo $i; ?>"
 								value="<?php echo $pixelmold_elements[ $i ]['linkurl'] ?>"
 							>
-							<p class="description"><?php echo __( 'Optional' ); ?></p>
+							<p class="description"><?php echo __( 'Optional. Insert the ID of a post to link to it.' ); ?></p>
 						</td>
 					</tr>
 

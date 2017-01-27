@@ -19,28 +19,27 @@ class pixelmoldthemeCarousel {
 
 		$default_options = array(
 			'title' => '',
-			'type' => 2, // 0: Images Carousel, 1: Slider, 2: Flexible Width, 3: Testimonials, 4: Meet our eam, 5: Services/logo, 6: Product, 7: Content card.
+			'type' => 2, // 0: Images Carousel, 1: Slider, 2: Flexible Width, 3: Testimonials, 4: Meet our eam, 5: Services/logo, 6: Product, 7: Content card, 8: Post carousel.
 			'style' => 'products_cart',
 			'count' => 0,
 			'dots' => false, // Dots navigation. 0: None, 1: Inside, 2: Outside.
 			'navs' => true, // Navigation arrows. 0: None, 1: Inside, 2: Outside.
-			'bgcolor' => '#000',
+			'bgcolor' => '#fff',
 			'items' => 5, // Amount of items displayed at once in the desktop size.
 			'items_tablet' => 3,
 			'items_phone' => 2,
 			'autoplay' => false,
 			'autoplayms' => 4000,
-			'stop_on_hover' => true, // Not yet implemented.
-			'speed' => 300,  // Not yet implemented.
-			'fixedheight' => false, // Not yet implemented.
+			'loop' => true,
+			'lightbox' => true,
 			'height' => 200, // In pixels.
 			'primary_font' => array( 'g', 'Raleway', '900', 'Ultra-Bold 900' ),
 			'primary_size' => 24, // In pixels.
-			'primary_color' => '#fff',
+			'primary_color' => '#000',
 			'primary_lineheight' => 24,
 			'secondary_font' => array( 'g', 'Open Sans', '400', 'Normal 400' ),
 			'secondary_size' => 16, // In pixels.
-			'secondary_color' => '#fff',
+			'secondary_color' => '#000',
 			'secondary_lineheight' => 16,
 			'animation' => 'fadeIn',
 			);
@@ -272,8 +271,8 @@ class pixelmoldthemeCarousel {
 			$meta_pixelmold_elements_data = array();
 			$i = 0;
 			foreach ( $attachmentids as $c_element ) {
-				$pixelmold_ele_placeholder = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
-				array_push( $meta_pixelmold_elements_data, $pixelmold_ele_placeholder );
+				$elements_sanitized = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
+				array_push( $meta_pixelmold_elements_data, $elements_sanitized );
 				$i++;
 			}
 			update_post_meta( $pixelmold_post_id, 'pixelmold_elements_data', $meta_pixelmold_elements_data );
@@ -282,39 +281,49 @@ class pixelmoldthemeCarousel {
 
 	public static function pixelmold_ele_sanitation( $id, $c_element, $pixelmold_carousel_dumpdata ) {
 
-		$pixelmold_ele_placeholder['id'] = intval( $id );
-		$pixelmold_ele_placeholder['attachid'] = intval( $c_element );
-		$pixelmold_ele_placeholder['title'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'title' . $id ] );
+		$elements_sanitized['id'] = intval( $id );
+		$elements_sanitized['attachid'] = intval( $c_element );
+		$elements_sanitized['title'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'title' . $id ] );
 
 		// This next implode thing is just a fancy way of sanitizing textareas, keeping the newlines.
-		$pixelmold_ele_placeholder['desc'] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $pixelmold_carousel_dumpdata[ 'desc' . $id ] ) ) );
+		$elements_sanitized['desc'] = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $pixelmold_carousel_dumpdata[ 'desc' . $id ] ) ) );
 
-		$pixelmold_ele_placeholder['linkurl'] = esc_url_raw( $pixelmold_carousel_dumpdata[ 'linkurl' . $id ] );
-		$pixelmold_ele_placeholder['linktext'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'linktext' . $id ] );
-
-		$pixelmold_ele_placeholder['price'] = intval( $pixelmold_carousel_dumpdata[ 'price' . $id ] );
-		$pixelmold_ele_placeholder['old_price'] = intval( $pixelmold_carousel_dumpdata[ 'old_price' . $id ] );
-
-		$pixelmold_ele_placeholder['facebook'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'facebook' . $id ] );
-		if ( substr( $pixelmold_ele_placeholder['facebook'], 0, 1 ) === '/' ) {
-			$pixelmold_ele_placeholder['facebook'] = substr( $pixelmold_ele_placeholder['facebook'], 1 );
+		if ( is_numeric( $pixelmold_carousel_dumpdata[ 'linkurl' . $id ] ) ) {
+			if ( false !== get_post_status( $pixelmold_carousel_dumpdata[ 'linkurl' . $id ] ) ) {
+				$elements_sanitized['linkurl'] = (int) $pixelmold_carousel_dumpdata[ 'linkurl' . $id ];
+			} else {
+				array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Post ID was invalid on element ' ) . $id . __( ', saved default instead.' ) );
+				$elements_sanitized['linkurl'] = '#';
+			}
+		} else {
+			$elements_sanitized['linkurl'] = esc_url_raw( $pixelmold_carousel_dumpdata[ 'linkurl' . $id ] );
 		}
 
-		$pixelmold_ele_placeholder['twitter'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'twitter' . $id ] );
-		if ( substr( $pixelmold_ele_placeholder['twitter'], 0, 1 ) === '@' ) {
-			$pixelmold_ele_placeholder['twitter'] = substr( $pixelmold_ele_placeholder['twitter'], 1 );
+		$elements_sanitized['linktext'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'linktext' . $id ] );
+
+		$elements_sanitized['price'] = (int) $pixelmold_carousel_dumpdata[ 'price' . $id ];
+		$elements_sanitized['old_price'] = (int) $pixelmold_carousel_dumpdata[ 'old_price' . $id ];
+
+		$elements_sanitized['facebook'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'facebook' . $id ] );
+		if ( substr( $elements_sanitized['facebook'], 0, 1 ) === '/' ) {
+			$elements_sanitized['facebook'] = substr( $elements_sanitized['facebook'], 1 );
 		}
-		$pixelmold_ele_placeholder['googleplus'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'googleplus' . $id ] );
-		if ( substr( $pixelmold_ele_placeholder['googleplus'], 0, 1 ) === '+' ) {
-			$pixelmold_ele_placeholder['googleplus'] = substr( $pixelmold_ele_placeholder['googleplus'], 1 );
+
+		$elements_sanitized['twitter'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'twitter' . $id ] );
+		if ( substr( $elements_sanitized['twitter'], 0, 1 ) === '@' ) {
+			$elements_sanitized['twitter'] = substr( $elements_sanitized['twitter'], 1 );
+		}
+		$elements_sanitized['googleplus'] = sanitize_text_field( $pixelmold_carousel_dumpdata[ 'googleplus' . $id ] );
+		if ( substr( $elements_sanitized['googleplus'], 0, 1 ) === '+' ) {
+			$elements_sanitized['googleplus'] = substr( $elements_sanitized['googleplus'], 1 );
 		}
 
 		if ( '' !== $pixelmold_carousel_dumpdata[ 'email' . $id ] && sanitize_email( $pixelmold_carousel_dumpdata[ 'email' . $id ] ) === '' ) {
-			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Email was invalid ' ) . 'on element ' . $id );
+			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Email was invalid on element ' ) . $id );
 		}
-		$pixelmold_ele_placeholder['email'] = sanitize_email( $pixelmold_carousel_dumpdata[ 'email' . $id ] );
+		$elements_sanitized['email'] = sanitize_email( $pixelmold_carousel_dumpdata[ 'email' . $id ] );
 
-		return $pixelmold_ele_placeholder;
+		return $elements_sanitized;
 	}
 
 	public static function pixelmold_sanitation( $pixelmold_carousel_dumpdata ) {
@@ -329,8 +338,8 @@ class pixelmoldthemeCarousel {
 		$attachmentids = json_decode( $pixelmold_carousel_dumpdata['attachids'] );
 		$pixelmold_sanitized['count'] = count( $attachmentids );
 
-		if ( intval( $pixelmold_carousel_dumpdata['type'] ) >= 0 && intval( $pixelmold_carousel_dumpdata['type'] ) < 10 ) {
-			$pixelmold_sanitized['type'] = intval( $pixelmold_carousel_dumpdata['type'] );
+		if ( (int) $pixelmold_carousel_dumpdata['type'] >= 0 && (int) $pixelmold_carousel_dumpdata['type'] < 10 ) {
+			$pixelmold_sanitized['type'] = (int) $pixelmold_carousel_dumpdata['type'];
 		} else {
 			array_push( $GLOBALS['pixelmold_carousel_errors'], __( 'Error with the type of carousel selected, saved default instead.' ) );
 			$pixelmold_sanitized['type'] = $required['type'];
@@ -384,22 +393,14 @@ class pixelmoldthemeCarousel {
 			$pixelmold_sanitized['bgcolor'] = $required['bgcolor'];
 		}
 
-		if ( 'on' === $pixelmold_carousel_dumpdata['navs'] ) {
-			$pixelmold_sanitized['navs'] = true;
-		} else {
-			$pixelmold_sanitized['navs'] = false;
-		}
 
-		if ( 'on' === $pixelmold_carousel_dumpdata['dots'] ) {
-			$pixelmold_sanitized['dots'] = true;
-		} else {
-			$pixelmold_sanitized['dots'] = false;
-		}
-
-		if ( 'on' === $pixelmold_carousel_dumpdata['autoplay'] ) {
-			$pixelmold_sanitized['autoplay'] = true;
-		} else {
-			$pixelmold_sanitized['autoplay'] = false;
+		$pixelmold_toggles = array('dots', 'navs', 'autoplay', 'loop', 'lightbox');
+		for ( $i = 0; $i < count( $pixelmold_toggles ); $i++ ) {
+			if ( 'on' === $pixelmold_carousel_dumpdata[ $pixelmold_toggles[ $i ] ] ) {
+				$pixelmold_sanitized[ $pixelmold_toggles[ $i ] ] = true;
+			} else {
+				$pixelmold_sanitized[ $pixelmold_toggles[ $i ] ] = false;
+			}
 		}
 
 		if ( '' === $pixelmold_carousel_dumpdata['animation'] ) {
