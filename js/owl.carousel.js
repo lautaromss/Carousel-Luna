@@ -3,7 +3,7 @@
  */
 
 jQuery(document).ready(function() {
-	'use strict'
+	'use strict';
 	var lunaCounter = 0, owlData = {};
 	var toSanitize = ['dots', 'navs', 'autoplay', 'loop'];
 
@@ -51,7 +51,7 @@ jQuery(document).ready(function() {
 					992:{
 						items: pixelmold_carousel[ 'items' + lunaCounter ],
 					}
-				}
+				};
 			}
 			// Other properties.
 			owlData[ 'animateOut' ] = 'fadeOut';
@@ -68,11 +68,11 @@ jQuery(document).ready(function() {
 				// Go to the next item.
 				jQuery( '.pixelmold_next_identifier_' + lunaCounter ).click(function() {
 					owl.trigger('next.owl.carousel');
-				})
+				});
 				// Go to the previous item.
 				jQuery( '.pixelmold_prev_identifier_' + lunaCounter ).click(function() {
 					owl.trigger('prev.owl.carousel');
-				})
+				});
 			}
 
 			// Go to next carousel.

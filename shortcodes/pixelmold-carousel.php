@@ -10,7 +10,7 @@ function pixelmold_carousel_enqueues() {
 function pixelmold_carousel_load( $atts ) {
 
 	if ( get_post_type( (int) $atts['id'] ) !== 'pixelmold_carousel' ) {
-		echo __( 'ERROR: Invalid carousel ID '  . (int) $atts['id'] );
+		echo __( 'ERROR: Invalid carousel ID ' ) . (int) $atts['id'];
 		return;
 	}
 
@@ -29,14 +29,14 @@ function pixelmold_carousel_load( $atts ) {
 	return $output;
 }
 
-function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter, $isAjaxRequest = false ) {
+function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter, $is_ajax_request = false ) {
 
 	if ( ! is_array( $elements ) ) {
 		return;
 	}
 
 	// Send carousel info to JS so it can be initialized.
-	if ( ! $isAjaxRequest ){
+	if ( ! $is_ajax_request ) {
 		foreach ( $carousel_data as $carkey => $carvalue ) {
 			$car_data[ $carkey . $carousels_counter ] = $carvalue;
 		}
@@ -59,7 +59,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			font-size: ' . esc_attr( $carousel_data['primary_size'] ) . 'px;
 			line-height: ' . esc_attr( $carousel_data['primary_lineheight'] ) . 'px;
 			font-family: ' . esc_attr( $carousel_data['primary_font'][1] ) . ';
-			font-weight: ' . esc_attr( substr($carousel_data['primary_font'][2], 0, 3 ) ) . ';
+			font-weight: ' . esc_attr( substr( $carousel_data['primary_font'][2], 0, 3 ) ) . ';
 			font-style: ' . esc_attr( $primary_font_style ) . ';
 		}';
 
@@ -77,12 +77,12 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			font-size: ' . esc_attr( $carousel_data['secondary_size'] ) . 'px;
 			line-height: ' . esc_attr( $carousel_data['secondary_lineheight'] ) . 'px;
 			font-family: ' . esc_attr( $carousel_data['secondary_font'][1] ) . ';
-			font-weight: ' . esc_attr( substr($carousel_data['secondary_font'][2], 0, 3 ) ) . ';
+			font-weight: ' . esc_attr( substr( $carousel_data['secondary_font'][2], 0, 3 ) ) . ';
 			font-style: ' . esc_attr( $secondary_font_style ) . ';
 		}
 
-		.pixelmold-ov-link,
-		.pixelmold-ov-lightbox {
+		.pixelmold-ov-link, .pixelmold-ov-link:hover, .pixelmold-ov-link:focus,
+		.pixelmold-ov-lightbox, .pixelmold-ov-lightbox:hover, .pixelmold-ov-lightbox:focus {
 			color: ' . esc_attr( $carousel_data['secondary_color'] ) . '; 
 		}
 
@@ -105,7 +105,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 	// so it's not possible to use wp_add_inline_style here, just echo it.
 	echo '<style>' . $custom_css . '</style>';
 
-	if ( ! $isAjaxRequest ) {
+	if ( ! $is_ajax_request ) {
 		// If the primary font is from Google Fonts, request it.
 		if ( 'g' === $carousel_data['primary_font'][0] ) {
 			pixelmold_enqueue_google_font( $carousel_data['primary_font'][1], $carousel_data['primary_font'][2] );
@@ -141,10 +141,10 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 					$element['linked_post_comments'] = get_comments_number( $element_linked_post );
 					$element['linked_post_date'] = get_the_date( 'M j, Y', $element_linked_post );
 					$element['linked_post_excerpt'] = $element_linked_post['post_excerpt'];
-					if ( $element['linked_post_excerpt'] === '' ) {
+					if ( '' === $element['linked_post_excerpt'] ) {
 						$element['linked_post_excerpt'] = wp_trim_words( $element_linked_post['post_content'], 55, '' );
 					}
-					if ( $element['desc'] === '' ) {
+					if ( '' === $element['desc'] ) {
 						$element['desc'] = $element['linked_post_excerpt'];
 					}
 				} else {
@@ -162,7 +162,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 						break;
 					// 1: Slider
 					case 1:
-					pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full );
+						pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full );
 					?>
 						
 						<?php
@@ -258,7 +258,7 @@ function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_i
 				</a>
 			<?php
 			}
-			if ( true === $carousel_data['lightbox'] ) { 
+			if ( true === $carousel_data['lightbox'] ) {
 				?>
 				<a class="pixelmold-ov pixelmold-ov-lightbox"
 					data-lightbox="image-1" 
@@ -315,7 +315,7 @@ function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
 			<div class="lunacarousel-slider-plain">
 				<div class="lunacarousel-hero-container">
 					<?php
-					if ( true === $carousel_data['lightbox'] ) { 
+					if ( true === $carousel_data['lightbox'] ) {
 						?>
 						<a class="pixelmold-ov pixelmold-ov-lightbox"
 							data-lightbox="image-1" 
@@ -340,23 +340,27 @@ function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img,
 	" src="<?php echo $elem_img[0]; ?>">
 	<div class="pixelmold-c-overlay">
 		<div class="pixelmold-overlay-content">
-			<?php if ( '' !== $element['title'] ) { ?>
+			<?php
+			if ( '' !== $element['title'] ) { ?>
 				<div class="pixelmold-caption-title">
 					<?php echo esc_html( $element['title'] ); ?>
 				</div>
 				<div class="double-separator"></div>
-			<?php } 
+			<?php
+			}
 			if ( '' !== $element['desc'] ) { ?>
 				<div class="pixelmold-caption-name">
 					<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 				</div>
 			<?php } ?>
-			<?php if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
+			<?php
+			if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
 				<a class="pixelmold-ov pixelmold-ov-link"
 					href="<?php echo esc_url( $element['linkurl'] ); ?>">
 				</a>
-			<?php } 
-			if ( true === $carousel_data['lightbox'] ) { 
+			<?php
+			}
+			if ( true === $carousel_data['lightbox'] ) {
 				?>
 				<a class="pixelmold-ov pixelmold-ov-lightbox"
 					data-lightbox="image-1" 
@@ -374,12 +378,14 @@ function pixelmold_team_carousel( $carousel_data, $element, $elem_img ) {
 	<img class="pixelmold-zommable" src="<?php echo esc_url( $elem_img[0] ); ?>"></img>
 	<div class="pixelmold-black-overlay">
 		<div class="pixelmold-overlay-caption">
-			<?php if ( '' !== $element['title'] ) { ?>
+			<?php
+			if ( '' !== $element['title'] ) { ?>
 				<div class="pixelmold-caption-title">
 					<?php echo esc_html( $element['title'] ); ?>
 				</div>
 				<div class="double-separator"></div>
-			<?php } 
+			<?php
+			}
 			if ( '' !== $element['desc'] ) { ?>
 				<div class="pixelmold-caption-name">
 					<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
@@ -533,7 +539,7 @@ function pixelmold_hex_to_rgba( $hex ) {
 		$b = hexdec( substr( $hex, 4, 2 ) );
 	}
 
-	$rgba = 'rgba(' . $r . ',' . $g . ',' . $b . ',' . '0.7)';
+	$rgba = "rgba( $r, $g, $b, 0.7 )";
 
 	return $rgba;
 }

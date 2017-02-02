@@ -19,7 +19,7 @@ add_shortcode( 'pixelmoldcarousel', 'pixelmold_carousel_load' );
 
 // Load Carousel BackEnd.
 require plugin_dir_path( __FILE__ ) . '/inc/carousel-admin.php';
-$pixelmoldCarouselObject = new pixelmoldthemeCarousel();
+$pixelmold_carousel_object = new Pixelmold_Luna_Carousel();
 
 // Our BackEnd CSS and JS enqueues.
 require plugin_dir_path( __FILE__ ) . '/inc/admin-carousel-enqueue.php';
@@ -38,7 +38,7 @@ function my_action_callback() {
 		return wp_send_json_error( __( 'Security error, user does not have enough privilages' ) );
 	}
 
-	if ( ! isset($_POST['count']) ) {
+	if ( ! isset( $_POST['count'] ) ) {
 		return wp_send_json_error( __( 'Missing data' ) );
 	}
 
@@ -46,11 +46,11 @@ function my_action_callback() {
 		$_POST[ 'desc' . $i ] = str_replace( "\'", "'", $_POST[ 'desc' . $i ] );
 		$_POST[ 'linktext' . $i ] = str_replace( "\'", "'", $_POST[ 'linktext' . $i ] );
 		$_POST[ 'title' . $i ] = str_replace( "\'", "'", $_POST[ 'title' . $i ] );
-		$ele_placeholder = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $_POST[ 'attachid' . $i ], $_POST );
+		$ele_placeholder = Pixelmold_Luna_Carousel::pixelmold_ele_sanitation( $i, $_POST[ 'attachid' . $i ], $_POST );
 		array_push( $sanitized_elements, $ele_placeholder );
 	}
 
-	$sanitized_carousel_properties = pixelmoldthemeCarousel::pixelmold_sanitation( $_POST );
+	$sanitized_carousel_properties = Pixelmold_Luna_Carousel::pixelmold_sanitation( $_POST );
 
 	pixelmold_show_carousel( $sanitized_elements, $sanitized_carousel_properties, 0, true );
 	wp_die();
