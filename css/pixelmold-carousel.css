@@ -38,7 +38,7 @@ body.lb-disable-scrolling {
 
 .lightbox {
 	position: absolute;
-	transform:translateY(-50%);
+	transform: translateY(-50%);
 	left: 0;
 	width: 100%;
 	z-index: 10000;
@@ -229,11 +229,16 @@ body.lb-disable-scrolling {
 	 * 2.1 General
 	 * ============================== */
 
-.owl-carousel .owl-item { -webkit-transform: translateZ(0) !important; }
+.owl-carousel .owl-item {
+	-webkit-transform: translateZ(0) !important;
+	text-decoration: none !important;
+	font-style: normal !important;
+	box-shadow: none !important;
+}
 
 .owl-stage-outer {
-	position:relative;
-	z-index:10;
+	position: relative;
+	z-index: 10;
 }
 
 .owl-stage {
@@ -242,17 +247,20 @@ body.lb-disable-scrolling {
 }
 
 .owl-controls {
-	position:relative;
-	z-index:99;
+	position: relative;
+	z-index: 99;
 	/*margin-top:-35px;*/
 }
 
 .pixelmold-outer-carousel {
-	margin: auto; position: relative;
+	margin: auto;
+	position: relative;
 }
 
 .pixelmold-outer-carousel a, .pixelmold-outer-carousel a:hover, .pixelmold-outer-carousel a:focus {
-	text-decoration: none;
+	text-decoration: none !important;
+	font-style: normal !important;
+	box-shadow: none !important;
 }
 
 .pixelmold-outer-carousel:hover .pixelmold-carousel-btn,
@@ -313,13 +321,13 @@ body.lb-disable-scrolling {
 	transition: background-color 300ms ease-in-out;
 	color: white;
 	min-width: 40px;
-	min-height: 80 px;
+	min-height: 80px;
 	text-align: center;
 	cursor: pointer;
 }
 
 .pixelmold-cards-prev-btn {
-	left: 0px;
+	left: 0;
 	transform: matrix(1, 0, 0, 1, -20, -35);
 
 }
@@ -385,22 +393,22 @@ body.lb-disable-scrolling {
 }
 
 .pixelmold-c-overlay {
-	height:100%;
-	width:100%;
-	position:absolute;
-	top:0;
-	left:0;
-	transform:translateX(0%);
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translateX(0%);
 	background: rgba(0, 0, 0, 0.7);
-	opacity:0;
-	transition:all .3s ease-in-out;
+	opacity: 0;
+	transition: all .3s ease-in-out;
 }
 
 .children-owl-item:hover .pixelmold-c-overlay,
 .children-owl-item:focus .pixelmold-c-overlay {
 	-webkit-transform: translateX(0%);
 	transform: translateX(0%);
-	opacity:1;
+	opacity: 1;
 	-webkit-transform-style: preserve-3d;
 }
 
@@ -411,13 +419,13 @@ body.lb-disable-scrolling {
 }
 
 .children-owl-item .pixelmold-zommable {
-	transition:all .3s ease-in-out;
+	transition: all .3s ease-in-out;
 }
 
 .children-owl-item {
-	position:relative;
+	position: relative;
 	overflow: hidden;
-	/*cursor:move;*/
+	cursor: move;
 }
 
 /* ==============================
@@ -425,13 +433,13 @@ body.lb-disable-scrolling {
  * ============================== */
 
 .pixelmold-overlay-content {
-	position:absolute;
-	top:50%;
-	left:50%;
-	transform:translate(-50%,-50%);
-	text-align:center;
-	color:rgba(255,255,255);
-	width:100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	color: #fff;
+	width: 100%;
 }
 
 .pixelmold-ov {
@@ -439,8 +447,8 @@ body.lb-disable-scrolling {
 	font-size: 34px;
 	color: #fff;
 	font-family: dashicons;
-	padding:0px 8px;
-	opacity:0.7;
+	padding: 0px 8px;
+	opacity: 0.7;
 	text-decoration: none;
 }
 
@@ -449,18 +457,15 @@ body.lb-disable-scrolling {
 }
 
 .pixelmold-ov-lightbox:before {
-
 	content: "\f179";
 }
 
 .pixelmold-ov:hover, .pixelmold-ov:focus, .pixelmold-ov:active {
 	line-height: 60px;
-	font-size: 34px;
-	color: #fff;
 	font-family: dashicons;
-	padding:0px 8px;
+	padding: 0px 8px;
 	text-decoration: none;
-	opacity:1;
+	opacity: 1;
 }
 
 /* ==============================
@@ -474,8 +479,8 @@ body.lb-disable-scrolling {
 
 .pixelmold-service .pixelmold-ico {
 	border-radius: 50%;
-	padding:10px;
-	background:#fff;
+	padding: 10px;
+	background: #fff;
 	border: 1px solid #33C3F0;
 	color: #33C3F0;
 	font-family: dashicons;
@@ -510,12 +515,12 @@ body.lb-disable-scrolling {
 	font-family: 'Open Sans', sans-serif;
 }
 .pixelmold-testminial-image {
-	border-radius:50%;
-	background-size:cover;
-	height:100px;
-	width:100px;
-	margin-left:auto;
-	margin-right:auto;
+	border-radius: 50%;
+	background-size: cover;
+	height: 100px;
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
 	transition: all .4s;
 	-webkit-filter: grayscale(60%); /* Chrome, Safari, Opera */
 	filter: grayscale(60%);
@@ -532,12 +537,12 @@ body.lb-disable-scrolling {
 }
 
 .pixelmold-testimonial-author {
-	text-align:right;
-	font-size:15px;
+	text-align: right;
+	font-size: 15px;
 }
 
 .pixelmold-testimonial-quote {
-	padding:20px 20px 0px 20px;
+	padding: 20px 20px 0px 20px;
 }
 
 .blockquote {
@@ -545,7 +550,7 @@ body.lb-disable-scrolling {
 	margin: 0 0 20px;
 	font-size: 17.5px;
 	border-left: 5px solid #eee;
-	margin-left:25px;
+	margin-left: 25px;
 	transition: all .4s;
 	text-align: center;
 }
@@ -555,22 +560,22 @@ body.lb-disable-scrolling {
 }
 
 .pixelmold-black-overlay {
-	width:100%;
-	height:100%;
-	background-color:rgba(0,0,0,0.3);
-	position:absolute;
-	top:0;
-	color:rgba(255,255,255);
-	text-align:center;
-	margin-top:auto;
-	margin-bottom:auto;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.3);
+	position: absolute;
+	top: 0;
+	color: rgba(255,255,255);
+	text-align: center;
+	margin-top: auto;
+	margin-bottom: auto;
 	transition: background 0.6s;
 }
 
 .pixelmold-overlay-caption {
-	position:relative;
-	top:50%;
-	transform:translateY(-30%);
+	position: relative;
+	top: 50%;
+	transform: translateY(-30%);
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
 	transition: all .3s;
@@ -601,25 +606,25 @@ body.lb-disable-scrolling {
 	font-family: dashicons;
 	padding:0px 8px;
 	color: rgba(255, 255, 255);
-	opacity:0.7;
+	opacity: 0.7;
 	transition: all .3s;
 }
 
 .dashicons-facebook:hover {
-	color:#3B5997;
-	opacity:1;
+	color: #3B5997;
+	opacity: 1;
 }
 .dashicons-twitter:hover {
-	color:#29C5F6;
-	opacity:1;
+	color: #29C5F6;
+	opacity: 1;
 }
 .dashicons-googleplus:hover {
-	color:#D13D2F;
-	opacity:1;
+	color: #D13D2F;
+	opacity: 1;
 }
 .dashicons-email:hover {
-	color:#fff;
-	opacity:1;
+	color: #fff;
+	opacity: 1;
 }
 
 .pixelmold-black-overlay:hover,
@@ -629,7 +634,7 @@ body.lb-disable-scrolling {
 
 .pixelmold-black-overlay:hover .pixelmold-socialov,
 .pixelmold-black-overlay:focus .pixelmold-socialov {
-	opacity:1;
+	opacity: 1;
 }
 
 	/* ==============================
@@ -652,8 +657,8 @@ body.lb-disable-scrolling {
 .pixelmold-card-img-top {
 	border-top-right-radius: .25rem;
 	border-top-left-radius: .25rem;
-	width:100%;
-	height:auto;
+	width: 100%;
+	height: auto;
 }
 
 .pixelmold-card-block {
@@ -673,7 +678,7 @@ body.lb-disable-scrolling {
 .pixelmold-card-text {
 	margin-top: 0;
 	margin-bottom: 15px;
-	font-size:15px;
+	font-size: 15px;
 	color: #666;
 }
 
@@ -714,10 +719,10 @@ body.lb-disable-scrolling {
 .pixelmold-product-img-top {
 	border-top-right-radius: .25rem;
 	border-top-left-radius: .25rem;
-	width:100%;
-	height:auto;
-	width:85%;
-	margin:auto;
+	width: 100%;
+	height: auto;
+	width: 85%;
+	margin: auto;
 }
 
 .pixelmold-product-footer {

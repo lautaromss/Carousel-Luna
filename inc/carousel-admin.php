@@ -1,6 +1,6 @@
 <?php
 
-class pixelmoldthemeCarousel {
+class Pixelmold_Luna_Carousel {
 
 
 	function __construct() {
@@ -143,7 +143,7 @@ class pixelmoldthemeCarousel {
 		if ( isset( $_GET['action'] ) ) {
 			// Prepare variables.
 			$pixelmold_nonce = wp_create_nonce( 'pixelmold_settings_nonce' );
-			$carousel_options = pixelmoldthemeCarousel::default_carousel_options();
+			$carousel_options = Pixelmold_Luna_Carousel::default_carousel_options();
 			$pixelmold_elements = array();
 
 			if ( 'edit_carousel' === $_GET['action'] ) {
@@ -275,7 +275,7 @@ class pixelmoldthemeCarousel {
 	function update_carousel( $pixelmold_post_id, $dumpdata ) {
 
 		$meta_pixelmold_carousel_data = array();
-		$meta_pixelmold_carousel_data = pixelmoldthemeCarousel::pixelmold_sanitation( $dumpdata );
+		$meta_pixelmold_carousel_data = Pixelmold_Luna_Carousel::pixelmold_sanitation( $dumpdata );
 		update_post_meta( $pixelmold_post_id, 'pixelmold_carousel_data', $meta_pixelmold_carousel_data );
 
 		// Finally update the info of each individual element (slides).
@@ -284,7 +284,7 @@ class pixelmoldthemeCarousel {
 			$meta_pixelmold_elements_data = array();
 			$i = 0;
 			foreach ( $attachmentids as $c_element ) {
-				$elements_sanitized = pixelmoldthemeCarousel::pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
+				$elements_sanitized = Pixelmold_Luna_Carousel::pixelmold_ele_sanitation( $i, $c_element, $dumpdata );
 				array_push( $meta_pixelmold_elements_data, $elements_sanitized );
 				$i++;
 			}
@@ -342,7 +342,7 @@ class pixelmoldthemeCarousel {
 	public static function pixelmold_sanitation( $pixelmold_carousel_dumpdata ) {
 
 		// This will prevent errors if some value is missing.
-		$required = pixelmoldthemeCarousel::default_carousel_options();
+		$required = Pixelmold_Luna_Carousel::default_carousel_options();
 		$missing = array_diff( array_keys( $required ), array_keys( $pixelmold_carousel_dumpdata ) );
 		foreach ( $missing as $m ) {
 		    $pixelmold_carousel_dumpdata[ $m ] = $required[ $m ];

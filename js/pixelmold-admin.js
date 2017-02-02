@@ -1,7 +1,7 @@
 "use strict";
 
 if ( typeof jQuery === 'undefined' ) {
-	throw new Error( 'jQuery not found.' )
+	throw new Error( 'jQuery not found.' );
 }
 
 jQuery( document ).ready(function($) {
@@ -90,7 +90,7 @@ jQuery( document ).ready(function($) {
 			var pixelmoldImagesIds = [], attachment, numItems, pixelmoldPreviousIds;
 
 			if ( $( '#attachids' ).val() == '' || $.parseJSON( $( '#attachids' ).val() ) == null ) {
-				numItems = 0
+				numItems = 0;
 			} else {
 				numItems = $.parseJSON( $( '#attachids' ).val() ).length;
 			}
@@ -134,9 +134,9 @@ jQuery( document ).ready(function($) {
 		var statePrices;
 
 		// Create the tab links.
-		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element'
-			+ ( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Item ' +
-			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="'+( numItemsPrev + 1 ) +
+		$( 'ul#pixelmold_ele_tabs' ).append( '<li role="presentation"><a href="#element' +
+			( numItemsPrev + 1 ) + '" aria-controls="pixelmold_ele" role="tab" data-toggle="tab">Item ' +
+			( numItemsPrev + 1 ) + '</a><button class="close" type="button" data-identifier="' + ( numItemsPrev + 1 ) +
 			'" title="Remove this slide">x</button></li>');
 
 		// Check which options to enable.
@@ -172,117 +172,110 @@ jQuery( document ).ready(function($) {
 
 		// Populate the admin tabs.
 		$( '#pixelmold_ele_tab_content' ).append( '<div role="tabpanel" class="tab-pane fade" id="element' +
-			( numItemsPrev + 1 ) + '">\
-			<table class="form-table pixelmold-close-table"><tbody>\
-			<tr>\
-				<th scope="row">\
-					<label for="pixelmold_element_image' + numItemsPrev + '">' + pixelmoldLabelsArray.image + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_image' + numItemsPrev + '" type="hidden" name="attachid' +
-					numItemsPrev + '" value="' + attachid + '" />\
-					<img id="ele_img_' + numItemsPrev + '" src="' + url +
-					'" style="height:200px; width:auto;display:block;margin-bottom:15px;">\
-					<input type="button" value="Change Image" class="button ele_img_button" data-element="' +
-					numItemsPrev + '">\
-				</td>\
-			</tr>\
-			<tr>\
-				<th scope="row">\
-					<label for="pixelmold_element_title' + numItemsPrev + '">' + pixelmoldLabelsArray.titleText + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_title' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="title' + numItemsPrev + '" value=""/>\
-					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
-				</td>\
-			</tr>\
-			\
-			<tr>\
-				<th scope="row">\
-					<label for="pixelmold_element_desc' + numItemsPrev + '">' + pixelmoldLabelsArray.descText + '</label>\
-				</th>\
-				<td>\
-					<textarea id="pixelmold_element_desc' + numItemsPrev + '" type="text" rows="5" cols="55" name="desc' + numItemsPrev + '" value=""></textarea>\
-					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_buttontext' + stateButtonText + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_linktext' + numItemsPrev + '">' + pixelmoldLabelsArray.buttonText + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_linktext' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linktext' + numItemsPrev + '" value="See more"/>\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_linkurl' + stateButtonURL + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_linkurl' + numItemsPrev + '">' + pixelmoldLabelsArray.fullURL + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_linkurl' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linkurl' + numItemsPrev + '" value="" />\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_price' + statePrices + '">\
-				<th scope="row">\
-					<label for="for="pixelmold_element_price' + numItemsPrev + '">' + pixelmoldLabelsArray.currPrice + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="price' + numItemsPrev + '" value=""/>\
-					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_price' + statePrices + '">\
-				<th scope="row">\
-					<label for="for="pixelmold_element_old_price' + numItemsPrev + '">' + pixelmoldLabelsArray.oldPrice + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="old_price' + numItemsPrev + '" value=""/>\
-					<p class="description">' + pixelmoldLabelsArray.optionalSale + '</p>\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_facebook' + numItemsPrev + '">' + pixelmoldLabelsArray.fbLink + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_facebook' + numItemsPrev + '" type="text" name="facebook' + numItemsPrev + '" value="" />\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_twitter' + numItemsPrev + '">' + pixelmoldLabelsArray.twitterLink + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_twitter' + numItemsPrev + '" type="text" name="twitter' + numItemsPrev + '" value="" />\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_googleplus' + numItemsPrev + '">' + pixelmoldLabelsArray.gplusLink + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_googleplus' + numItemsPrev + '" type="text" name="googleplus' + numItemsPrev + '" value="" />\
-				</td>\
-			</tr>\
-			\
-			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
-				<th scope="row">\
-					<label for="pixelmold_element_email' + numItemsPrev + '">' + pixelmoldLabelsArray.emailLink + '</label>\
-				</th>\
-				<td>\
-					<input id="pixelmold_element_email' + numItemsPrev + '" type="text" name="email' + numItemsPrev + '" value="" />\
-				</td>\
-			</tr>\
-			</tbody></table>\
-			</div>\
-			</div>');
+			( numItemsPrev + 1 ) + '">' +
+			'<table class="form-table pixelmold-close-table"><tbody>' +
+			'<tr>' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_image' + numItemsPrev + '">' + pixelmoldLabelsArray.image + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_image' + numItemsPrev + '" type="hidden" name="attachid' +
+					numItemsPrev + '" value="' + attachid + '" />' +
+					'<img id="ele_img_' + numItemsPrev + '" src="' + url +
+					'" style="height:200px; width:auto;display:block;margin-bottom:15px;">' +
+					'<input type="button" value="Change Image" class="button ele_img_button" data-element="' +
+					numItemsPrev + '">' +
+				'</td>' +
+			'</tr>' +
+			'<tr>' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_title' + numItemsPrev + '">' + pixelmoldLabelsArray.titleText + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_title' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="title' + numItemsPrev + '" value=""/>' +
+					'<p class="description">' + pixelmoldLabelsArray.optional + '</p>' +
+				'</td>' +
+			'</tr>' +
+			'<tr>' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_desc' + numItemsPrev + '">' + pixelmoldLabelsArray.descText + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<textarea id="pixelmold_element_desc' + numItemsPrev + '" type="text" rows="5" cols="55" name="desc' + numItemsPrev + '" value="">' +
+					'</textarea>' +
+					'<p class="description">' + pixelmoldLabelsArray.optional + '</p>' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_buttontext' + stateButtonText + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_linktext' + numItemsPrev + '">' + pixelmoldLabelsArray.buttonText + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_linktext' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linktext' + numItemsPrev + '" value="See more"/>' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_linkurl' + stateButtonURL + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_linkurl' + numItemsPrev + '">' + pixelmoldLabelsArray.fullURL + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_linkurl' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linkurl' + numItemsPrev + '" value="" />' +
+				'</td>' +
+			'</tr>' +
+			'' +
+			'<tr class="pixelmold_price' + statePrices + '">' +
+				'<th scope="row">' +
+					'<label for="for="pixelmold_element_price' + numItemsPrev + '">' + pixelmoldLabelsArray.currPrice + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="price' + numItemsPrev + '" value=""/>' +
+					'<p class="description">' + pixelmoldLabelsArray.optional + '</p>' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_price' + statePrices + '">' +
+				'<th scope="row">' +
+					'<label for="for="pixelmold_element_old_price' + numItemsPrev + '">' + pixelmoldLabelsArray.oldPrice + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="old_price' + numItemsPrev + '" value=""/>' +
+					'<p class="description">' + pixelmoldLabelsArray.optionalSale + '</p>' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_social_class' + stateSocialMedia + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_facebook' + numItemsPrev + '">' + pixelmoldLabelsArray.fbLink + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_facebook' + numItemsPrev + '" type="text" name="facebook' + numItemsPrev + '" value="" />' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_social_class' + stateSocialMedia + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_twitter' + numItemsPrev + '">' + pixelmoldLabelsArray.twitterLink + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_twitter' + numItemsPrev + '" type="text" name="twitter' + numItemsPrev + '" value="" />' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_social_class' + stateSocialMedia + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_googleplus' + numItemsPrev + '">' + pixelmoldLabelsArray.gplusLink + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_googleplus' + numItemsPrev + '" type="text" name="googleplus' + numItemsPrev + '" value="" />' +
+				'</td>' +
+			'</tr>' +
+			'<tr class="pixelmold_social_class' + stateSocialMedia + '">' +
+				'<th scope="row">' +
+					'<label for="pixelmold_element_email' + numItemsPrev + '">' + pixelmoldLabelsArray.emailLink + '</label>' +
+				'</th>' +
+				'<td>' +
+					'<input id="pixelmold_element_email' + numItemsPrev + '" type="text" name="email' + numItemsPrev + '" value="" />' +
+				'</td>' +
+			'</tr>' +
+			'</tbody></table>' +
+			'</div>' +
+			'</div>');
 
 			numItemsPrev++;
 	}
@@ -329,7 +322,7 @@ jQuery( document ).ready(function($) {
 		$( '#pixelmold-carousel-preview' ).html( 'refreshing' );
 
 		// Ajax request.
-		var resp = jQuery.post(ajaxurl, data, function(response) {
+		jQuery.post(ajaxurl, data, function(response) {
 			response += GoogleFonts;
 			$( '#pixelmold-carousel-preview' ).html( response );
 
@@ -371,7 +364,7 @@ jQuery( document ).ready(function($) {
 					992:{
 						items: data[ 'items' ],
 					}
-				}
+				};
 			}
 			// Other properties.
 			owlData[ 'animateOut' ] = 'fadeOut';
@@ -388,11 +381,11 @@ jQuery( document ).ready(function($) {
 				// Go to the next item.
 				jQuery( '.pixelmold_next_identifier_0' ).click(function() {
 					owl.trigger('next.owl.carousel');
-				})
+				});
 				// Go to the previous item.
 				jQuery( '.pixelmold_prev_identifier_0' ).click(function() {
 					owl.trigger('prev.owl.carousel');
-				})
+				});
 			}
 
 		});
@@ -473,7 +466,7 @@ jQuery( document ).ready(function($) {
 		e.preventDefault();
 		
 		if ( $( '#attachids' ).val() == '' || $.parseJSON( $( '#attachids' ).val() ) == null ) {
-			numItems = 0
+			numItems = 0;
 		} else {
 			numItems = $.parseJSON( $( '#attachids' ).val() ).length;
 		}
@@ -485,13 +478,14 @@ jQuery( document ).ready(function($) {
 	 * "Add a tab" button.
 	 *
 	 */
-	$( '#add-pixelmold-tab' ).on( 'click', function(e) {
+	$( '#add-pixelmold-tab' ).on( 'click', function() {
 		var pixelmoldPreviousIds = $.parseJSON( $( '#attachids' ).val());
+		var numItemsPrev;
 
 		// If there was any image already uploaded
 		if ( pixelmoldPreviousIds != undefined && pixelmoldPreviousIds != '' && pixelmoldPreviousIds != null ) {
 			// Get previous items count
-			var numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
+			numItemsPrev = $.parseJSON( $( '#attachids' ).val() ).length;
 		} else {
 			numItemsPrev = 0;
 			pixelmoldPreviousIds = [];

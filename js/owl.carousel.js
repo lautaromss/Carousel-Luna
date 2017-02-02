@@ -52,7 +52,7 @@ jQuery(document).ready(function() {
 					992:{
 						items: pixelmold_carousel[ 'items' + lunaCounter ],
 					}
-				}
+				};
 			}
 			// Other properties.
 			owlData[ 'animateOut' ] = 'fadeOut';
@@ -67,7 +67,6 @@ jQuery(document).ready(function() {
 			// Initialize navigation arrow if applicable.
 			if ( true == owlData['navs'] ) {
 				// Go to the next item.
-
 				jQuery( '.pixelmold_next_identifier_' + lunaCounter ).click(function(nextArrow) {
 					var targetedCarousel = nextArrow['currentTarget']['classList'][2];
 					targetedCarousel = targetedCarousel.substr(-1);

@@ -8,7 +8,7 @@
 	=============================
 */
 
-/* 
+/*
  * Load admin CSS styles and JS scripts
 */
 function pixelmold_load_carousel_admin_scripts( $hook ) {
@@ -40,7 +40,7 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 	wp_register_style( 'pixelmold_owl_carousel_css', plugins_url( 'css/owl.carousel.css', dirname( __FILE__ ) ), array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'pixelmold_owl_carousel_css' );
 
-	wp_register_style( 'pixelmold_carousel_styled', plugins_url( 'css/pixelmold-carousel.css', dirname( __FILE__ ) ), array('pixelmold_owl_carousel_css'), '1.0.0', 'all' );
+	wp_register_style( 'pixelmold_carousel_styled', plugins_url( 'css/pixelmold-carousel.css', dirname( __FILE__ ) ), array( 'pixelmold_owl_carousel_css' ), '1.0.0', 'all' );
 	wp_enqueue_style( 'pixelmold_carousel_styled' );
 
 	wp_register_style( 'animate_css', plugins_url( 'css/animate.css', dirname( __FILE__ ) ), array(), '1.0.0', 'all' );
@@ -48,7 +48,7 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 
 	wp_register_style( 'select2_css', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css', array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'select2_css' );
-	
+
 	wp_register_script( 'select2_js', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js', array( 'jquery' ), '1.0.0', true );
 	wp_enqueue_script( 'select2_js' );
 

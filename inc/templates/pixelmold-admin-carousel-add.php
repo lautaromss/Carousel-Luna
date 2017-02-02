@@ -771,7 +771,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 									if ( 'g' === $carousel_options['secondary_font'][0] ) {
 										echo '<option value="' . $carousel_options['secondary_font'][2] .
 											'" selected>' . $carousel_options['secondary_font'][3] . '</option>';
-										
+
 										foreach ( $fonts['google'][ $carousel_options['secondary_font'][1] ]['variants'] as $pixelmold_key => $pixelmold_variant ) {
 											echo '<option value="' . $pixelmold_variant['id'] . '">' .
 												$pixelmold_variant['text'] . '</option>';
