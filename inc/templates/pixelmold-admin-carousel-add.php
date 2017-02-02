@@ -54,7 +54,7 @@ for ( $i = 1; $i <= (int) $carousel_options['count']; $i++ ) {  ?>
 ?>
 </ul>
 <ul class="nav nav-tabs add-tab" role="tablist">
-<li><a id="add-pixelmold-tab">Add Item</a></li>
+<li><a id="add-pixelmold-tab"><?php echo __('Add Item'); ?></a></li>
 </ul>
 
 <div class="card" style="max-width:1200px; margin-top:0px">

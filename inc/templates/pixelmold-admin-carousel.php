@@ -60,8 +60,6 @@
 
 </table>
 
-<p class="description">*Enter the shortcode in your post or page content editor to display the carousel.</p>
-
 <script>
 jQuery('.pixelmold_delete_car').click(function() {
 

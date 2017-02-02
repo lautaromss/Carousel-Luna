@@ -18,6 +18,22 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 		return;
 	}
 
+	$LabelsArray = array(
+		'image'   => __('Image'),
+		'titleText'  => __('Title text'),
+		'descText'  => __('Description text'),
+		'buttonText' => __('Button text'),
+		'fullURL'   => __('Full URL'),
+		'currPrice'  => __('Current price'),
+		'oldPrice'  => __('Old price'),
+		'fbLink' => __('Facebook link'),
+		'twitterLink'   => __('Twitter link'),
+		'gplusLink'  => __('Google+ link'),
+		'emailLink'  => __('Email link'),
+		'optional' => __('Optional.'),
+		'optionalSale' => __('Optional, to show a product on sale.'),
+	);
+
 	wp_register_style( 'pixelmold_carousel_admin_css', plugins_url( 'css/pixelmold-carousel-admin.css', dirname( __FILE__ ) ), array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'pixelmold_carousel_admin_css' );
 
@@ -40,6 +56,12 @@ function pixelmold_load_carousel_admin_scripts( $hook ) {
 
 	wp_register_script( 'pixelmold_admin_script', plugins_url( 'js/pixelmold-admin.js', dirname( __FILE__ ) ), array( 'jquery', 'wp-color-picker' ), '1.0.0', true );
 	wp_enqueue_script( 'pixelmold_admin_script' );
+
+	wp_localize_script(
+					'pixelmold_admin_script',
+					'pixelmoldLabelsArray',
+					$LabelsArray
+				);
 
 	wp_register_script( 'pixelmold_owl_js', plugins_url( 'js/owl.carousel.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0', true );
 	wp_enqueue_script( 'pixelmold_owl_js' );

@@ -55,3 +55,7 @@ function my_action_callback() {
 	pixelmold_show_carousel( $sanitized_elements, $sanitized_carousel_properties, 0, true );
 	wp_die();
 }
+
+function test_delete_pls() {
+	echo 'well this gets called';
+}

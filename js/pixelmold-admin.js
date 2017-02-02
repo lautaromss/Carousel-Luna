@@ -176,7 +176,7 @@ jQuery( document ).ready(function($) {
 			<table class="form-table pixelmold-close-table"><tbody>\
 			<tr>\
 				<th scope="row">\
-					<label for="pixelmold_element_image' + numItemsPrev + '">Image</label>\
+					<label for="pixelmold_element_image' + numItemsPrev + '">' + pixelmoldLabelsArray.image + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_image' + numItemsPrev + '" type="hidden" name="attachid' +
@@ -189,28 +189,27 @@ jQuery( document ).ready(function($) {
 			</tr>\
 			<tr>\
 				<th scope="row">\
-					<label for="pixelmold_element_title' + numItemsPrev + '">Title text</label>\
+					<label for="pixelmold_element_title' + numItemsPrev + '">' + pixelmoldLabelsArray.titleText + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_title' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="title' + numItemsPrev + '" value=""/>\
-					<p class="description">Optional</p>\
+					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
 				</td>\
 			</tr>\
 			\
 			<tr>\
 				<th scope="row">\
-					<label for="pixelmold_element_desc' + numItemsPrev + '">Description text</label>\
+					<label for="pixelmold_element_desc' + numItemsPrev + '">' + pixelmoldLabelsArray.descText + '</label>\
 				</th>\
 				<td>\
-					<textarea id="pixelmold_element_desc' + numItemsPrev + '" type="text" rows="5" cols="55" name="desc' + numItemsPrev + '" value="">\
-					</textarea>\
-					<p class="description">Optional</p>\
+					<textarea id="pixelmold_element_desc' + numItemsPrev + '" type="text" rows="5" cols="55" name="desc' + numItemsPrev + '" value=""></textarea>\
+					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
 				</td>\
 			</tr>\
 			\
 			<tr class="pixelmold_buttontext' + stateButtonText + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_linktext' + numItemsPrev + '">Button text</label>\
+					<label for="pixelmold_element_linktext' + numItemsPrev + '">' + pixelmoldLabelsArray.buttonText + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_linktext' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linktext' + numItemsPrev + '" value="See more"/>\
@@ -219,7 +218,7 @@ jQuery( document ).ready(function($) {
 			\
 			<tr class="pixelmold_linkurl' + stateButtonURL + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_linkurl' + numItemsPrev + '">Full URL</label>\
+					<label for="pixelmold_element_linkurl' + numItemsPrev + '">' + pixelmoldLabelsArray.fullURL + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_linkurl' + numItemsPrev + '" class="pixelmold-large-textbox" type="text" name="linkurl' + numItemsPrev + '" value="" />\
@@ -228,27 +227,27 @@ jQuery( document ).ready(function($) {
 			\
 			<tr class="pixelmold_price' + statePrices + '">\
 				<th scope="row">\
-					<label for="for="pixelmold_element_price' + numItemsPrev + '">Current price</label>\
+					<label for="for="pixelmold_element_price' + numItemsPrev + '">' + pixelmoldLabelsArray.currPrice + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="price' + numItemsPrev + '" value=""/>\
-					<p class="description">Optional</p>\
+					<p class="description">' + pixelmoldLabelsArray.optional + '</p>\
 				</td>\
 			</tr>\
 			\
 			<tr class="pixelmold_price' + statePrices + '">\
 				<th scope="row">\
-					<label for="for="pixelmold_element_old_price' + numItemsPrev + '">Old price</label>\
+					<label for="for="pixelmold_element_old_price' + numItemsPrev + '">' + pixelmoldLabelsArray.oldPrice + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_price' + numItemsPrev + '" class="pixelmold-large-textbox" type="number" min="1" name="old_price' + numItemsPrev + '" value=""/>\
-					<p class="description">Optional, to show a product on sale.</p>\
+					<p class="description">' + pixelmoldLabelsArray.optionalSale + '</p>\
 				</td>\
 			</tr>\
 			\
 			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_facebook' + numItemsPrev + '">Facebook link</label>\
+					<label for="pixelmold_element_facebook' + numItemsPrev + '">' + pixelmoldLabelsArray.fbLink + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_facebook' + numItemsPrev + '" type="text" name="facebook' + numItemsPrev + '" value="" />\
@@ -257,7 +256,7 @@ jQuery( document ).ready(function($) {
 			\
 			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_twitter' + numItemsPrev + '">Twitter link</label>\
+					<label for="pixelmold_element_twitter' + numItemsPrev + '">' + pixelmoldLabelsArray.twitterLink + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_twitter' + numItemsPrev + '" type="text" name="twitter' + numItemsPrev + '" value="" />\
@@ -266,7 +265,7 @@ jQuery( document ).ready(function($) {
 			\
 			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_googleplus' + numItemsPrev + '">Google+ link</label>\
+					<label for="pixelmold_element_googleplus' + numItemsPrev + '">' + pixelmoldLabelsArray.gplusLink + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_googleplus' + numItemsPrev + '" type="text" name="googleplus' + numItemsPrev + '" value="" />\
@@ -275,7 +274,7 @@ jQuery( document ).ready(function($) {
 			\
 			<tr class="pixelmold_social_class' + stateSocialMedia + '">\
 				<th scope="row">\
-					<label for="pixelmold_element_email' + numItemsPrev + '">Email link</label>\
+					<label for="pixelmold_element_email' + numItemsPrev + '">' + pixelmoldLabelsArray.emailLink + '</label>\
 				</th>\
 				<td>\
 					<input id="pixelmold_element_email' + numItemsPrev + '" type="text" name="email' + numItemsPrev + '" value="" />\

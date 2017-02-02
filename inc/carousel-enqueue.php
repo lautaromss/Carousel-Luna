@@ -25,13 +25,13 @@ function pixelmold_carousel_front_enqueue() {
 
 	// We enqueue them early if we detect the presence of our shortcode.
 	// Otherwise they will still get enqueued but when rendering the shortcode.
-	if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'pixelmoldcarousel') ) {
+	//if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'pixelmoldcarousel') ) {
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'pixelmold_owl_js' );
 		wp_enqueue_script( 'lightbox_js' );
 		wp_enqueue_style( 'pixelmold_owl_carousel_css' );
 		wp_enqueue_style( 'pixelmold_carousel_style' );
 		wp_enqueue_style( 'animate_css' );
-	}
+	//}
 }
 add_action( 'wp_enqueue_scripts', 'pixelmold_carousel_front_enqueue' );

@@ -4,14 +4,15 @@
 
 jQuery(document).ready(function() {
 	'use strict'
-	var lunaCounter = 0, owlData = {};
+	var lunaCounter = 0, owlData = {}, owl = [];
 	var toSanitize = ['dots', 'navs', 'autoplay', 'loop'];
 
 	// While there are carousels left without initializing.
 	while ( lunaCounter != -1 ) {
 		// If the carousel exists.
 		if (
-			typeof pixelmold_carousel != 'undefined' &&
+			typeof pixelmold_carousel == 'object' &&
+			pixelmold_carousel != null &&
 			pixelmold_carousel.hasOwnProperty( 'type' + lunaCounter )
 		) {
 			// Sanitize it's properties for use.
@@ -60,18 +61,23 @@ jQuery(document).ready(function() {
 			owlData[ 'autoplayTimeout' ] = pixelmold_carousel[ 'autoplayms' + lunaCounter ];
 
 			// Initialize carousel.
-			var owl = jQuery( '.pixelmold_images_carousel' + lunaCounter );
-			owl.owlCarousel(owlData);
+			owl[lunaCounter] = jQuery( '.pixelmold_images_carousel' + lunaCounter );
+			owl[lunaCounter].owlCarousel(owlData);
 
 			// Initialize navigation arrow if applicable.
 			if ( true == owlData['navs'] ) {
 				// Go to the next item.
-				jQuery( '.pixelmold_next_identifier_' + lunaCounter ).click(function() {
-					owl.trigger('next.owl.carousel');
+
+				jQuery( '.pixelmold_next_identifier_' + lunaCounter ).click(function(nextArrow) {
+					var targetedCarousel = nextArrow['currentTarget']['classList'][2];
+					targetedCarousel = targetedCarousel.substr(-1);
+					owl[targetedCarousel].trigger('next.owl.carousel');
 				})
 				// Go to the previous item.
-				jQuery( '.pixelmold_prev_identifier_' + lunaCounter ).click(function() {
-					owl.trigger('prev.owl.carousel');
+				jQuery( '.pixelmold_prev_identifier_' + lunaCounter ).click(function(prevArrow) {
+					var targetedCarousel = prevArrow['currentTarget']['classList'][2];
+					targetedCarousel = targetedCarousel.substr(-1);
+					owl[targetedCarousel].trigger('next.owl.carousel');
 				})
 			}
 

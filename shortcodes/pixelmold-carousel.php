@@ -36,11 +36,16 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 	}
 
 	// Send carousel info to JS so it can be initialized.
-	if ( ! $isAjaxRequest ){
+	if ( ! $isAjaxRequest ) {
 		foreach ( $carousel_data as $carkey => $carvalue ) {
 			$car_data[ $carkey . $carousels_counter ] = $carvalue;
 		}
-		wp_localize_script( 'pixelmold_owl_js', 'pixelmold_carousel', $car_data );
+		pixelmoldthemeCarousel::$current_carousels_data = array_merge ( pixelmoldthemeCarousel::$current_carousels_data, $car_data );
+		wp_localize_script(
+					'pixelmold_owl_js',
+					'pixelmold_carousel',
+					pixelmoldthemeCarousel::$current_carousels_data
+				);
 	}
 
 	// Generate custom CSS
@@ -50,11 +55,9 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 		$primary_font_style = 'normal';
 	}
 	$custom_css = '
-		.pixelmold-caption-title,
-		.pixelmold-testimonial-quote,
-		.pixelmold-service-title,
-		.pixelmold-card-title, .pixelmold-card-title:hover, .pixelmold-card-title:focus,
-		.lunacarousel-hero h1 {
+		.owl-item .children-owl-item .primary-typography' . (int) $carousels_counter . ',
+		.owl-item .children-owl-item .primary-typography' . (int) $carousels_counter . ':hover,
+		.owl-item .children-owl-item .primary-typography' . (int) $carousels_counter . ':focus {
 			color: ' . esc_attr( $carousel_data['primary_color'] ) . '; 
 			font-size: ' . esc_attr( $carousel_data['primary_size'] ) . 'px;
 			line-height: ' . esc_attr( $carousel_data['primary_lineheight'] ) . 'px;
@@ -72,7 +75,10 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 		.pixelmold-caption-name,
 		.pixelmold-testimonial-author,
 		.pixelmold-card-text,
-		.lunacarousel-hero h3 {
+		.lunacarousel-hero h3,
+		.owl-item .children-owl-item .secondary-typography' . (int) $carousels_counter . ',
+		.owl-item .children-owl-item .secondary-typography' . (int) $carousels_counter . ':hover,
+		.owl-item .children-owl-item .secondary-typography' . (int) $carousels_counter . ':focus {
 			color: ' . esc_attr( $carousel_data['secondary_color'] ) . '; 
 			font-size: ' . esc_attr( $carousel_data['secondary_size'] ) . 'px;
 			line-height: ' . esc_attr( $carousel_data['secondary_lineheight'] ) . 'px;
@@ -81,16 +87,16 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			font-style: ' . esc_attr( $secondary_font_style ) . ';
 		}
 
-		.pixelmold-ov-link,
-		.pixelmold-ov-lightbox {
+		.owl-item .children-owl-item .pixelmold-ov-link' . (int) $carousels_counter . ',
+		.owl-item .children-owl-item .pixelmold-ov-lightbox' . (int) $carousels_counter . ' {
 			color: ' . esc_attr( $carousel_data['secondary_color'] ) . '; 
 		}
 
-		.pixelmold-c-overlay {
+		.owl-item .children-owl-item .pixelmold-i-overlay' . (int) $carousels_counter . ' {
 			background: ' . esc_attr( pixelmold_hex_to_rgba( $carousel_data['bgcolor'] ) ) . ';
 		}
-		.pixelmold_carousel_' . (int) $carousels_counter . '_items:hover .pixelmold-c-overlay,
-		.pixelmold_carousel_' . (int) $carousels_counter . '_items:focus .pixelmold-c-overlay {
+		.pixelmold_carousel_' . (int) $carousels_counter . '_items:hover .pixelmold-i-overlay' . (int) $carousels_counter . ',
+		.pixelmold_carousel_' . (int) $carousels_counter . '_items:focus .pixelmold-i-overlay' . (int) $carousels_counter . ' {
 			animation: ' . '0.3s ' . esc_html( $carousel_data['animation'] ) . ';
 		}
 		.pixelmold-cart-btn:hover,
@@ -98,6 +104,9 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			transition: all 0.3s;
 			background-color: ' . esc_attr( $carousel_data['bgcolor'] ) . ';
 			color: #fff;
+		}
+		.owl-carousel {
+			display:none;
 		}
 		';
 
@@ -124,7 +133,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 	//Print the carousel HTML.
 	?>
 	<div class="pixelmold-outer-carousel">
-		<div id="owl_pixelmold_carousel" class="owl-carousel pixelmold_images_carousel<?php echo $carousels_counter; ?>">
+		<div id="owl_pixelmold_carousel" class="owl-carousel pixelmold_images_carousel<?php echo (int) $carousels_counter; ?>">
 			<?php
 			// List all carousel items.
 			foreach ( $elements as $element ) {
@@ -158,11 +167,11 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 				switch ( $carousel_data['type'] ) {
 					// 0: Images Carousel
 					case 0:
-						pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_img_full );
+						pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_img_full, $carousels_counter );
 						break;
 					// 1: Slider
 					case 1:
-					pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full );
+					pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full, $carousels_counter );
 					?>
 						
 						<?php
@@ -170,7 +179,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 
 					// 2: Flexible Width Images
 					case 2:
-						pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img, $elem_img_full );
+						pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img, $elem_img_full, $carousels_counter );
 						break;
 
 					// 3: Testimonials
@@ -180,8 +189,8 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 							<div class="pixelmold-testminial-image" style="background-image:url('<?php
 							echo esc_url( $elem_img[0] ); ?>');"></div>
 							<div class="blockquote">
-								<div class="pixelmold-testimonial-quote"><?php echo esc_html( $element['desc'] ); ?></div>
-								<div class="pixelmold-testimonial-author"><?php echo esc_html( $element['title'] ); ?></div>
+								<div class="pixelmold-testimonial-quote primary-typography<?php echo (int) $carousels_counter; ?>"><?php echo esc_html( $element['desc'] ); ?></div>
+								<div class="pixelmold-testimonial-author secondary-typography<?php echo (int) $carousels_counter; ?>"><?php echo esc_html( $element['title'] ); ?></div>
 							</div>
 						</div>
 						<?php
@@ -189,7 +198,7 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 
 					// 4: Meet our team
 					case 4:
-						pixelmold_team_carousel( $carousel_data, $element, $elem_img );
+						pixelmold_team_carousel( $carousel_data, $element, $elem_img, $carousels_counter );
 						break;
 
 					// 5: Services or logos
@@ -198,8 +207,8 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 						<div class="pixelmold-service">
 							<!--Icons <span class="dashicons-heart pixelmold-ico"></span>-->
 							<img class="pixelmold-carousel-image" src="<?php echo esc_url( $elem_img[0] ); ?>">
-							<div class="pixelmold-service-title"><?php echo esc_attr( $element['title'] ); ?></div>
-							<div class="pixelmold-card-text"><?php echo esc_attr( $element['desc'] ); ?></div>
+							<div class="pixelmold-service-title primary-typography<?php echo (int) $carousels_counter; ?>"><?php echo esc_attr( $element['title'] ); ?></div>
+							<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?>"><?php echo esc_attr( $element['desc'] ); ?></div>
 						</div>	
 
 						<?php
@@ -207,17 +216,17 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 
 					// 6: Products
 					case 6:
-						pixelmold_product_carousel( $carousel_data, $element, $elem_img );
+						pixelmold_product_carousel( $carousel_data, $element, $elem_img, $carousels_counter );
 						break;
 
 					// 7: Content Cards
 					case 7:
-						pixelmold_content_carousel( $carousel_data, $element, $elem_img );
+						pixelmold_content_carousel( $carousel_data, $element, $elem_img, $carousels_counter );
 						break;
 
 					// 7: Posts
 					case 8:
-						pixelmold_posts_carousel( $carousel_data, $element, $elem_img );
+						pixelmold_posts_carousel( $carousel_data, $element, $elem_img, $carousels_counter );
 						break;
 				} // End switch(). ?>
 				</div>
@@ -225,42 +234,42 @@ function pixelmold_show_carousel( $elements, $carousel_data, $carousels_counter,
 			} // End foreach(). ?>
 		</div>
 		<?php if ( true === $carousel_data['navs'] ) { ?>
-		<div class="pixelmold-prev-btn pixelmold-carousel-btn <?php echo 'pixelmold_prev_identifier_' . $carousels_counter; ?>"></div>
-		<div class="pixelmold-next-btn pixelmold-carousel-btn <?php echo 'pixelmold_next_identifier_' . $carousels_counter; ?>"></div>
+		<div class="pixelmold-prev-btn pixelmold-carousel-btn <?php echo 'pixelmold_prev_identifier_' . (int) $carousels_counter; ?>"></div>
+		<div class="pixelmold-next-btn pixelmold-carousel-btn <?php echo 'pixelmold_next_identifier_' . (int) $carousels_counter; ?>"></div>
 		<?php } ?>
 	</div>
 
 	<?php
 } // End pixelmold_show_carousel().
 
-function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_img_full ) {
+function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_img_full, $carousels_counter ) {
 	?>
 	<img class="pixelmold-zommable pixelmold-carousel-image" src="<?php echo $elem_img[0]; ?>">
-	<div class="pixelmold-c-overlay">
+	<div class="pixelmold-c-overlay pixelmold-i-overlay<?php echo (int) $carousels_counter; ?>">
 		<div class="pixelmold-overlay-content">
 			<?php
 			if ( '' !== $element['title'] ) { ?>
-				<div class="pixelmold-caption-title">
+				<div class="pixelmold-caption-title primary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo esc_html( $element['title'] ); ?>
 				</div>
 				<div class="double-separator"></div>
 			<?php
 			}
 			if ( '' !== $element['desc'] ) { ?>
-				<div class="pixelmold-caption-name">
+				<div class="pixelmold-caption-name secondary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 				</div>
 			<?php
 			}
 			if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
-				<a class="pixelmold-ov pixelmold-ov-link"
+				<a class="pixelmold-ov pixelmold-ov-link pixelmold-ov-link<?php echo (int) $carousels_counter; ?>"
 					href="<?php echo esc_url( $element['linkurl'] ); ?>">
 				</a>
 			<?php
 			}
 			if ( true === $carousel_data['lightbox'] ) { 
 				?>
-				<a class="pixelmold-ov pixelmold-ov-lightbox"
+				<a class="pixelmold-ov pixelmold-ov-lightbox pixelmold-ov-lightbox<?php echo (int) $carousels_counter; ?>"
 					data-lightbox="image-1" 
 					href="<?php echo esc_url( $elem_img_full[0] ); ?>">
 				</a>
@@ -271,7 +280,7 @@ function pixelmold_images_carousel( $carousel_data, $element, $elem_img, $elem_i
 	<?php
 }
 
-function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
+function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full, $carousels_counter ) {
 	switch ( $carousel_data['style'] ) {
 		case 'text_and_button':
 			?>
@@ -279,7 +288,7 @@ function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
 				src="<?php echo esc_url( $elem_img_full[0] );?>"
 				style="width:100%; height:auto;">
 			</img>
-			<div class="lunacarousel-hero">
+			<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?> primary-typography<?php echo (int) $carousels_counter; ?>">
 				<div class="lunacarousel-hero-container">
 					<h1 class="animated fadeInDown">
 						<?php echo esc_html( $element['title'] ); ?>
@@ -317,7 +326,7 @@ function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
 					<?php
 					if ( true === $carousel_data['lightbox'] ) { 
 						?>
-						<a class="pixelmold-ov pixelmold-ov-lightbox"
+						<a class="pixelmold-ov pixelmold-ov-lightbox pixelmold-ov-lightbox<?php echo (int) $carousels_counter; ?>"
 							data-lightbox="image-1" 
 							href="<?php echo esc_url( $elem_img_full[0] ); ?>">
 						</a>
@@ -330,7 +339,7 @@ function pixelmold_slider_carousel( $carousel_data, $element, $elem_img_full ) {
 	} // End switch().
 }
 
-function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img, $elem_img_full ) {
+function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img, $elem_img_full, $carousels_counter ) {
 	// Get the proportional width
 	$elem_img_width = round( $carousel_data['height'] * $elem_img[1] / $elem_img[2] );
 	?>
@@ -338,27 +347,27 @@ function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img,
 		height: <?php echo esc_attr( $carousel_data['height'] ); ?>px;
 		width:<?php echo esc_attr( $elem_img_width ) ?>px;
 	" src="<?php echo $elem_img[0]; ?>">
-	<div class="pixelmold-c-overlay">
+	<div class="pixelmold-c-overlay pixelmold-i-overlay<?php echo (int) $carousels_counter; ?>">
 		<div class="pixelmold-overlay-content">
 			<?php if ( '' !== $element['title'] ) { ?>
-				<div class="pixelmold-caption-title">
+				<div class="pixelmold-caption-title primary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo esc_html( $element['title'] ); ?>
 				</div>
 				<div class="double-separator"></div>
 			<?php } 
 			if ( '' !== $element['desc'] ) { ?>
-				<div class="pixelmold-caption-name">
+				<div class="pixelmold-caption-name secondary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 				</div>
 			<?php } ?>
 			<?php if ( '' !== $element['linkurl'] && '#' !== $element['linkurl'] ) { ?>
-				<a class="pixelmold-ov pixelmold-ov-link"
+				<a class="pixelmold-ov pixelmold-ov-link pixelmold-ov-link<?php echo (int) $carousels_counter; ?>"
 					href="<?php echo esc_url( $element['linkurl'] ); ?>">
 				</a>
 			<?php } 
 			if ( true === $carousel_data['lightbox'] ) { 
 				?>
-				<a class="pixelmold-ov pixelmold-ov-lightbox"
+				<a class="pixelmold-ov pixelmold-ov-lightbox pixelmold-ov-lightbox<?php echo (int) $carousels_counter; ?>"
 					data-lightbox="image-1" 
 					href="<?php echo esc_url( $elem_img_full[0] ); ?>">
 				</a>
@@ -369,19 +378,19 @@ function pixelmold_flexible_width_carousel( $carousel_data, $element, $elem_img,
 	<?php
 }
 
-function pixelmold_team_carousel( $carousel_data, $element, $elem_img ) {
+function pixelmold_team_carousel( $carousel_data, $element, $elem_img, $carousels_counter ) {
 	?>
 	<img class="pixelmold-zommable" src="<?php echo esc_url( $elem_img[0] ); ?>"></img>
 	<div class="pixelmold-black-overlay">
 		<div class="pixelmold-overlay-caption">
 			<?php if ( '' !== $element['title'] ) { ?>
-				<div class="pixelmold-caption-title">
+				<div class="pixelmold-caption-title primary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo esc_html( $element['title'] ); ?>
 				</div>
 				<div class="double-separator"></div>
 			<?php } 
 			if ( '' !== $element['desc'] ) { ?>
-				<div class="pixelmold-caption-name">
+				<div class="pixelmold-caption-name secondary-typography<?php echo (int) $carousels_counter; ?>">
 					<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 				</div>
 			<?php
@@ -408,16 +417,16 @@ function pixelmold_team_carousel( $carousel_data, $element, $elem_img ) {
 	<?php
 }
 
-function pixelmold_product_carousel( $carousel_data, $element, $elem_img ) {
+function pixelmold_product_carousel( $carousel_data, $element, $elem_img, $carousels_counter ) {
 	switch ( $carousel_data['style'] ) {
 		case 'products_cart':
 			?><div class="pixelmold-card">
 				<div class="pixelmold-card-block">
-					<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title">
+					<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title primary-typography<?php echo (int) $carousels_counter; ?>">
 							<?php echo esc_attr( $element['title'] ); ?>
 					</a>
 					<img class="pixelmold-product-img-top" src="<?php echo esc_url( $elem_img[0] ); ?>">
-					<div class="pixelmold-card-text">
+					<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?>">
 						<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 					</div>
 					<div class="pixelmold-product-footer">
@@ -440,11 +449,11 @@ function pixelmold_product_carousel( $carousel_data, $element, $elem_img ) {
 		case 'products_button':
 			?><div class="pixelmold-card">
 				<div class="pixelmold-card-block">
-					<a class="pixelmold-card-title">
+					<a class="pixelmold-card-title primary-typography<?php echo (int) $carousels_counter; ?>">
 							<?php echo esc_attr( $element['title'] ); ?>
 					</a>
 					<img class="pixelmold-product-img-top" src="<?php echo esc_url( $elem_img[0] ); ?>">
-					<div class="pixelmold-card-text">
+					<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?>">
 						<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 					</div>
 					<div class="pixelmold-product-footer">
@@ -467,15 +476,15 @@ function pixelmold_product_carousel( $carousel_data, $element, $elem_img ) {
 	} // End switch().
 } // End pixelmold_product_carousel().
 
-function pixelmold_content_carousel( $carousel_data, $element, $elem_img ) {
+function pixelmold_content_carousel( $carousel_data, $element, $elem_img, $carousels_counter ) {
 	?>
 	<div class="pixelmold-card">
 		<img class="pixelmold-card-img-top" src="<?php echo esc_url( $elem_img[0] ); ?>">
 		<div class="pixelmold-card-block">
-			<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title">
+			<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title primary-typography<?php echo (int) $carousels_counter; ?>">
 				<?php echo esc_attr( $element['title'] ); ?>
 			</a>
-			<div class="pixelmold-card-text">
+			<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?>">
 				<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 			</div>
 
@@ -489,12 +498,12 @@ function pixelmold_content_carousel( $carousel_data, $element, $elem_img ) {
 	<?php
 } // End pixelmold_content_carousel().
 
-function pixelmold_posts_carousel( $carousel_data, $element, $elem_img ) {
+function pixelmold_posts_carousel( $carousel_data, $element, $elem_img, $carousels_counter ) {
 	?>
 	<div class="pixelmold-card">
 		<img class="pixelmold-card-img-top" src="<?php echo esc_url( $elem_img[0] ); ?>">
 		<div class="pixelmold-card-block">
-			<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title">
+			<a <?php echo pixelmold_escape_href_url( $element['linkurl'] ); ?>" class="pixelmold-card-title primary-typography<?php echo (int) $carousels_counter; ?>">
 				<?php echo esc_attr( $element['title'] ); ?>
 			</a>
 			<?php
@@ -506,7 +515,7 @@ function pixelmold_posts_carousel( $carousel_data, $element, $elem_img ) {
 			<div class="pixelmold-post-meta"><span class="dashicons dashicons-calendar-alt"></span> <?php echo $element['linked_post_date'] ?> <span class="dashicons dashicons-admin-comments"></span><?php echo $element['linked_post_comments'] . ' comments.'; ?></div>
 			<?php
 			} ?>
-			<div class="pixelmold-card-text">
+			<div class="pixelmold-card-text secondary-typography<?php echo (int) $carousels_counter; ?>">
 				<?php echo nl2br( esc_textarea( $element['desc'] ) ); ?>
 			</div>
 

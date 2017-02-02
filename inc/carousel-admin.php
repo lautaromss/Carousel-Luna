@@ -15,6 +15,9 @@ class pixelmoldthemeCarousel {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
+	// Holds the data of each carousel included in current post/page.
+	public static $current_carousels_data = array();
+
 	public static function default_carousel_options() {
 
 		$default_options = array(
@@ -42,7 +45,7 @@ class pixelmoldthemeCarousel {
 			'secondary_color' => '#000',
 			'secondary_lineheight' => 16,
 			'animation' => 'fadeIn',
-			);
+		);
 
 		return $default_options;
 	}
@@ -50,62 +53,72 @@ class pixelmoldthemeCarousel {
 	public static function default_element_options() {
 
 		$element = array(
-				'id' => 0,
-				'type' => 'image',
-				'title' => '',// Also serves as author in the testimonials type carousel.
-				'desc' => '', // Also serves as testimonial text/quote.
-				'icon' => '',
-				'icon_color' => '',
-				'linkurl' => '#',
-				'linktext' => 'See more',
-				'attachid' => '',
-				'videotype' => 'html5',
-				'videourl' => '',
-				'facebook' => '',
-				'twitter' => '',
-				'googleplus' => '',
-				'email' => '',
-				'price' => '',
-				'old_price' => '',
-			);
+			'id' => 0,
+			'type' => 'image',
+			'title' => '',// Also serves as author in the testimonials type carousel.
+			'desc' => '', // Also serves as testimonial text/quote.
+			'icon' => '',
+			'icon_color' => '',
+			'linkurl' => '#',
+			'linktext' => 'See more',
+			'attachid' => '',
+			'videotype' => 'html5',
+			'videourl' => '',
+			'facebook' => '',
+			'twitter' => '',
+			'googleplus' => '',
+			'email' => '',
+			'price' => '',
+			'old_price' => '',
+		);
 
 		return $element;
+	}
+
+	// Gets called to the footer from the shortcode.
+	public static function localize_carousels_data() {
+		echo 'YES WE CALLED IT';
+		wp_localize_script(
+			'pixelmold_owl_js',
+			'pixelmold_carousel',
+			pixelmoldthemeCarousel::$current_carousels_data
+		);
 	}
 
 	function register_post_type() {
 
 		$labels = array(
-				'name'               => _x( 'Carousels', 'post type general name', 'pixelmoldtheme' ),
-				'singular_name'      => _x( 'Carousel', 'post type singular name', 'pixelmoldtheme' ),
-				'menu_name'          => _x( 'Carousels', 'admin menu', 'pixelmoldtheme' ),
-				'name_admin_bar'     => _x( 'Carousel', 'add new on admin bar', 'pixelmoldtheme' ),
-				'add_new'            => _x( 'Add New', 'Carousel', 'pixelmoldtheme' ),
-				'add_new_item'       => __( 'Add New Carousel', 'pixelmoldtheme' ),
-				'new_item'           => __( 'New Carousel', 'pixelmoldtheme' ),
-				'edit_item'          => __( 'Edit Carousel', 'pixelmoldtheme' ),
-				'view_item'          => __( 'View Carousel', 'pixelmoldtheme' ),
-				'all_items'          => __( 'All Carousels', 'pixelmoldtheme' ),
-				'search_items'       => __( 'Search Carousels', 'pixelmoldtheme' ),
-				'parent_item_colon'  => __( 'Parent Carousels:', 'pixelmoldtheme' ),
-				'not_found'          => __( 'No Carousels found.', 'pixelmoldtheme' ),
-				'not_found_in_trash' => __( 'No Carousels found in Trash.', 'pixelmoldtheme' ),
+			'name'               => _x( 'Carousels', 'post type general name', 'pixelmoldtheme' ),
+			'singular_name'      => _x( 'Carousel', 'post type singular name', 'pixelmoldtheme' ),
+			'menu_name'          => _x( 'Carousels', 'admin menu', 'pixelmoldtheme' ),
+			'name_admin_bar'     => _x( 'Carousel', 'add new on admin bar', 'pixelmoldtheme' ),
+			'add_new'            => _x( 'Add New', 'Carousel', 'pixelmoldtheme' ),
+			'add_new_item'       => __( 'Add New Carousel', 'pixelmoldtheme' ),
+			'new_item'           => __( 'New Carousel', 'pixelmoldtheme' ),
+			'edit_item'          => __( 'Edit Carousel', 'pixelmoldtheme' ),
+			'view_item'          => __( 'View Carousel', 'pixelmoldtheme' ),
+			'all_items'          => __( 'All Carousels', 'pixelmoldtheme' ),
+			'search_items'       => __( 'Search Carousels', 'pixelmoldtheme' ),
+			'parent_item_colon'  => __( 'Parent Carousels:', 'pixelmoldtheme' ),
+			'not_found'          => __( 'No Carousels found.', 'pixelmoldtheme' ),
+			'not_found_in_trash' => __( 'No Carousels found in Trash.', 'pixelmoldtheme' ),
 		);
 
 		$args = array(
-				'labels'             => $labels,
-		        'description'        => __( 'Description.', 'pixelmoldtheme' ),
-				'public'             => false,
-				'publicly_queryable' => false,
-				'show_ui'            => false,
-				'show_in_menu'       => false,
-				'query_var'          => true,
-				'rewrite'            => array( 'slug' => 'pixelmold_carousel' ),
-				'capability_type'    => 'post',
-				'has_archive'        => true,
-				'hierarchical'       => false,
-				'menu_position'      => null,
-				'supports'           => array( 'title' ),
-				'show_in_admin_bar'  => false,
+			'labels'             => $labels,
+			'description'        => __( 'Description.', 'pixelmoldtheme' ),
+			'public'             => false,
+			'publicly_queryable' => false,
+			'show_ui'            => false,
+			'show_in_menu'       => false,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'pixelmold_carousel' ),
+			'capability_type'    => 'post',
+			'has_archive'        => true,
+			'hierarchical'       => false,
+			'menu_position'      => null,
+			'supports'           => array( 'title' ),
+			'show_in_admin_bar'  => false,
 		);
 
 		register_post_type( 'pixelmold_carousel', $args );
@@ -119,7 +132,7 @@ class pixelmoldthemeCarousel {
 			$page_title,
 			$menu_title,
 			'manage_options',
-		  	'pixelmold_carousels_page',
+			'pixelmold_carousels_page',
 			array( $this, 'carousels_page' )
 		);
 	}
